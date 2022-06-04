@@ -82,3 +82,73 @@ if (!function_exists('despachos_post_type')) {
 
 	add_action('init', 'despachos_post_type', 0);
 }
+
+
+// ADDING COLUMNS WITH THEIR TITLES
+add_filter( 'manage_edit-shop_order_columns', 'custom_shop_order_column', 20 );
+
+function custom_shop_order_column($columns)
+{
+    $reordered_columns = array();
+
+    // Inserting columns to a specific location
+    foreach( $columns as $key => $column){
+        $reordered_columns[$key] = $column;
+        if( $key ==  'order_status' ){
+            // Inserting after "Status" column
+            $reordered_columns['download-prescription'] = __( 'Receta','theme_domain');
+            $reordered_columns['signature'] = __( 'Firma cliente','theme_domain');
+        }
+    }
+    return $reordered_columns;
+}
+
+function getFirmaFilename($order_id){
+	// El nombre podr'ia provenir de la base de datos
+	return 'firma-order_id-' . $order_id . '.png'; 
+}
+
+function getRecetaFilename($order_id){
+	// El nombre podr'ia provenir de la base de datos
+	return 'receta-order_id-' . $order_id . '.png'; 
+}
+
+function getReceta($order_id){
+	// Sino existe... debe crearse en alg'un punto
+	$path = __DIR__ . '../../wp-content/uploads/easyfarmadespachos/';
+	$file = $path . getRecetaFilename($order_id); 
+
+	return file_get_contents($path);
+}
+
+
+// Adding the data for the additional column
+add_action( 'manage_shop_order_posts_custom_column' , 'custom_orders_list_column_content', 10, 2 );
+
+function custom_orders_list_column_content( $column, $order_id )
+{
+	global $config;
+
+	$path = __DIR__ . '../../wp-content/uploads/easyfarmadespachos/';
+
+    switch($column)
+    {
+		case 'download-prescription':			
+			
+			$anchor = 'Receta escaneada';
+			$url    = $path . getRecetaFilename($order_id);  
+
+			echo "<a href='$url' alt='receta escaneada'>$anchor</a>";
+
+			break;
+		case 'signature':
+
+			$file = getFirmaFilename($order_id);
+			
+			// el path debe existir
+			$file = get_site_url() . '/wp-content/uploads/easyfarmadespachos/' . $file;
+			echo "<img src='$file' width=200 height=100 />";
+			
+			break;
+    }
+}
