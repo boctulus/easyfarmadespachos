@@ -154,7 +154,7 @@ function file_upload(){
     ];
 }
 
-function file_upload_base64()
+function file_upload_base64(WP_REST_Request $req)
 {
     global $wpdb;
 
