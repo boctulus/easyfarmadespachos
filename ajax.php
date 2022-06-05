@@ -7,6 +7,7 @@ use boctulus\EasyFarmaDespachos\libs\Debug;
 use boctulus\EasyFarmaDespachos\libs\Arrays;
 use boctulus\EasyFarmaDespachos\libs\Orders;
 use boctulus\EasyFarmaDespachos\libs\MultipleUploader;
+use boctulus\EasyFarmaDespachos\libs\Base64Uploader;
 
 require_once __DIR__ . '/libs/Url.php';
 require_once __DIR__ . '/libs/Files.php';
@@ -15,6 +16,7 @@ require_once __DIR__ . '/libs/Debug.php';
 require_once __DIR__ . '/libs/Arrays.php';
 require_once __DIR__ . '/libs/Orders.php';
 require_once __DIR__ . '/libs/MultipleUploader.php';
+require_once __DIR__ . '/libs/Base64Uploader.php';
 
 /*
     Recibo un token y cambio la contraseña
@@ -121,7 +123,6 @@ function file_upload(){
      
     }, $prefix);
 
-
     $files    = $uploader->doUpload()->getFileNames();   
     $failures = $uploader->getErrors();     
 
@@ -153,6 +154,53 @@ function file_upload(){
     ];
 }
 
+function file_upload_base64()
+{
+    global $wpdb;
+
+    try {
+        $uploader = new Base64Uploader();
+
+        $uploader
+        ->setLocation(__DIR__ . '/../../uploads/easyfarmadespachos')
+        ->setFileHandler(function($prefix) {
+
+            return $prefix .'-'. time();
+        
+        }, rand(10000, 99999));
+
+        $files    = $uploader->doUpload()->getFileNames();   
+        $failures = $uploader->getErrors();     
+        
+        /*
+            Almaceno los nombres de los archivos en DB
+        */
+        foreach($files as $ix => $f){
+            $as_stored    = $f;
+
+            $sql = "INSERT INTO `{$wpdb->prefix}easyfarma_files` (`id`, `filename`, `filename_as_stored`, `created_at`) VALUES (NULL, '', '$as_stored', CURRENT_TIMESTAMP);";
+
+            $wpdb->query($sql);
+            $id = $wpdb->insert_id;
+
+            $files[$ix] = [
+                'filename' => $f,
+                'id' => $id
+            ];
+        }
+
+        return [
+            'files'    => $files,
+            'failures' => $failures
+        ];
+
+    } catch (\Exception $e){
+        $error = new WP_Error();
+        $error->add(500, $e->getMessage());
+        return $error;
+    }
+}
+
 add_action('rest_api_init', function () {
     # GET /wp-json/orders/v1/get
 
@@ -172,6 +220,13 @@ add_action('rest_api_init', function () {
     register_rest_route('ez_files/v1', '/post', array(
         'methods' => 'POST',
         'callback' => 'file_upload',
+        'permission_callback' => '__return_true'
+    ));
+
+    // /wp-json/ez_files/v1/post
+    register_rest_route('ez_files_base64/v1', '/post', array(
+        'methods' => 'POST',
+        'callback' => 'file_upload_base64',
         'permission_callback' => '__return_true'
     ));
 });
