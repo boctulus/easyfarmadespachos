@@ -21,6 +21,8 @@ require_once __DIR__ . '/libs/Arrays.php';
 if ($_SERVER['REQUEST_URI'] == '/checkout/'):
 	?>
 	<script>
+        const SITE_URL = '<?= get_site_url(); ?>';
+
 		function getBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -62,8 +64,7 @@ if ($_SERVER['REQUEST_URI'] == '/checkout/'):
 
                     // Enviar por Ajax ... por POST
                     jQuery.ajax({
-                        // NOOOOOOOOOOoo hardecodear !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                        url: 'http://easyfarma.lan/wp-json/ez_files_base64/v1/post',
+                        url: SITE_URL + '/wp-json/ez_files_base64/v1/post',
                         type: 'POST',
                         processData: false,
                         contentType: 'application/octet-stream',
