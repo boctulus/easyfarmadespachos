@@ -4,7 +4,7 @@
  * Plugin Name: EasyFarma Despachos
  * Plugin URI:  
  * Description: Info de despachos
- * Version:     1.0.0
+ * Version:     1.0.1
  * Author:      Pablo Bozzolo
  * Author URI:  
  * License:     
@@ -19,6 +19,15 @@ defined('ABSPATH') || die;
 
 require_once __DIR__ . '/ajax.php';
 require_once __DIR__ . '/installer/easyfarma_files.php';
+require_once __DIR__ . '/checkout.php';
+require_once __DIR__ . '/libs/Debug.php';
+
+if (!function_exists('dd')){
+	function dd($val, $msg = null, $pre_cond = null){
+		boctulus\EasyFarmaDespachos\libs\Debug::dd($val, $msg, $pre_cond);
+	}
+}
+
 
 // https://generatewp.com/post-type/
 if (!function_exists('despachos_post_type')) {
