@@ -1,6 +1,6 @@
 <?php
 
-namespace simplerest\core\libs;
+namespace boctulus\EasyFarmaDespachos\libs;
 
 use boctulus\EasyFarmaDespachos\libs\Files;
 use boctulus\EasyFarmaDespachos\libs\Arrays;
@@ -36,7 +36,7 @@ class MultipleUploader
 {
 	protected $filenames  = [];
 	protected $settings	= [];
-	protected $location = __DIR__ . '../../wp-content/uploads/';
+	protected $location = __DIR__ . '../../wp-content/uploads';
 	protected $erroneous = [];
 	protected $renamerFn = null;
 	protected const WILDCARD = '*';
@@ -121,11 +121,19 @@ class MultipleUploader
 					$tmp_name = $_FILES[$name]["tmp_name"][$key];
 					$filename = basename($_FILES[$name]["name"][$key]); 
 					$new_filename = $renamer($subfijo) . '.' . pathinfo($_FILES[$name]["name"][$key], PATHINFO_EXTENSION);
+					
 					$this->filenames[$i] = [ 
 						'ori_name'  => $filename, 
 						'as_stored' => $new_filename 
 					];
-					move_uploaded_file($tmp_name, $this->location. DIRECTORY_SEPARATOR . $new_filename);
+					
+					$ok = move_uploaded_file($tmp_name, $this->location. DIRECTORY_SEPARATOR . $new_filename);
+
+					if (!$ok){
+						$this->erroneous[] = $_FILES[$name]['name'][$key];
+						continue;
+					}
+
 					$i++;				
 				}else
 					$this->erroneous[] = $_FILES[$name]['name'][$key];
@@ -139,11 +147,18 @@ class MultipleUploader
 					$tmp_name = $_FILES[$input_name]['tmp_name'];
 					$filename =  basename($_FILES[$input_name]['name']);
 					$new_filename = $renamer($subfijo) . '.' . pathinfo($_FILES[$input_name]['name'], PATHINFO_EXTENSION);
+					
 					$this->filenames[] = [ 
 						'ori_name'  => $filename, 
 						'as_stored' => $new_filename 
 					];
-					move_uploaded_file($tmp_name, $this->location. DIRECTORY_SEPARATOR. $new_filename);		
+					
+					$ok = move_uploaded_file($tmp_name, $this->location. DIRECTORY_SEPARATOR. $new_filename);	
+					
+					if (!$ok){
+						$this->erroneous[] = $_FILES[$name]['name'];
+						return $this;
+					}
 				}else
 					$this->erroneous[] = $_FILES[$input_name]['name'];
 			}
@@ -155,11 +170,18 @@ class MultipleUploader
 							$tmp_name = $file['tmp_name'];
 							$filename =  basename($file['name']);
 							$new_filename = $renamer($subfijo) . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+							
 							$this->filenames[] = [ 
 								'ori_name'  => $filename, 
 								'as_stored' => $new_filename
-							 ];
-							move_uploaded_file($tmp_name, $this->location. DIRECTORY_SEPARATOR. $new_filename);		
+							];
+
+							$ok = move_uploaded_file($tmp_name, $this->location. DIRECTORY_SEPARATOR. $new_filename);
+							
+							if (!$ok){
+								$this->erroneous[] = $_FILES[$name]['name'];
+								return $this;
+							}
 						}else
 							$this->erroneous[] = $file['name'];
 					}
@@ -175,11 +197,19 @@ class MultipleUploader
 							$tmp_name = $file['tmp_name'];
 							$filename =  basename($file['name']);
 							$new_filename = $renamer($subfijo) . '.' . pathinfo($file['name'], PATHINFO_EXTENSION);
+							
 							$this->filenames[] = [ 
 								'ori_name'  => $filename, 
 								'as_stored' => $new_filename 
+							
 							];
-							move_uploaded_file($tmp_name, $this->location. DIRECTORY_SEPARATOR. $new_filename);		
+							
+							$ok = move_uploaded_file($tmp_name, $this->location. DIRECTORY_SEPARATOR. $new_filename);		
+						
+							if (!$ok){
+								$this->erroneous[] = $_FILES[$name]['name'][$_name];
+								continue;
+							}						
 						}else
 							$this->erroneous[] = $file['name'];
 					}

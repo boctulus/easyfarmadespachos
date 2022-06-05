@@ -18,6 +18,7 @@
 defined('ABSPATH') || die;
 
 require_once __DIR__ . '/ajax.php';
+require_once __DIR__ . '/installer/easyfarma_files.php';
 
 // https://generatewp.com/post-type/
 if (!function_exists('despachos_post_type')) {
@@ -97,6 +98,7 @@ function custom_shop_order_column($columns)
         if( $key ==  'order_status' ){
             // Inserting after "Status" column
             $reordered_columns['download-prescription'] = __( 'Receta','theme_domain');
+			$reordered_columns['print-qr'] = __( 'Código QR','theme_domain');
             $reordered_columns['signature'] = __( 'Firma cliente','theme_domain');
         }
     }
@@ -121,6 +123,18 @@ function getReceta($order_id){
 	return file_get_contents($path);
 }
 
+if (isset($_GET['post_type']) && $_GET['post_type'] == 'shop_order'):
+	?>
+	<script>
+		function open_qr(e){
+			e.stopImmediatePropagation();
+			e.preventDefault();			
+			alert('QR');
+			return false;
+		}
+	</script>
+<?php
+endif;
 
 // Adding the data for the additional column
 add_action( 'manage_shop_order_posts_custom_column' , 'custom_orders_list_column_content', 10, 2 );
@@ -133,6 +147,10 @@ function custom_orders_list_column_content( $column, $order_id )
 
     switch($column)
     {
+		case 'print-qr':
+			echo "<input type='button' onclick='open_qr(event);' value=' Ver ' />";
+
+			break;
 		case 'download-prescription':			
 			
 			$anchor = 'Receta escaneada';
