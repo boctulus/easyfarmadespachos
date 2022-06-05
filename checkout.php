@@ -30,12 +30,54 @@ if ($_SERVER['REQUEST_URI'] == '/checkout/'):
             });
         }
 
+        // alterativa antigue a getBase64()
+        makeblob = function (dataURL) {
+            var BASE64_MARKER = ';base64,';
+            if (dataURL.indexOf(BASE64_MARKER) == -1) {
+                var parts = dataURL.split(',');
+                var contentType = parts[0].split(':')[1];
+                var raw = decodeURIComponent(parts[1]);
+                return new Blob([raw], { type: contentType });
+            }
+            var parts = dataURL.split(BASE64_MARKER);
+            var contentType = parts[0].split(':')[1];
+            var raw = window.atob(parts[1]);
+            var rawLength = raw.length;
+
+            var uInt8Array = new Uint8Array(rawLength);
+
+            for (var i = 0; i < rawLength; ++i) {
+                uInt8Array[i] = raw.charCodeAt(i);
+            }
+
+            return new Blob([uInt8Array], { type: contentType });
+        }
+
         function send_file(){
             let file = document.querySelector('#file').files[0];
 
             getBase64(file).then(
                 data => {
                     console.log(data)
+
+                    // Enviar por Ajax ... por POST
+                    jQuery.ajax({
+                        // NOOOOOOOOOOoo hardecodear !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        url: 'http://easyfarma.lan/wp-json/ez_files_base64/v1/post',
+                        type: 'POST',
+                        processData: false,
+                        contentType: 'application/octet-stream',
+                        // data es 'data:image/jpeg;base64,9j/4AAQSkZJRgA..........gAooooAKKKKACiiigD//Z'
+                        data: data
+                    })
+                    .done(function(data) {
+                        console.log(data);
+                        console.log("success");
+                    })
+                    .fail(function(data) {
+                        console.log(data);
+                        console.log("error");
+                    });
                 }
             );
         }
