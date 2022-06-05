@@ -36,7 +36,7 @@ class MultipleUploader
 {
 	protected $filenames  = [];
 	protected $settings	= [];
-	protected $location = __DIR__ . '../../wp-content/uploads';
+	protected $location = __DIR__ . '/../../../uploads';
 	protected $erroneous = [];
 	protected $renamerFn = null;
 	protected const WILDCARD = '*';
@@ -58,6 +58,10 @@ class MultipleUploader
 
 		return $this;
 	}	
+
+	public function getLocation(){
+		return $this->location;
+	}
 
 	/*
 		Renamer

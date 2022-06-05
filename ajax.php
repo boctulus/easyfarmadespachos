@@ -111,7 +111,10 @@ function file_upload(){
 
     $prefix = implode('-', $kv);
 
-    $uploader = (new MultipleUploader())
+    $uploader = new MultipleUploader();
+
+    $uploader
+    ->setLocation(__DIR__ . '/../../uploads/easyfarmadespachos')
     ->setFileHandler(function($prefix) {
 
         return $prefix .'-'. time();
