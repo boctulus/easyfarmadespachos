@@ -126,10 +126,10 @@ function getReceta($order_id){
 if (isset($_GET['post_type']) && $_GET['post_type'] == 'shop_order'):
 	?>
 	<script>
-		function open_qr(e){
+		function open_qr(e, order_id){
 			e.stopImmediatePropagation();
 			e.preventDefault();			
-			alert('QR');
+			alert('QR para order ' + order_id);
 			return false;
 		}
 	</script>
@@ -148,7 +148,7 @@ function custom_orders_list_column_content( $column, $order_id )
     switch($column)
     {
 		case 'print-qr':
-			echo "<input type='button' onclick='open_qr(event);' value=' Ver ' />";
+			echo "<input type='button' onclick='open_qr(event, $order_id);' value=' Ver ' />";
 
 			break;
 		case 'download-prescription':			
