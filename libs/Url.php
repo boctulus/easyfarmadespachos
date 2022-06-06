@@ -11,6 +11,10 @@ use boctulus\EasyFarmaDespachos\libs\Arrays;
 
 class Url 
 {    
+    static function is_cli(){
+        return (php_sapi_name() == 'cli');
+    }
+    
     // Body decode
     static function bodyDecode(string $data){
         //throw new \Exception("aaa");
@@ -110,10 +114,28 @@ class Url
         return $x;
     }
 
-    static function getBaseUrl($url, bool $include_path = false)
+    static function currentUrl(){
+        if (static::is_cli()){
+            return '';
+        }
+
+        $actual_link = (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        return $actual_link;
+    }
+
+    static function getBaseUrl(?string $url = null)
     {
+        if (static::is_cli()){
+            return '';
+        }
+        
+        if (is_null($url)){
+            $url = static::currentUrl();
+        }
+
         $url_info = parse_url($url);
-        return  $url_info['scheme'] . '://' . $url_info['host'];
+        $base_url = $url_info['scheme'] . '://' . $url_info['host'] . (isset($url_info['port']) ? ':'. $url_info['port'] : '');
+        return  $base_url;
     }
 
     static function consume_api(string $url, string $http_verb, $body = null, ?Array $headers = null, ?Array $options = null, $decode = true)

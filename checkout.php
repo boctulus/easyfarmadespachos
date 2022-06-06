@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_URI'] == '/checkout/'):
 
             getBase64(file).then(
                 data => {
-                    console.log(data)
+                    //console.log(data)
 
                     // Enviar por Ajax ... por POST
                     jQuery.ajax({

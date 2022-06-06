@@ -8,6 +8,20 @@ namespace boctulus\EasyFarmaDespachos\libs;
 
 class Arrays 
 {
+    static function trimArray(array $arr){
+        $arr = array_map('trim', $arr);
+       
+        return $arr;
+    }
+
+    static function rtrimArray(array $arr){
+        return array_map('rtrim', $arr);
+    }
+
+    static function ltrimArray(array $arr){
+        return array_map('rtrim', $arr);
+    }
+
     // https://www.w3resource.com/php-exercises/php-array-exercise-26.php
     static function shuffle_assoc($my_array)
     {
