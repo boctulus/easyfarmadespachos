@@ -19,6 +19,14 @@ use boctulus\EasyFarmaDespachos\libs\Arrays;
 use boctulus\EasyFarmaDespachos\libs\Products;
 // ...
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+echo "Current Memory: " .ini_get("memory_limit")."\r\n";
+ini_set("memory_limit","728M");
+echo "Updates Memory: ".ini_get("memory_limit")."\r\n";
+
 
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', realpath(__DIR__ . '/../../..') . DIRECTORY_SEPARATOR);
@@ -40,6 +48,15 @@ if (!function_exists('dd')){
 	}
 }
 
+
+//////////////////////////////
+//
+// Ya se ejecuto...... no m;as
+//
+//////////////////////////////
+
+exit;
+/////////////////////////////
 
 global $wpdb;
 

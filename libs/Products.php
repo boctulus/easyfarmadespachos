@@ -209,6 +209,40 @@ class Products
 
     /*
         Get Metadata by Product Id (pid)
+
+        Ej:
+
+        Products::getMetaByPid($pid, 'product_cat')
+
+        Salida:
+
+        array (
+            0 =>
+            (object) array(
+                'term_id' => '20',
+                'name' => 'Medicamentos',
+                'slug' => 'medicamentos',
+                'term_group' => '0',
+                'term_taxonomy_id' => '20',
+                'taxonomy' => 'product_cat',
+                'description' => '',
+                'parent' => '0',
+                'count' => '1389',
+            ),
+            1 =>
+            (object) array(
+                'term_id' => '34',
+                'name' => 'Antialérgicos antihistamínicos',
+                'slug' => 'antialergicos-antihistaminicos',
+                'term_group' => '0',
+                'term_taxonomy_id' => '34',
+                'taxonomy' => 'product_cat',
+                'description' => '',
+                'parent' => '0',
+                'count' => '93',
+            ),
+            // ...
+        )
     */
     static function getMetaByPid($pid, $taxonomy = null){
 		global $wpdb;
@@ -1410,15 +1444,48 @@ class Products
 		return $arr;
 	}
 
-    static function getAttributeTaxonomies(){
+
+    /*
+        Obtener todos los custom attributes disponibles para productos simples
+
+        Salida:
+
+        array (
+            'id:18' => 'att_prueba',
+            'id:14' => 'bioequivalente',
+            'id:3' => 'codigo_isp',
+            'id:15' => 'control_de_stock',
+            'id:2' => 'dosis',
+            'id:8' => 'enfermedades',
+            'id:10' => 'es_medicamento',
+            'id:13' => 'forma_farmaceutica',
+            'id:5' => 'laboratorio',
+            'id:9' => 'mostrar_descr',
+            'id:11' => 'otros_medicamentos',
+            'id:17' => 'precio_easyfarma_plus',
+            'id:7' => 'precio_fraccion',
+            'id:6' => 'precio_x100',
+            'id:12' => 'principio_activo',
+            'id:4' => 'req_receta',
+            'id:16' => 'size',
+        )
+
+        antes getAttributeTaxonomies()
+    */
+    static function getCustomAttributeTaxonomies(){
         $attributes = wc_get_attribute_taxonomies();
         $slugs      = wp_list_pluck( $attributes, 'attribute_name' );
         
         return $slugs;
     }
 
-    /**
-     * Register an attribute taxonomy.
+    /*
+        Register an attribute taxonomy.
+     
+        Uso:
+				
+		Products::createAttributeTaxonomy(Precio EasyFarma Plus', 'precio_easyfarma_plus');
+
      */
     static function createAttributeTaxonomy($name, $new_slug, $translation_domain = null) 
     {
@@ -1556,22 +1623,120 @@ class Products
         return $arr;
     }
 
-    static function getProductsByCategoryName(string $cate_name, $in_stock = true, $conditions = []){
-        $categos = !is_array($cate_name) ? [ $cate_name ] : $cate_name;
 
-        $query_args = array(
-            'category' => $categos,
-        );
 
-        if ($in_stock){
-            $query_args['stock_status'] = 'instock';
+    /*
+        Devuelve custom attributes.  Probado con productos simples.
+
+        Ejemplo de uso:
+
+        Products::getCustomAttr($pid)
+
+        o
+
+        Products::getCustomAttr($pid, 'Código ISP')
+
+        Salida:
+
+         array (
+            'name' => 'Código ISP',
+            'value' => 'F-983/13',
+            'position' => 1,
+            'is_visible' => 1,
+            'is_variation' => 0,
+            'is_taxonomy' => 0,
+        )
+    */
+    static function getCustomAttr($pid, $attr_name = null){
+        global $wpdb;
+
+        if (!is_int($pid)){
+            throw new \InvalidArgumentException("PID debe ser un entero");
         }
 
-        if (!empty($conditions)){
-            $query_args = array_merge($query_args, $conditions);
+        $sql = "SELECT meta_value FROM `{$wpdb->prefix}postmeta` WHERE post_id = $pid AND meta_key = '_product_attributes'";
+
+        $res = $wpdb->get_results($sql, ARRAY_A);   
+
+        if (empty($res)){
+            return;
         }
 
-        return wc_get_products( $query_args );
+        $attrs = unserialize($res[0]['meta_value']);
+
+        if (!empty($attr_name)){
+            foreach ($attrs as $at){
+                if ($at['name'] == $attr_name){
+                    return $at;
+                }
+            }
+
+            return;
+        }
+
+        return $attrs;
+    }
+
+    /*
+        Uso:
+
+        Products::getCustomAttrByLabel('Precio por 100 ml o 100 G')
+
+        Salida:
+
+        array (
+            'attribute_id' => '6',
+            'attribute_name' => 'precio_x100',
+            'attribute_label' => 'Precio por 100 ml o 100 G',
+            'attribute_type' => 'select',
+            'attribute_orderby' => 'menu_order',
+            'attribute_public' => '0',
+        )
+    */
+
+    static function getCustomAttrByLabel($label){
+        global $wpdb;
+
+        $sql = "SELECT * FROM `{$wpdb->prefix}woocommerce_attribute_taxonomies` WHERE attribute_label = '$label'";
+
+        $res = $wpdb->get_results($sql, ARRAY_A);   
+
+        if (empty($res)){
+            return;
+        }
+
+        return $res[0];
+    }
+
+
+    /*
+        Forma de uso:
+
+        Products::getCustomAttrByName('forma_farmaceutica')
+
+        Salida:
+
+        array (
+            'attribute_id' => '6',
+            'attribute_name' => 'precio_x100',
+            'attribute_label' => 'Precio por 100 ml o 100 G',
+            'attribute_type' => 'select',
+            'attribute_orderby' => 'menu_order',
+            'attribute_public' => '0',
+        )        
+    */
+    static function getCustomAttrByName($name){
+        global $wpdb;
+
+        $sql = "SELECT * FROM `{$wpdb->prefix}woocommerce_attribute_taxonomies` WHERE attribute_name = '$name'";
+
+        $res = $wpdb->get_results($sql, ARRAY_A);   
+
+        if (empty($res)){
+            return;
+        }
+
+        return $res[0];
     }
 
     /*
@@ -1625,6 +1790,26 @@ class Products
 
         return $attrs;
     }
+
+
+    static function getProductsByCategoryName(string $cate_name, $in_stock = true, $conditions = []){
+        $categos = !is_array($cate_name) ? [ $cate_name ] : $cate_name;
+
+        $query_args = array(
+            'category' => $categos,
+        );
+
+        if ($in_stock){
+            $query_args['stock_status'] = 'instock';
+        }
+
+        if (!empty($conditions)){
+            $query_args = array_merge($query_args, $conditions);
+        }
+
+        return wc_get_products( $query_args );
+    }
+
 
     static function load_template_part($slug, $name  = '') {
         ob_start();
@@ -1871,97 +2056,4 @@ class Products
         return $ret;
     }
 
-
-    /*
-        Devuelve custom attributes.  Probado con productos simples.
-
-        Ejemplo de uso:
-
-        Products::getCustomAttr($pid)
-
-        o
-
-        Products::getCustomAttr($pid, 'Principio activo')
-    */
-    static function getCustomAttr($pid, $attr_name = null){
-        global $wpdb;
-
-        if (!is_int($pid)){
-            throw new \InvalidArgumentException("PID debe ser un entero");
-        }
-
-        $sql = "SELECT meta_value FROM `{$wpdb->prefix}postmeta` WHERE post_id = $pid AND meta_key = '_product_attributes'";
-
-        $res = $wpdb->get_results($sql, ARRAY_A);   
-
-        if (empty($res)){
-            return;
-        }
-
-        $attrs = unserialize($res[0]['meta_value']);
-
-        if (!empty($attr_name)){
-            foreach ($attrs as $at){
-                if ($at['name'] == $attr_name){
-                    return $at;
-                }
-            }
-
-            return;
-        }
-
-        return $attrs;
-    }
-
-    /*
-        Uso:
-
-        Products::getCustomAttrByLabel('Precio por 100 ml o 100 G')
-
-        Salida:
-
-        array (
-            'attribute_id' => '6',
-            'attribute_name' => 'precio_x100',
-            'attribute_label' => 'Precio por 100 ml o 100 G',
-            'attribute_type' => 'select',
-            'attribute_orderby' => 'menu_order',
-            'attribute_public' => '0',
-        )
-    */
-
-    static function getCustomAttrByLabel($label){
-        global $wpdb;
-
-        $sql = "SELECT * FROM `{$wpdb->prefix}woocommerce_attribute_taxonomies` WHERE attribute_label = '$label'";
-
-        $res = $wpdb->get_results($sql, ARRAY_A);   
-
-        if (empty($res)){
-            return;
-        }
-
-        return $res[0];
-    }
-
-
-    /*
-        Forma de uso:
-
-        Products::getCustomAttrByName('forma_farmaceutica')
-        
-    */
-    static function getCustomAttrByName($name){
-        global $wpdb;
-
-        $sql = "SELECT * FROM `{$wpdb->prefix}woocommerce_attribute_taxonomies` WHERE attribute_name = '$name'";
-
-        $res = $wpdb->get_results($sql, ARRAY_A);   
-
-        if (empty($res)){
-            return;
-        }
-
-        return $res[0];
-    }
 }

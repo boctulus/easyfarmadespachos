@@ -35,14 +35,7 @@ if (!$cli){
 }
 
 
-//$pid = 7845;
-
-// dd(
-//     Products::getMetaByPid($pid)
-// );
-
-// exit;
-// ////
+$pid = 7845;
 
 $products = wc_get_products([
     //'status' => 'publish', 
