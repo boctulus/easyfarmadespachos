@@ -63,14 +63,14 @@ function post_ficha_despacho(WP_REST_Request $req){
 
     $data = $req->get_body();
 
+    $error = new WP_Error();
+
     try {
         if ($data === null) {
             throw new \Exception("No se recibió la data");
         }
 
         $data = Url::bodyDecode($data);
-
-        //$error = new WP_Error();
 
         Files::dump($data);
 
@@ -85,6 +85,10 @@ function post_ficha_despacho(WP_REST_Request $req){
 
     } catch (\Exception $e){
         Files::logger($e->getMessage());
+        
+        $error = new WP_Error();
+        $error->add(500, $e->getMessage());
+        return $error;
     }
 }
 

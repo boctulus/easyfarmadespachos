@@ -87,6 +87,9 @@ $att_names = [
 ];
 
 
+/*
+    Aplica trim() y ucfirst() a... arrays o strings
+*/
 function t($data){
 	if (is_array($data)){
 		$data = Arrays::trimArray(array_unique($data));
@@ -161,7 +164,7 @@ foreach ($products as $_p){
 
     $term_arr = [];
 	foreach ($att_name_keys as $ix => $at_key){
-		$atts[$at_key] = t($atts[$at_key]);
+		//$atts[$at_key] = t($atts[$at_key]);
 
 		$term_names = !is_array($atts[$at_key]) ? [ $atts[$at_key] ] : $atts[$at_key];
 	
