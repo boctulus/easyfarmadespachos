@@ -15,19 +15,25 @@
  * @subpackage EasyFarma Despachos
  */
 
+use boctulus\EasyFarmaDespachos\libs\Reactor;
+
 defined('ABSPATH') || die;
+
+#if (defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY){
+	ini_set('display_errors', 1);
+	ini_set('display_startup_errors', 1);
+	error_reporting(E_ALL);
+#}
+
 
 require_once __DIR__ . '/ajax.php';
 require_once __DIR__ . '/installer/easyfarma_files.php';
-require_once __DIR__ . '/checkout.php';
+require_once __DIR__ . '/checkout.php'; // hooks
 require_once __DIR__ . '/libs/Debug.php';
+require_once __DIR__ . '/libs/Reactor.php';
 
-if (!function_exists('dd')){
-	function dd($val, $msg = null, $pre_cond = null){
-		boctulus\EasyFarmaDespachos\libs\Debug::dd($val, $msg, $pre_cond);
-	}
-}
-
+require_once __DIR__ . '/helpers/debug.php';
+require_once __DIR__ . '/helpers/cli.php';
 
 // https://generatewp.com/post-type/
 if (!function_exists('despachos_post_type')) {
@@ -179,3 +185,10 @@ function custom_orders_list_column_content( $column, $order_id )
 			break;
     }
 }
+
+
+/*
+	Instancio reactor
+*/
+
+$reactor = new Reactor();

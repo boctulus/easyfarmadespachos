@@ -8,6 +8,9 @@ namespace boctulus\EasyFarmaDespachos\libs;
 
 /*
     Custom Post Type
+
+    Ver
+    https://wordpress.stackexchange.com/questions/401323/conditional-delete-metadata-does-not-works
 */
 class CPT {
     static function getAll($post_type = 'post', $status = 'publish', $limit = -1, $order = null){

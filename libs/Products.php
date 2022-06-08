@@ -592,7 +592,6 @@ class Products
         return $wpdb->get_results($sql);  
     }
 
-
     static function updateStock($product, $qty){      
         $product = static::getProduct($product);  
 
@@ -767,7 +766,7 @@ class Products
         // Attributes et default attributes
         
         if( isset( $args['attributes'] ) ){
-            $attr = static::createProductAttributes($args['attributes'], ($args['type'] == 'variable'));
+            $attr = static::insertAttTerms($args['attributes'], ($args['type'] == 'variable'));
             $product->set_attributes($attr);
         }
             
@@ -883,6 +882,8 @@ class Products
             'Precio por 100 ml o 100 G' => '',
             'Requiere receta' => 'Si',
         )
+
+        Creo estos son los atributos no-reusables
     */
     static function createProductAttributesForSimpleProducs($pid, Array $attributes){
         $i = 0;
@@ -932,8 +933,16 @@ class Products
         ),
 
         It works even for Simple products althought them they can not be used.
+
+        ---
+
+        Crea / inserta terminos en atributos re-utilizables
+
+        Pre-cond: los atributos deben existir.
+
+        Nota: antes se llamaba createProductAttributes()
     */
-    static function createProductAttributes(Array $attributes, bool $for_variation){
+    static function insertAttTerms(Array $attributes, bool $for_variation){
 
         $data = array();
         $position = 0;
@@ -998,6 +1007,28 @@ class Products
         }
 
         return $data;
+    }
+
+    /*
+        Delete Attribute Term by Name
+
+        Borra terminos agregados con insertAttTerms()
+    */
+    static function deleteTermByName($name){
+        global $wpdb;
+
+        $sql = "DELETE FROM `{$wpdb->prefix}terms` WHERE name = '$name'";
+        return $wpdb->get_results($sql);  
+    }
+
+     /*
+        Delete Attribute Term by Slug
+    */
+    static function deleteTermBySlug($slug){
+        global $wpdb;
+
+        $sql = "DELETE FROM `{$wpdb->prefix}terms` WHERE slug = '$slug'";
+        return $wpdb->get_results($sql);  
     }
 
 
@@ -1122,11 +1153,11 @@ class Products
         if( isset( $args['attributes'] ) ){     
 
             if ($args['type'] == 'variable'){
-                $attr = static::createProductAttributes($args['attributes'], ($args['type'] == 'variable'));
+                $attr = static::insertAttTerms($args['attributes'], ($args['type'] == 'variable'));
                 $product->set_attributes($attr);
             } elseif($args['type'] == 'simple'){
                 if ($create_attributes_for_simple_products){
-                    $attr = static::createProductAttributes($args['attributes'], ($args['type'] == 'variable'));
+                    $attr = static::insertAttTerms($args['attributes'], ($args['type'] == 'variable'));
                     $product->set_attributes($attr);
                 }
             } 
@@ -1218,6 +1249,147 @@ class Products
 
         return $pid;
     }
+
+    static function dumpProduct($product){
+		$obj = [];
+	
+		$get_src = function($html) {
+			$parsed_img = json_decode(json_encode(simplexml_load_string($html)), true);
+			$src = $parsed_img['@attributes']['src']; 
+			return $src;
+		};
+	
+		// Get Product General Info
+	  
+		$pid = $product->get_id();
+
+		$obj['id'] = $pid;;
+		$obj['type'] = $product->get_type();
+		$obj['name'] = $product->get_name();
+		$obj['slug'] = $product->get_slug();
+		$obj['status'] = $product->get_status();
+		$obj['featured'] = $product->get_featured();
+		$obj['catalog_visibility'] = $product->get_catalog_visibility();
+		$obj['description'] = $product->get_description();
+		$obj['short_description'] = $product->get_short_description();
+		$obj['sku'] = $product->get_sku();
+		#$obj['virtual'] = $product->get_virtual();
+		#$obj['permalink'] = get_permalink( $product->get_id() );
+		#$obj['menu_order'] = $product->get_menu_order(
+		#$obj['date_created'] = $product->get_date_created();
+		#$obj['date_modified'] = $product->get_date_modified();
+		
+		// Get Product Prices
+		
+		$obj['price'] = $product->get_price();
+		$obj['regular_price'] = $product->get_regular_price();
+		$obj['sale_price'] = $product->get_sale_price();
+		#$obj['date_on_sale_from'] = $product->get_date_on_sale_from();
+		#$obj['date_on_sale_to'] = $product->get_date_on_sale_to();
+		#$obj['total_sales'] = $product->get_total_sales();
+		
+		// Get Product Tax, Shipping & Stock
+		
+		#$obj['tax_status'] = $product->get_tax_status();
+		#$obj['tax_class'] = $product->get_tax_class();
+		$obj['manage_stock'] = $product->get_manage_stock();
+		$obj['stock_quantity'] = $product->get_stock_quantity();
+		$obj['stock_status'] = $product->get_stock_status();
+		#$obj['backorders'] = $product->get_backorders();
+		$obj['is_sold_individually'] = $product->get_sold_individually();
+		#$obj['purchase_note'] = $product->get_purchase_note();
+		#$obj['shipping_class_id'] = $product->get_shipping_class_id();
+		
+		// Get Product Dimensions
+		
+		$obj['weight'] = $product->get_weight();
+		$obj['length'] = $product->get_length();
+		$obj['width'] = $product->get_width();
+		$obj['height'] = $product->get_height();
+		//	$obj['dimensions'] = $product->get_dimensions(false);
+		
+		// Get Linked Products
+		
+		#$obj['upsell_ids'] = $product->get_upsell_ids();
+		#$obj['cross_sell_id'] = $product->get_cross_sell_ids();
+		$obj['parent_id'] = $product->get_parent_id();
+		
+		// Get Product Taxonomies
+		
+		$obj['tags'] = self::getTagsByPid($pid);
+
+
+		$obj['categories'] = [];
+		$category_ids = $product->get_category_ids();
+	
+		foreach ($category_ids as $cat_id){
+			$terms = get_term_by( 'id', $cat_id, 'product_cat' );
+			$obj['categories'][] = [
+				'name' => $terms->name,
+				'slug' => $terms->slug,
+				'description' => $terms->description
+			];
+		}
+			
+		
+		// Get Product Downloads
+		
+		#$obj['downloads'] = $product->get_downloads();
+		#$obj['download_expiry'] = $product->get_download_expiry();
+		#$obj['downloadable'] = $product->get_downloadable();
+		#$obj['download_limit'] = $product->get_download_limit();
+		
+		// Get Product Images
+		
+		#$obj['image_id'] = $product->get_image_id();
+		$obj['image'] =  wp_get_attachment_image_src($product->get_image_id(), 'large');  
+
+		$gallery_image_ids = $product->get_gallery_image_ids();
+			
+		$obj['gallery_images'] = [];
+		foreach ($gallery_image_ids as $giid){
+			$obj['gallery_images'][] = wp_get_attachment_image_src($giid, 'large');
+		}	
+	
+		// Get Product Reviews
+		
+		#$obj['reviews_allowed'] = $product->get_reviews_allowed();
+		#$obj['rating_counts'] = $product->get_rating_counts();
+		#$obj['average_rating'] = $product->get_average_rating();
+		#$obj['review_count'] = $product->get_review_count();
+	
+		// Get Product Variations and Attributes
+
+		if($obj['type'] == 'variable'){
+			$variation_ids = $product->get_children(); // get variations
+	
+			$obj['attributes'] = self::getVariationAttributes($product);
+			
+			$tmp = $product->get_default_attributes();
+			if (!empty($tmp)){
+				$obj['default_attributes'] = $tmp;
+			}		
+
+
+			$obj['variations'] = $product->get_available_variations();	
+			
+			foreach ($obj['variations'] as $k => $var){
+
+				if ($var['sku'] == $obj['sku']){
+					$obj['variations'][$k]['sku'] = '';
+				}
+				
+			}
+
+			
+		} else {
+			// Simple product
+
+			$obj['attributes'] = $product->get_attributes();
+		}		
+	
+		return $obj;		
+	}
 
     static function addVariation( $pid, Array $args ){
         
@@ -2056,4 +2228,33 @@ class Products
         return $ret;
     }
 
+
+    /*
+        Ej de uso
+
+        Products::deleteCustomMetas([
+            'laboratorio',
+            'enfermedades',
+            'bioequivalente',
+            'principio_activo',
+            'forma_farmaceutica',
+            'control_de_stock',
+            'otros_medicamentos',
+            'dosis'
+        ])
+    */
+    function deleteCustomMetas(Array $metas){
+        global $wpdb;
+
+        foreach ($metas as $ix => $meta){
+            $metas[$ix] = "'$meta'";
+        }
+
+        $metas_str = implode(',', $metas);
+
+        $sql = "DELETE FROM `wp_postmeta` WHERE meta_key IN ($metas_str);";
+    
+        $affected = $wpdb->query($sql);
+        return $affected;
+    }
 }
