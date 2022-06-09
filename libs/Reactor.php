@@ -54,23 +54,17 @@ class Reactor
 		if (!empty(get_transient('product-'. $pid))){
 			return;
 		}
-
+		
 		set_transient('product-'. $pid, true, 2);
-
-		$atts = [];
-
-		foreach ($this->att_name_vals as $at){
-			$atts[] = Products::getCustomAttr($pid, $at);
-		}
 
 		Files::localDump([
 			'event' => 'CREATE',
-			'obj' => $atts
+			'obj' => Products::dumpProduct($product)
 		]);
 	}
 
 	function onUpdate($product){
-		$pid = $product->get_id();			
+		$pid = $product->get_id();	
 
 		if (!empty(get_transient('product-'. $pid))){
 			return;
@@ -78,62 +72,30 @@ class Reactor
 
 		set_transient('product-'. $pid, true, 2);
 		
-		$atts = [];
-		foreach ($this->att_name_vals as $at){
-			$__at = Products::getCustomAttr($pid, $at);
-
-			if ($__at['is_variation'] != 0){
-				continue;
-			}
-
-			$atts[] = $__at;
-		}
-
-		$prev_atts = get_transient('att-product-'. $pid);
-		
-		if (!empty($prev_atts)){
-			// Voy a obtener la diferencia
-		}
-
-		/*
-			Deber'ia.... sino hay transientes de este tipo, crearlos todos juntos antes 
-			de tener que utilizarlos ac'a
-		*/
-		set_transient('att-product-'. $pid, true, 0);
-
 		Files::localDump([
 			'event' => 'UPDATE',
-			'obj' => $atts
+			'obj' => Products::dumpProduct($product)
 		]);
+
+		
 	}
 
 	function onDelete($product){
-		$pid = $product->get_id();			
-		
-		$atts = [];
-
-		foreach ($this->att_name_vals as $at){
-			$atts[] = Products::getCustomAttr($pid, $at);
-		}
+		$pid = $product->get_id();
 
 		Files::localDump([
 			'event' => 'DELETE',
-			'obj' => $atts
+			'obj' => Products::dumpProduct($product)
 		]);
 	}
 
 	function onRestore($product){
 		$pid = $product->get_id();
-		// $sku = $product->get_sku();
-
-		// if ($sku == null){
-		// 	return;
-		// }
-
-		// Files::localDump([
-		// 	'event' => 'RESTORE',
-		// 	'obj' => Products::dumpProduct($product)
-		// ]);
+	
+		Files::localDump([
+			'event' => 'RESTORE',
+			'obj' => Products::dumpProduct($product)
+		]);
 		// ..
 	}
 	

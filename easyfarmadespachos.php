@@ -30,6 +30,7 @@ require_once __DIR__ . '/ajax.php';
 require_once __DIR__ . '/installer/easyfarma_files.php';
 require_once __DIR__ . '/checkout.php'; // hooks
 require_once __DIR__ . '/libs/Debug.php';
+require_once __DIR__ . '/libs/Reactor.php';
 
 require_once __DIR__ . '/helpers/debug.php';
 require_once __DIR__ . '/helpers/cli.php';
