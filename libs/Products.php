@@ -995,7 +995,7 @@ class Products
             $attribute->set_options( $term_ids );
             $attribute->set_position( $position );
 
-            if (isset($visibilit)){
+            if (isset($visibility)){
                 $attribute->set_visible( $visibility );
             }            
             
@@ -1029,6 +1029,103 @@ class Products
 
         $sql = "DELETE FROM `{$wpdb->prefix}terms` WHERE slug = '$slug'";
         return $wpdb->get_results($sql);  
+    }
+
+    /*
+        Para cada atributo no-reusable extrae la diferencia
+
+        Ej: 
+
+        $a = array (
+            array (
+            'name' => 'Laboratorio',
+            'value' => 'UnLab2',
+            'position' => 1,
+            'is_visible' => 1,
+            'is_variation' => 0,
+            'is_taxonomy' => 0,
+            ),
+
+            array (
+            'name' => 'Enfermedades',
+            'value' => 'Pestesssss',
+            'position' => 1,
+            'is_visible' => 1,
+            'is_variation' => 0,
+            'is_taxonomy' => 0,
+            ),
+            array (
+            'name' => 'Bioequivalente',
+            'value' => 'Otrox',
+            'position' => 1,
+            'is_visible' => 1,
+            'is_variation' => 0,
+            'is_taxonomy' => 0,
+            )
+        );
+
+        $b = array (
+            array (
+            'name' => 'Laboratorio',
+            'value' => 'UnLab2',
+            'position' => 1,
+            'is_visible' => 1,
+            'is_variation' => 0,
+            'is_taxonomy' => 0,
+            ),
+
+            array (
+            'name' => 'Enfermedades',
+            'value' => 'SIDA|Herpes',
+            'position' => 1,
+            'is_visible' => 1,
+            'is_variation' => 0,
+            'is_taxonomy' => 0,
+            ),
+            array (
+            'name' => 'Bioequivalente',
+            'value' => 'Otrox|NuevoMed',
+            'position' => 1,
+            'is_visible' => 1,
+            'is_variation' => 0,
+            'is_taxonomy' => 0,
+            )
+        );
+
+        Salida:
+
+        Array
+        (
+            [Enfermedades] => Array
+            (
+                    [prev] => Pestesssss
+                    [current] => SIDA|Herpes
+            )
+
+            [Bioequivalente] => Array
+            (
+                    [prev] => Otrox
+                    [current] => Otrox|NuevoMed
+            )
+        )
+
+    */
+    function termDiff(Array $prev, Array $current){
+        $dif = [];
+        foreach ($prev as $ix => $at) {
+            $name  = $at['name'];
+            $val_p = $prev[$ix]['value'];
+            $val_c = $current[$ix]['value'];
+
+            if ($val_p !== $val_c){
+                $dif[$name] = [
+                    'prev'    => $val_p,
+                    'current' => $val_c 
+                ];
+            }
+        }
+
+        return $dif;
     }
 
 
