@@ -3,6 +3,8 @@
 use boctulus\EasyFarmaDespachos\libs\Debug;
 use boctulus\EasyFarmaDespachos\libs\Strings;
 use boctulus\EasyFarmaDespachos\libs\Products;
+use boctulus\EasyFarmaDespachos\libs\Users; ///
+use boctulus\EasyFarmaDespachos\libs\EasyFarma; ///
 // ...
 
 
@@ -16,6 +18,8 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/libs/Debug.php';
 require_once __DIR__ . '/libs/Strings.php';
 require_once __DIR__ . '/libs/Products.php';
+require_once __DIR__ . '/libs/Users.php';
+require_once __DIR__ . '/libs/EasyFarma.php'; ///
 
 
 if (!function_exists('dd')){
@@ -33,6 +37,24 @@ $cli = (php_sapi_name() == 'cli');
 if (!$cli){
 	echo "Ejecutar desde la terminal";
 }
+
+
+$pid = 7843;
+#$pid = 8947; // no tiene plus
+
+
+dd(
+    EasyFarma::get_precio_plus($pid)
+);
+
+
+// $pid = 8;
+
+// dd(
+//     Users::hasRole('easyfarma_vip', $pid)
+// );
+
+exit; /////////
 
 $attrs = [
     // 'pa_color' => array(

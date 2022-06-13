@@ -16,6 +16,7 @@ class Reactor
 {
 	protected $att_name_keys = [];
 	protected $att_name_vals = [];
+	protected $action;
 
 	function __construct()
 	{
