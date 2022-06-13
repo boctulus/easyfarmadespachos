@@ -386,6 +386,15 @@ class Products
         $wpdb->query("DELETE pm FROM {$prefix}postmeta pm LEFT JOIN {$prefix}posts wp ON wp.ID = pm.post_id WHERE wp.ID IS NULL");
     } 
 
+    static function getRandomProductIds($qty = 1, $type = 'product'){
+        global $wpdb;
+
+        $sql = "SELECT ID FROM {$wpdb->prefix}posts WHERE post_type IN ('$type') ORDER BY RAND() LIMIT $qty";
+
+        $res = $wpdb->get_results($sql, ARRAY_A);
+        return array_column($res, 'ID');
+    }
+
     static function getAttachmentIdFromSrc ($image_src) {
         global $wpdb;
 

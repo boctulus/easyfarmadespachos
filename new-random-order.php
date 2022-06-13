@@ -39,7 +39,11 @@ if (!$cli){
 	echo "Ejecutar desde la terminal";
 }
 
-foreach ([1176, 1178] as $pid){
+$pids = Products::getRandomProductIds(
+    rand(1, 5)
+);
+
+foreach ($pids as $pid){
     $qty = rand(0, 10);
 
     if ($qty > 0){
