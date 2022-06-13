@@ -5,7 +5,12 @@ use boctulus\EasyFarmaDespachos\libs\Strings;
 use boctulus\EasyFarmaDespachos\libs\Orders;
 use boctulus\EasyFarmaDespachos\libs\Products;
 
-// ...
+/*
+	Mostrar todos los errores
+*/
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -21,13 +26,6 @@ require_once __DIR__ . '/libs/Orders.php';
 require_once __DIR__ . '/libs/Products.php';
 
 require_once __DIR__ . '/helpers/cli.php';
-
-/*
-	Mostrar todos los errores
-*/
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
 
 global $wpdb;
