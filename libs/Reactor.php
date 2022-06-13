@@ -22,26 +22,6 @@ class Reactor
 		add_action('woocommerce_update_product', [$this, 'sync_on_product_update'], 11, 1 );
 		add_action('added_post_meta', [$this, 'sync_on_new_post_data'], 10, 4 );
 		add_action('untrash_post', [$this, 'sync_on_untrash_post'], 10, 1);
-
-		$att_names = [
-			'laboratorio' 			=> 'Laboratorio',
-			'enfermedades' 			=> 'Enfermedades',
-			'bioequivalente' 		=> 'Bioequivalente',
-			'principio_activo' 		=> 'Principio activo',
-			'forma_farmaceutica' 	=> 'Forma farmacéutica',
-			'control_de_stock' 		=> 'Control de Stock',
-			'otros_medicamentos'	=> 'Otros medicamentos',
-			'dosis' 				=> 'Dosis',
-			'codigo_isp' 			=> 'Código ISP',
-			'es_medicamento' 		=> 'Es medicamento',
-			'mostrar_descr' 		=> 'Mostrar descripción',
-			'precio_fraccion' 		=> 'Precio por fracción',
-			'precio_x100'			=> 'Precio por 100 ml o 100 G',
-			'req_receta'			=> 'Requiere receta'
-		];
-		
-		$this->att_name_keys = array_keys($att_names);   // keys = names
-		$this->att_name_vals = array_values($att_names); // vals = labels
 	}	
 
     /*

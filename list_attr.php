@@ -49,7 +49,7 @@ foreach ($products as $_p){
     $sale_price = $p->get_sale_price();
 
     dd(
-        Products::getCustomAttr($pid,)
+        Products::getCustomAttr($pid)
     );
 }
 

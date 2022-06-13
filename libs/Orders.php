@@ -9,10 +9,99 @@ namespace boctulus\EasyFarmaDespachos\libs;
 use boctulus\EasyFarmaDespachos\libs\Strings;
 use boctulus\EasyFarmaDespachos\libs\Debug;
 
-class Orders {
+class Orders 
+{
+    /*
+        Ej. de params:
+
+        $products = [
+            [
+                'pid' => 1178,
+                'qty' => 3
+            ],
+            [
+                'pid' => 1176,
+                'qty' => 2
+            ]
+        ];
+        
+        $billing_address = array(
+            'first_name' => 'Joe',
+            'last_name'  => 'Conlin',
+            'company'    => 'Speed Society',
+            'email'      => 'joe@testing.com',
+            'phone'      => '760-555-1212',
+            'address_1'  => '123 Main st.',
+            'address_2'  => '104',
+            'city'       => 'San Diego',
+            'state'      => 'Ca',
+            'postcode'   => '92121',
+            'country'    => 'US'
+        );
+
+        Faltar'ia poder setear atributos
+    */
+    static function createOrder(Array $products, Array $billing_address, Array $shipping_address = null, $status = null)
+    {   
+        // Now we create the order
+        $order = wc_create_order();
+        
+        foreach ($products as $product){
+            $p   = Products::getProduct($product['pid']);
+            $qty = $product['qty'];
+
+            // The add_product() function below is located in 
+            // plugins/woocommerce/includes/abstracts/abstract_wc_order.php
+            $order->add_product($p, $qty); 
+        }
+        
+        $order->set_address( $billing_address, 'billing' );
+
+        if (!empty($shipping_address)){
+            $order->set_address( $billing_address, 'shipping' );
+        }
+
+        //
+        $order->calculate_totals();
+
+        /*
+            Podr'ia ser tomado como "transicion"
+        */
+        if (!empty($status)){
+            $order->update_status('on-hold');
+        }
+        
+        return $order;
+    }
+
     static function getOrderById($order_id){
         // Get an instance of the WC_Order object (same as before)
         return wc_get_order($order_id);
+    }
+
+    // https://stackoverflow.com/a/46690009/980631
+    static function getLastOrderId(){
+        global $wpdb;
+        $statuses = array_keys(wc_get_order_statuses());
+        $statuses = implode( "','", $statuses );
+    
+        // Getting last Order ID (max value)
+        $results = $wpdb->get_col( "
+            SELECT MAX(ID) FROM {$wpdb->prefix}posts
+            WHERE post_type LIKE 'shop_order'
+            AND post_status IN ('$statuses')
+        " );
+        return reset($results);
+    }
+
+    static function getLastOrderById(){
+        $id = static::getLastOrderId();
+
+        if (empty($id)){
+            return;
+        }
+
+        return static::getOrderById($id);
     }
 
     static function getOrderItems(\Automattic\WooCommerce\Admin\Overrides\Order $order_object){
@@ -122,14 +211,29 @@ class Orders {
         Recibe instancia de WC_Order_Item_Product y devuelve array
     */
     static function orderItemToArray($item) {
+        if ($item === null){
+            throw new \InvalidArgumentException("Se espera objeto de tipo WC_Order_Item_Product. Recibido NULL");
+        }
+
+        if (!is_object($item)){
+            dd($item);
+            throw new \InvalidArgumentException("Se espera objeto de tipo WC_Order_Item_Product");
+        }
+
         //Get the product ID
-        $product_id = $item->get_product_id();
+        $product_id   = $item->get_product_id();
 
         //Get the variation ID
         $variation_id = $item->get_variation_id();
 
         //Get the WC_Product object
         $product = $item->get_product();
+
+        if (empty($product)){
+            dd($item, 'ITEM');
+            dd($product_id, 'PRODUCT ID');
+            throw new \Exception("producto no encontrado");
+        }
 
         // The quantity
         $quantity = $item->get_quantity();
@@ -163,7 +267,8 @@ class Orders {
             'product_name' => $product_name,
             'sku'          => $sku,
             'weight'       => $product->get_weight(),
-            'price'        => $product->get_regular_price(),   
+            'price'        => $product->get_price(),  /// <-- *
+            'regular_price' => $product->get_regular_price(),   
             'sale_price'   => $product->get_sale_price(), 
 
             'total_non_discounted' => $total_non_discounted,

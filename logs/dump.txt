@@ -2,131 +2,46 @@ array (
   'event' => 'UPDATE',
   'obj' => 
   array (
-    0 => 
+    'id' => 8947,
+    'type' => 'simple',
+    'name' => 'MiProd',
+    'slug' => 'miprod',
+    'status' => 'publish',
+    'featured' => false,
+    'catalog_visibility' => 'visible',
+    'description' => 'Descr',
+    'short_description' => '',
+    'sku' => 'test-001',
+    'price' => '3000',
+    'regular_price' => '4000',
+    'sale_price' => '3000',
+    'manage_stock' => false,
+    'stock_quantity' => NULL,
+    'stock_status' => 'instock',
+    'is_sold_individually' => false,
+    'weight' => '',
+    'length' => '',
+    'width' => '',
+    'height' => '',
+    'parent_id' => 0,
+    'tags' => 
     array (
-      'name' => 'Laboratorio',
-      'value' => 'UnLab2',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
     ),
-    1 => 
+    'categories' => 
     array (
-      'name' => 'Enfermedades',
-      'value' => 'Pestesssss',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
+      0 => 
+      array (
+        'name' => 'Uncategorized',
+        'slug' => 'uncategorized',
+        'description' => '',
+      ),
     ),
-    2 => 
+    'image' => false,
+    'gallery_images' => 
     array (
-      'name' => 'Bioequivalente',
-      'value' => 'Otrox',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
     ),
-    3 => 
+    'attributes' => 
     array (
-      'name' => 'Principio activo',
-      'value' => 'No se',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
-    ),
-    4 => 
-    array (
-      'name' => 'Forma farmacéutica',
-      'value' => 'Alguna',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
-    ),
-    5 => 
-    array (
-      'name' => 'Control de Stock',
-      'value' => '6',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
-    ),
-    6 => 
-    array (
-      'name' => 'Otros medicamentos',
-      'value' => 'No',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
-    ),
-    7 => 
-    array (
-      'name' => 'Dosis',
-      'value' => '55 ml',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
-    ),
-    8 => 
-    array (
-      'name' => 'Código ISP',
-      'value' => 'XXX-100',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
-    ),
-    9 => 
-    array (
-      'name' => 'Es medicamento',
-      'value' => 'Si',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
-    ),
-    10 => 
-    array (
-      'name' => 'Mostrar descripción',
-      'value' => 'Si',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
-    ),
-    11 => 
-    array (
-      'name' => 'Precio por fracción',
-      'value' => '134',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
-    ),
-    12 => 
-    array (
-      'name' => 'Precio por 100 ml o 100 G',
-      'value' => '53',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
-    ),
-    13 => 
-    array (
-      'name' => 'Requiere receta',
-      'value' => 'mmm',
-      'position' => 1,
-      'is_visible' => 1,
-      'is_variation' => 0,
-      'is_taxonomy' => 0,
     ),
   ),
 )

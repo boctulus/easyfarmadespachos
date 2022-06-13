@@ -529,18 +529,26 @@ class Products
         return $att_id;
     }
 
+    /*
+        Todos los atributos "nativos" parecen comenzar con "_". Ej:
+        
+        para tax_class es _tax_class
+        para thumbnail_id es _thumbnail_id
+        etc
+    */  
+    static function setPostAttribute($pid, $key, $value){
+        update_post_meta($pid, $key, $value);
+    }
     static function setDefaultImage($pid, $image_id){
         //dd("Updating default image for post with PID $pid");
         update_post_meta( $pid, '_thumbnail_id', $image_id );
     }
-
 
     static function setImagesForPost($pid, Array $image_ids){
         //dd("Updating images for post with PID $pid");
         $image_ids = implode(",", $image_ids);
         update_post_meta($pid, '_product_image_gallery', $image_ids);
     }
-
     static function setProductCategoryNames($pid, Array $categos){
         if (count($categos) >0 && is_array($categos[0])){
             //dd($categos, 'CATEGORIES');
@@ -549,7 +557,6 @@ class Products
 
         wp_set_object_terms($pid, $categos, 'product_cat');
     }
-
     static function setProductTagNames($pid, Array $names){
         if (count($names) >0 && is_array($names[0])){
             //dd($names, 'TAGS');
