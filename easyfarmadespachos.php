@@ -31,6 +31,7 @@ require_once __DIR__ . '/installer/easyfarma_files.php';
 require_once __DIR__ . '/checkout.php'; // hooks
 require_once __DIR__ . '/libs/Debug.php';
 require_once __DIR__ . '/libs/Reactor.php';
+require_once __DIR__ . '/libs/Users.php';
 
 require_once __DIR__ . '/helpers/debug.php';
 require_once __DIR__ . '/helpers/cli.php';
@@ -95,9 +96,55 @@ if (!function_exists('despachos_post_type')) {
 
 		register_post_type('despachos', $args);
 	}
-
-	add_action('init', 'despachos_post_type', 0);
 }
+
+/*
+	 https://preventdirectaccess.com/wordpress-add-user-role-programmatically/
+	 https://developer.wordpress.org/reference/functions/add_role/
+*/
+function easyfarmadespachos_add_roles(){
+	add_role(
+		'repartidor', //  System name of the role.
+		__( 'Repartidor'  ), // Display name of the role.
+		array(
+			'read'  => true,
+			'delete_posts'  => false,
+			'delete_published_posts' => false,
+			'edit_posts'   => false,
+			'publish_posts' => true,
+			'upload_files'  => false,
+			'edit_pages'  => false,
+			'edit_published_pages'  =>  false,
+			'publish_pages'  => false,
+			'delete_published_pages' => false, 
+		)
+	);
+
+	add_role(
+		'easyfarma_vip', //  System name of the role.
+		__( 'EasyFarma VIP'  ), // Display name of the role.
+		array(
+			'read'  => true,
+			'delete_posts'  => false,
+			'delete_published_posts' => false,
+			'edit_posts'   => false,
+			'publish_posts' => false,
+			'upload_files'  => false,
+			'edit_pages'  => false,
+			'edit_published_pages'  =>  false,
+			'publish_pages'  => false,
+			'delete_published_pages' => false, 
+		)
+	);
+}
+
+
+function easyfarmadespachos_init(){
+	despachos_post_type();
+	easyfarmadespachos_add_roles();
+}
+
+add_action('init', 'easyfarmadespachos_init', 0);
 
 
 // ADDING COLUMNS WITH THEIR TITLES
@@ -185,6 +232,9 @@ function custom_orders_list_column_content( $column, $order_id )
 			break;
     }
 }
+
+
+
 
 
 /*
