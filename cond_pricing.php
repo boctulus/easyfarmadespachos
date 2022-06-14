@@ -34,13 +34,20 @@ add_filter('woocommerce_product_get_price', 'custom_price_easyfarma_plus_role', 
  * https://wordpress.stackexchange.com/a/111788/99153 
  */
 
+ /*
+    Se ejecuta en 
+    
+    /cart/
+    /cart/{producto}
+ */
  function custom_price_easyfarma_plus_role($price, $product) {
     if (!is_user_logged_in()) return $price;
 
-    $pid = $product->get_id();
-  
-    if (Users::hasRole('easyfarma_vip', $pid)){
-        $price_plus = EasyFarma::get_precio_plus($pid);
+    $prod_id = $product->get_id();
+    $user_id = get_current_user_id();
+
+    if (Users::hasRole('easyfarma_vip', $user_id)){
+        $price_plus = EasyFarma::get_precio_plus($prod_id);
 
         if (!empty($price_plus)){
             $price = $price_plus;
@@ -48,25 +55,4 @@ add_filter('woocommerce_product_get_price', 'custom_price_easyfarma_plus_role', 
     }
     
     return $price;
-}
-
-/**
- * has_role_WPA111772 
- *
- * function to check if a user has a specific role
- * 
- * @param  string  $role    role to check against 
- * @param  int  $user_id    user id
- * @return boolean
- */
-function has_role_WPA111772($role = '',$user_id = null){
-    if ( is_numeric( $user_id ) )
-        $user = get_user_by( 'id',$user_id );
-    else
-        $user = wp_get_current_user();
-
-    if ( empty( $user ) )
-        return false;
-
-    return in_array( $role, (array) $user->roles );
 }
