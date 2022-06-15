@@ -38,6 +38,8 @@ require_once __DIR__ . '/helpers/cli.php';
 require_once __DIR__ . '/checkout.php'; // hooks
 require_once __DIR__ . '/cond_pricing.php'; // hooks
 
+require_once __DIR__ . '/meta_box_despachos.php';
+
 
 // https://generatewp.com/post-type/
 if (!function_exists('despachos_post_type')) {

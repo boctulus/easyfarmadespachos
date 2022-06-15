@@ -2,19 +2,36 @@ array (
   'event' => 'UPDATE',
   'obj' => 
   array (
-    'id' => 8947,
+    'id' => 4173,
     'type' => 'simple',
-    'name' => 'MiProd',
-    'slug' => 'miprod',
+    'name' => 'Zoltum 20 mg. 28 comp.',
+    'slug' => 'zoltum-20-mg-28-comp',
     'status' => 'publish',
     'featured' => false,
     'catalog_visibility' => 'visible',
-    'description' => 'Descr',
+    'description' => 'Indicaciones:
+
+Pantoprazol comprimidos con recubrimiento entérico 20 mg: Alivio de síntomas gastrointestinales que requieran reducción de la secreción ácida. Tratamiento de mantención en pacientes recuperados de una esofagitis por reflujo.
+Pantoprazol comprimidos con recubrimiento entérico 40 mg: Ulcera duodenal. Ulcera gástrica. Esofagitis por reflujo gastroesofágico moderado a severo. Erradicación del Helicobacter pylori en combinación con tratamiento de antibióticos adecuados.
+
+Posología:
+
+Pantoprazol comprimidos con recubrimiento entérico 20 mg: La dosis oral recomendada es de 20 mg de pantoprazol al día. El alivio de los síntomas generalmente se logra después de un período de 2 a 4 semanas. La curación de la esofagitis asociada requiere generalmente un período de 4 semanas de tratamiento. Si no fuera suficiente, la curación se conseguirá, normalmente, después de un período adicional de 4 semanas. En pacientes en los cuales se ha conseguido el control o alivio de los síntomas, la reaparición de los mismos puede ser controlada con un régimen de tratamiento "a demanda" de 20 mg/día cuando sea necesario. En los pacientes en los que no se haya conseguido el adecuado control de los síntomas con el tratamiento "a demanda", se valorará el paso a un tratamiento continuo. Tratamiento a largo plazo y prevención de las recaídas de la esofagitis por reflujo: Para el tratamiento a largo plazo se recomienda una dosis de mantenimiento de 20 mg de pantoprazol al día, aumentándose a 40 mg de pantoprazol al día si se produjera una recaída. Para este caso puede utilizarse pantoprazol 40 mg. Después de la curación de las recaídas puede de nuevo reducirse la dosis a 20 mg de pantoprazol. Los comprimidos de pantoprazol 20 mg no deben masticarse ni triturarse, y deben ser ingeridos enteros, con agua, 1 hora antes del desayuno.
+Pantoprazol comprimidos con recubrimiento entérico 40 mg: Para el tratamiento de úlcera duodenal y gástrica y esofagitis por reflujo: La dosis recomendada es de 40 mg de pantoprazol al día. En casos individuales se puede administrar una dosis doble (80 mg de pantoprazol) al día, especialmente si no han respondido a otros fármacos. El tratamiento a largo plazo de los pacientes con enfermedades hipersecretoras patológicas: Debe iniciarse con una dosis diaria de 80 mg de pantoprazol. Esta dosis se puede aumentar o disminuir posteriormente, según sea necesario, tomando como referencia las determinaciones de la secreción ácida gástrica. En el caso de administrarse dosis superiores a 80 mg al día, ésta se debe dividir y administrar en 2 tomas al día. De forma transitoria se puede administrar una dosis superior a 160 mg de pantoprazol, si fuera necesario. La duración del tratamiento en enfermedades hipersecretoras patológicas no es limitada y debe adaptarse según necesidades clínicas. En caso de insuficiencia hepática grave: La dosis debe ajustarse a 40 mg de pantoprazol cada 2 días. En pacientes con insuficiencia hepática grave: Las enzimas hepáticas deben ser monitorizadas regularmente durante el tratamiento con pantoprazol, y en caso de un aumento de éstas, se debe interrumpir el tratamiento. La dosis diaria de 40 mg de pantoprazol no debe excederse en pacientes de edad avanzada o en aquellos con deterioro de la función renal. Los comprimidos de Pantoprazol 40 mg no deben masticarse ni triturarse, y deben ser ingeridos enteros, con agua, 1 hora antes del desayuno. Si para conseguir la curación de las úlceras se instaura un tratamiento adicional con pantoprazol, debe tenerse en cuenta la posología recomendada para úlceras gástricas y duodenales. La úlcera duodenal cicatriza generalmente en 2 semanas. Si el período de 2 semanas de tratamiento no es suficiente, la cicatrización se produce, en casi todos los casos, en otras 2 semanas. Para el tratamiento de úlceras gástricas y esofagitis por reflujo se requiere, generalmente, un período de 4 semanas. Si no fuera suficiente, la curación se conseguirá, normalmente, en otras 4 semanas.
+
+Propiedades: Zoltum comprimidos con recubrimiento entérico de 20 mg: Farmacología: Pantoprazol es un benzimidazol sustituido que inhibe la secreción de ácido clorhídrico en el estómago mediante acción específica sobre la bomba de protones de las células parietales. Pantoprazol se transforma en su forma activa en el canalículo secretor de las células parietales donde inhibe a la enzima H+/K+ ATPasa, es decir, en la etapa final de la producción de ácido clorhídrico en el estómago. La inhibición es dosis-dependiente y afecta tanto a la secreción ácida basal como a la estimulada. Como otros inhibidores de la bomba de protones y los antagonistas de los receptores H2, el tratamiento con pantoprazol produce una reducción de la acidez en el estómago y, por lo tanto, un aumento de gastrina proporcional a la reducción de acidez. El aumento en gastrina es reversible. Como pantoprazol se une a la enzima en una zona distal a nivel del receptor celular, puede afectar a la secreción de ácido clorhídrico independientemente de la estimulación por otras sustancias (acetilcolina, histamina y gastrina). El efecto es el mismo tanto si se administra por vía intravenosa como oral. Los valores de gastrina en ayunas se incrementan con pantoprazol. Durante el tratamiento a corto plazo estos valores no exceden, en la mayoría de los casos, el límite superior normal. Durante el tratamiento a largo plazo los niveles de gastrina se duplican en la mayoría de los casos. No obstante, solamente en casos aislados se han observado incrementos excesivos. Como consecuencia, durante el tratamiento a largo plazo, se ha observado en un número mínimo de casos un incremento de leve a moderado en el número de células endocrinas específicas ECL en el estómago (de hiperplasia simple a adenomatosa). Sin embargo, según los estudios llevados a cabo hasta el momento, la formación de lesiones precursoras de carcinoide (hiperplasia atípica) o de carcinoides gástricos, que han sido descritas en animales de experimentación, no se han encontrado en humanos. Según los resultados de los estudios llevados a cabo en animales, no puede descartarse totalmente la influencia de un tratamiento a largo plazo superior a 1 año con pantoprazol sobre los parámetros endocrinos del tiroides. Farmacocinética: Pantoprazol se absorbe rápidamente, obteniéndose concentraciones elevadas en plasma incluso después de una única dosis oral de 40 mg. Se consiguen unas concentraciones séricas máximas entre 2-3 µg/ml en una media de aproximadamente 2.5 horas después de la administración, y estos valores permanecen constantes tras la administración múltiple. El volumen de distribución es de unos 0.15 l/kg y el aclaramiento es de alrededor de 0.1 k/h/kg. La vida media final es de aproximadamente 1 hora. Se han registrado casos de individuos con eliminación retrasada. Debido a la activación específica de pantoprazol en las células parietales, la vida media de eliminación no se correlaciona con su duración de acción más prolongada (inhibición de la secreción ácida). Los valores farmacocinéticos no varían después de una administración única o repetida. En el intervalo de dosis de 10 a 80 mg, la cinética de pantoprazol en plasma es prácticamente lineal, tanto tras la administración oral como intravenosa. La unión de pantoprazol a proteínas séricas es de alrededor del 98%. Pantoprazol se metaboliza casi exclusivamente en el hígado. La eliminación renal representa la principal vía de excreción (alrededor de un 80%) para los metabolitos de pantoprazol, el resto se excreta con las heces. El principal metabolito en plasma y orina es desmetilpantoprazol que está conjugado con sulfato. La vida media del metabolito principal (alrededor de 1.5 h) no es mucho más larga que la de pantoprazol. Biodisponibilidad: Pantoprazol se absorbe totalmente después de la administración oral. La biodisponibilidad absoluta de los comprimidos fue de alrededor del 77%. La ingesta concomitante de alimento no influye sobreel AUC, la concentración sérica máxima y, por lo tanto, sobre la biodisponibilidad. Sólo la variabilidad del período de latencia se incrementará por la ingesta concomitante de alimento. Características en pacientes/grupos especiales de sujetos: No se requiere una reducción de la dosis cuando se administra pantoprazol a pacientes con función renal limitada (incluyendo pacientes en diálisis). Como en los sujetos sanos, la vida media de pantoprazol es corta. Solamente muy pequeñas cantidades de pantoprazol pueden ser dializadas. Aunque el principal metabolito presenta una vida media moderadamente retrasada (2-3 h), la excreción es, sin embargo, rápida y por eso no se produce acumulación. Aunque para pacientes con cirrosis hepática (clases A y B según la clasificación de Child) los valores de vida media aumentan entre 7 y 9 h y los valores AUC aumentan en un factor de 5-7, la concentración máxima en plasma sólo se incrementa ligeramente, en un factor de 1.5 en comparación con sujetos sanos. Tampoco es clínicamente relevante el ligero incremento en AUC y C max en voluntarios de edad avanzada, en comparación con voluntarios jóvenes. Zoltum comprimidos con recubrimiento entérico de 40 mg: Farmacología: Pantoprazol es un benzimidazol sustituido que inhibe la secreción de ácido clorhídrico en el estómago mediante acción específica sobre la bomba de protones de las células parietales.
+
+Composición:
+
+Zoltum 20 mg: Cada comprimido con recubrimiento entérico contiene: Pantoprazol 20.000 mg. Excipientes: Lactosa, Crospovidona, Carbonatode Sodio, Croscarmelosa Sódica, Estearato de Magnesio, Dióxido de Silicio Coloidal, Chroma Seal Copolímero del Acido Metacrílico, Citrato de Trietilo, Polietilenglicol 6000, Oxido de Hierro Amarillo, Dióxido de Titanio.
+Zoltum 40 mg: Cada comprimido con recubrimiento entérico contiene: Pantoprazol 40.000 mg. Excipientes: Lactosa, Crospovidona, Carbonato de Sodio, Croscarmelosa Sódica, Estearato de Magnesio, Dióxido de Silicio Coloidal, Chroma Seal Copolímero del Acido Metacrílico, Citrato de Trietilo, Polietilenglicol 6000, Oxido de Hierro Amarillo, Dióxido de Titanio.
+
+Otros productos que contienen Pantoprazol: Pantocal, Zoltum.',
     'short_description' => '',
-    'sku' => 'test-001',
-    'price' => '3000',
-    'regular_price' => '4000',
-    'sale_price' => '3000',
+    'sku' => '7730979093934',
+    'price' => '13900',
+    'regular_price' => '13900',
+    'sale_price' => '',
     'manage_stock' => false,
     'stock_quantity' => NULL,
     'stock_status' => 'instock',
@@ -31,17 +48,244 @@ array (
     array (
       0 => 
       array (
-        'name' => 'Uncategorized',
-        'slug' => 'uncategorized',
+        'name' => 'Antiácidos',
+        'slug' => 'antiacidos',
+        'description' => '',
+      ),
+      1 => 
+      array (
+        'name' => 'Antiulcerosos',
+        'slug' => 'antiulcerosos',
+        'description' => '',
+      ),
+      2 => 
+      array (
+        'name' => 'Aparato digestivo',
+        'slug' => 'aparato-digestivo',
+        'description' => '',
+      ),
+      3 => 
+      array (
+        'name' => 'Medicamentos',
+        'slug' => 'medicamentos',
         'description' => '',
       ),
     ),
-    'image' => false,
+    'image' => 
+    array (
+      0 => 'http://easyfarma.lan/wp-content/uploads/2022/04/300420221651285236-1024x1022.jpeg',
+      1 => 1024,
+      2 => 1022,
+      3 => true,
+    ),
     'gallery_images' => 
     array (
+      0 => 
+      array (
+        0 => 'http://easyfarma.lan/wp-content/uploads/2022/04/300420221651285236-1024x1022.jpeg',
+        1 => 1024,
+        2 => 1022,
+        3 => true,
+      ),
     ),
     'attributes' => 
     array (
+      'laboratorio' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Laboratorio',
+          'options' => 
+          array (
+            0 => 'Tecnofarma',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'enfermedades' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Enfermedades',
+          'options' => 
+          array (
+            0 => 'Acidez',
+            1 => 'Ulcera',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'bioequivalente' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Bioequivalente',
+          'options' => 
+          array (
+            0 => 'BEpantoprazol',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'principio-activo' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Principio activo',
+          'options' => 
+          array (
+            0 => 'Pantoprazol',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'forma-farmaceutica' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Forma farmacéutica',
+          'options' => 
+          array (
+            0 => 'Comprimidos',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'control-de-stock' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Control de Stock',
+          'options' => 
+          array (
+            0 => 'Disponible',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'dosis' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Dosis',
+          'options' => 
+          array (
+            0 => '20 mg',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'codigo-isp' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Código ISP',
+          'options' => 
+          array (
+            0 => 'F-19451',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'es-medicamento' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Es medicamento',
+          'options' => 
+          array (
+            0 => 'Si',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'mostrar-descripcion' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Mostrar descripción',
+          'options' => 
+          array (
+            0 => 'No',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'precio-por-fraccion' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Precio por fracción',
+          'options' => 
+          array (
+            0 => '496',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'requiere-receta' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Requiere receta',
+          'options' => 
+          array (
+            0 => 'Si',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
+      'precio-easyfarma-plus' => 
+      WC_Product_Attribute::__set_state(array(
+         'data' => 
+        array (
+          'id' => 0,
+          'name' => 'Precio EasyFarma Plus',
+          'options' => 
+          array (
+            0 => '9359',
+          ),
+          'position' => 1,
+          'visible' => true,
+          'variation' => false,
+        ),
+      )),
     ),
   ),
 )
