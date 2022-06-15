@@ -39,7 +39,7 @@ require_once __DIR__ . '/checkout.php'; // hooks
 require_once __DIR__ . '/cond_pricing.php'; // hooks
 
 require_once __DIR__ . '/meta_box_despachos.php';
-
+require_once __DIR__ . '/meta_box_productos.php';
 
 // https://generatewp.com/post-type/
 if (!function_exists('despachos_post_type')) {
@@ -47,7 +47,6 @@ if (!function_exists('despachos_post_type')) {
 	// Register Custom Post Type
 	function despachos_post_type()
 	{
-
 		$labels = array(
 			'name'                  => _x('Despachos', 'Post Type General Name', 'text_domain'),
 			'singular_name'         => _x('Despacho', 'Post Type Singular Name', 'text_domain'),
@@ -237,11 +236,6 @@ function custom_orders_list_column_content( $column, $order_id )
 			break;
     }
 }
-
-
-
-
-
 
 
 /*

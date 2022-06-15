@@ -17,5 +17,15 @@ class EasyFarma
     
         return (float) $arr['value'];
     }
+
+    static function get_laboratorio($pid){
+        $arr = Products::getCustomAttr($pid, 'Laboratorio');
+    
+        if ($arr === null){
+            return;
+        }
+    
+        return $arr['value'];
+    }
     
 }

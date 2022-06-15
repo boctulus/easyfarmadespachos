@@ -44,7 +44,7 @@ $pid = 7843;
 
 
 dd(
-    EasyFarma::get_precio_plus($pid)
+    EasyFarma::get_laboratorio($pid)
 );
 
 

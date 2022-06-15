@@ -36,8 +36,6 @@ function fichas_despacho_meta_box() {
 
 add_action( 'add_meta_boxes', 'fichas_despacho_meta_box' );
 
-add_action( 'add_meta_boxes', 'fichas_despacho_meta_box' );
-
 function lat_meta_box_callback( $post ) {
 
     // Add a nonce field so we can check for it later.

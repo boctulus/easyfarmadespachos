@@ -878,7 +878,7 @@ class Products
         Use *after* post creation
 
         @param $pid product id
-        @param array[] $attributes - This needs to be an array containing ALL your attributes so it can insert them in one go
+        @param array[] $attributes - This needs to be an array containing *ALL* your attributes so it can insert them in one go
 
         Ex.
 
@@ -935,18 +935,19 @@ class Products
 
         https://gist.github.com/alphasider/b9916b51083c48466f330ab0006328e6
 
-        'attributes'         => array(
-        // Taxonomy and term name values
-        'pa_color' => array(
-            'term_names' => array('Red', 'Blue'),
-            'is_visible' => true,
-            'for_variation' => false,
-        ),
-        'pa_size' =>  array(
-            'term_names' => array('X Large'),
-            'is_visible' => true,
-            'for_variation' => false,
-        ),
+        array(
+            // Taxonomy and term name values
+            'pa_color' => array(
+                'term_names' => array('Red', 'Blue'),
+                'is_visible' => true,
+                'for_variation' => false,
+            ),
+            'pa_size' =>  array(
+                'term_names' => array('X Large'),
+                'is_visible' => true,
+                'for_variation' => false,
+            ),
+        )
 
         It works even for Simple products althought them they can not be used.
 
