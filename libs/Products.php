@@ -900,8 +900,10 @@ class Products
         )
 
         Creo estos son los atributos no-reusables
+
+        Viejo nombre: createProductAttributesForSimpleProducs
     */
-    static function createProductAttributesForSimpleProducs($pid, Array $attributes){
+    static function setProductAttributesForSimpleProducts($pid, Array $attributes){
         $i = 0;
 
         if (empty($attributes)){
@@ -928,6 +930,17 @@ class Products
 
         // Now update the post with its new attributes
         update_post_meta($pid, '_product_attributes', $product_attributes);
+    }
+
+    /*
+        Lo que debe hacer es ... 
+
+        1) Leer todos los atributos existentes para ese post con sus los valores y almacenarlos temporalmente
+
+        2) Debe funcionar como un PATCH, permitiendo actualizar uno o algunos (pero no obligatoriamente todos) atributos usando los valores temporales para el resto.
+    */
+    static function updateProductAttributesForSimpleProducts($pid, $att){
+        /// HACER !!!!!!!!!!
     }
 
     /*

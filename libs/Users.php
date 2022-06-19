@@ -11,6 +11,26 @@ use boctulus\EasyFarmaDespachos\libs\Arrays;
 
 class Users
 {
+    static function getCurrentUserId(){
+        return get_current_user_id();
+    }
+
+    static function getUserByEmail($email){
+        return get_user_by( 'email', $email);
+    }
+
+    static function getUserIdByEmail($email){
+        $u = get_user_by( 'email', $email);
+
+        if (!empty($u)){
+            return $u->ID;
+        }
+    }
+
+    static function userExistsByEmail($email){
+        return !empty( get_user_by( 'email', $email) );
+    }
+    
     /*
         https://wordpress.stackexchange.com/a/111788/99153
     */

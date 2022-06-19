@@ -39,9 +39,17 @@ class Orders
             'country'    => 'US'
         );
 
-        Faltar'ia poder setear atributos
+        Atributos. Ej:
+
+        [
+            '_customer_user' => $userid,
+            // ...
+        ]
+
+        https://stackoverflow.com/a/50384706/980631
+        
     */
-    static function createOrder(Array $products, Array $billing_address, Array $shipping_address = null, $status = null)
+    static function createOrder(Array $products, Array $billing_address, Array $shipping_address = null, $attributes = [])
     {   
         // Now we create the order
         $order = wc_create_order();
@@ -64,14 +72,23 @@ class Orders
         //
         $order->calculate_totals();
 
-        /*
-            Podr'ia ser tomado como "transicion"
-        */
-        if (!empty($status)){
-            $order->update_status('on-hold');
+        if (!empty($attributes)){
+            foreach ($attributes as $att_name => $att_value){
+                update_post_meta($order->id, $att_name, $att_value);
+            }
         }
         
         return $order;
+    }
+
+    static function setOrderStatus($order, $status){
+        if (!empty($status)){
+            $order->update_status($status);
+        }
+    }
+
+    static function setCustomerId($order, $user_id){
+        $order->set_customer_id($user_id);
     }
 
     static function getOrderById($order_id){

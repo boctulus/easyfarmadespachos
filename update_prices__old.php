@@ -186,7 +186,7 @@ foreach ($products as $_p){
 		$term_arr[$at_name] = implode('|', $term_names);
 	}
 
-    Products::createProductAttributesForSimpleProducs($pid, $term_arr);
+    Products::setProductAttributesForSimpleProducts($pid, $term_arr);
 
     /*
         Ahora destruyo el sale_price

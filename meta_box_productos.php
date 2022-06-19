@@ -85,7 +85,7 @@ function save_productos_meta_box_data( $post_id ) {
     $my_data = sanitize_text_field( $_POST['laboratorio'] );
 
     // update_post_meta( $post_id, '_coord_lon', $my_data ); 
-    ////////////// para escribir usar createProductAttributesForSimpleProducs()
+    ////////////// para escribir usar setProductAttributesForSimpleProducts()
 
 }
 

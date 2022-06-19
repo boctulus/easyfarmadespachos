@@ -164,7 +164,10 @@ class Files
 	}
 
 	static function localLogger($data, $filename = 'log.txt'){	
+		$dir  = $path = __DIR__ . '/../logs/';
 		$path = __DIR__ . '/../logs/'. $filename; 
+
+		Files::mkDir($dir); //
 		
 		if (is_array($data) || is_object($data))
 			$data = json_encode($data);
@@ -194,6 +197,7 @@ class Files
 	
 
 }
+
 
 
 
