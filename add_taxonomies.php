@@ -1,7 +1,7 @@
 <?php
 
-use boctulus\EasyFarmaInit\libs\Debug;
-use boctulus\EasyFarmaInit\libs\Products;
+use boctulus\EasyFarmaDespachos\libs\Debug;
+use boctulus\EasyFarmaDespachos\libs\Products;
 // ...
 
 
@@ -34,51 +34,21 @@ if (!$cli){
 
 function addNewTaxonomies(){
 	$new_atts = [
-		[
-			'Dosis', 'dosis'
-		],
-		[
-			'Código ISP', 'codigo_isp'
-		],
-		[
-			'Requiere receta', 'req_receta'
-		],
-		[
-			'Laboratorio', 'laboratorio'
-		],
-		[
-			'Precio por 100 ml o 100 G', 'precio_x100'
-		],
-		[
-			'Precio por fracción', 'precio_fraccion'
-		],
-		[
-			'Enfermedades', 'enfermedades'
-		],
-		[
-			'Mostrar descripción', 'mostrar_descr'
-		],
-		[
-			'Es medicamento', 'es_medicamento'
-		],
-		[
-			'Otros medicamentos', 'otros_medicamentos'
-		],
-		[
-			'Principio activo', 'principio_activo'
-		],
-		[
-			'Forma farmacéutica', 'forma_farmaceutica'
-		],
-		[
-			'Bioequivalente', 'bioequivalente'
-		],	
-		[
-			'Control de Stock', 'control_de_stock'
-		],
-		[
-			'Precio EasyFarma Plus', 'precio_easyfarma_plus'
-		]
+		['Laboratorio', 'laboratorio'],
+		['Enfermedades', 'enfermedades'],
+		['Bioequivalente', 'bioequivalente'],	
+		['Principio activo', 'principio_activo'],
+		['Forma farmacéutica', 'forma_farmaceutica'],
+		['Control de Stock', 'control_de_stock'],
+		['Otros medicamentos', 'otros_medicamentos'],
+		['Dosis', 'dosis' ],		
+		['Código ISP', 'codigo_isp' ],
+		['Es medicamento', 'es_medicamento'],
+		['Mostrar descripción', 'mostrar_descripcion'], //
+		['Precio por fracción', 'precio_por_fraccion'], //
+		['Precio por 100 ml o 100 G', 'precio_por_100'], //
+		['Requiere receta', 'requiere_receta'], //
+		['Precio EasyFarma Plus', 'precio_plus'] //
 	];
 
 
@@ -86,11 +56,10 @@ function addNewTaxonomies(){
 		Products::createAttributeTaxonomy($new_at[0], $new_at[1]);
 	}
 
-
-	dd(Products::getAttributeTaxonomies());
+	dd(Products::getCustomAttributeTaxonomies());
 }
 
 
 addNewTaxonomies();
-echo 'OK';
+dd('OK');
 

@@ -1,0 +1,18 @@
+TODO Easyfarma despachos
+========================
+
+
+- Roles						 -> ventas -> Graficos, App despachos -- listo
+
+- Tipo de precio condicional -> ventas -> Graficos -- (se va a cambiar de estrategia)
+
+- Metaboxes 				 -> Fichas de despachos  -- casi listo
+
+- Metaboxes 				 -> Filtro  -- listo
+
+- Reemplazar atributos de productos simples por Metas (1) -- listo
+
+- Sync de atributos  (2)	 -> Filtro <!--------------- *
+
+- Chequear que......... verdaderamente sea requerida la receta. Sino lo es........bloquear el checkout
+

@@ -1,5 +1,0 @@
-TODO Easyfarma despachos
-========================
-
-- Chequear que......... verdaderamente sea requerida la receta. Sino lo es........bloquear el checkout
-

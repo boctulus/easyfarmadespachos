@@ -19,7 +19,7 @@ $meta_atts = [
     'dosis',
     'codigo_isp',
     'es_medicamento',
-    'mostrar_descripcion',
+    'mostrar_descripcion',  //
     'precio_por_fraccion',
     'precio_por_100',
     'requiere_receta',
