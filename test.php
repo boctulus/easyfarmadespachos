@@ -38,7 +38,6 @@ if (!$cli){
 	echo "Ejecutar desde la terminal";
 }
 
-
 dd(
     Products::getTaxonomyFromTerm('Triangulo')
 , 'Taxonimias conteniendo el term');

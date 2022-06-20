@@ -1034,20 +1034,6 @@ class Products
     }
 
     /*
-        Delete Attribute Term by Name
-
-        Borra terminos agregados con insertAttTerms() de la tabla 'wp_terms'
-    */
-    static function deleteTermByName(int $term_id, string $taxonomy, $args = []){
-        if (!Strings::startsWith('pa_', $taxonomy)){
-            $taxonomy = 'pa_' . $taxonomy;
-        }
-
-        wp_delete_term($term_id, $taxonomy, $args);
-    }
-
-
-    /*
         Para cada atributo no-reusable extrae la diferencia
 
         Ej: 
@@ -2415,7 +2401,7 @@ class Products
             ;
         */
         $sql = "SELECT p.*, pm.* FROM wp_postmeta pm
-        LEFT JOIN wp_posts p ON p.ID = pm.post_id 
+        LEFT JOIN {$wpdb->prefix}posts p ON p.ID = pm.post_id 
         WHERE p.post_type = '%s' 
         AND pm.meta_key = '%s' 
         AND pm.meta_value='%s'
@@ -2482,14 +2468,44 @@ class Products
         */
 
         $sql = "SELECT taxonomy FROM wp_terms AS t 
-        LEFT JOIN wp_termmeta AS tm ON t.term_id = tm.term_id 
-        LEFT JOIN wp_term_taxonomy AS tt ON tt.term_id = t.term_id
+        LEFT JOIN {$wpdb->prefix}termmeta AS tm ON t.term_id = tm.term_id 
+        LEFT JOIN {$wpdb->prefix}term_taxonomy AS tt ON tt.term_id = t.term_id
         WHERE name = '%s'";
 
         $r = $wpdb->get_col($wpdb->prepare($sql, $term_name));
     
         return $r;
     }
+
+    static function getTermIdsByTaxonomy(string $taxonomy){
+        global $wpdb;
+
+        if (!Strings::startsWith('pa_', $taxonomy)){
+            $taxonomy = 'pa_' . $taxonomy;
+        }
+
+        $sql = "SELECT term_id FROM `{$wpdb->prefix}term_taxonomy` WHERE `taxonomy` = '$taxonomy';";
+
+        return $wpdb->get_col($sql);
+    }
+
+    /*
+        Delete Attribute Term by Name
+
+        Borra los terminos agregados con insertAttTerms() de la tabla 'wp_terms' por taxonomia (pa_forma_farmaceutica, etc)
+    */
+    static function deleteTermByName(string $term_name, string $taxonomy, $args = []){
+        if (!Strings::startsWith('pa_', $taxonomy)){
+            $taxonomy = 'pa_' . $taxonomy;
+        }
+
+        $term_ids = static::getTermIdsByTaxonomy($taxonomy);
+
+        foreach ($term_ids as $term_id){
+            wp_delete_term($term_id, $taxonomy, $args);
+        }
+    }
+
 
 
 }
