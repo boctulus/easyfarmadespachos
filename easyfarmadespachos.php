@@ -26,14 +26,17 @@ defined('ABSPATH') || die;
 #}
 
 
-require_once __DIR__ . '/ajax.php';
+$config = include __DIR__ . '/config/config.php';
+
 require_once __DIR__ . '/installer/easyfarma_files.php';
 require_once __DIR__ . '/libs/Debug.php';
-require_once __DIR__ . '/libs/Reactor.php';
+require_once __DIR__ . '/libs/Reactor.php'; // Reactor
 require_once __DIR__ . '/libs/Users.php';
 
 require_once __DIR__ . '/helpers/debug.php';
 require_once __DIR__ . '/helpers/cli.php';
+
+require_once __DIR__ . '/ajax.php';
 
 require_once __DIR__ . '/checkout.php'; // hooks
 require_once __DIR__ . '/cond_pricing.php'; // hooks
@@ -242,4 +245,7 @@ function custom_orders_list_column_content( $column, $order_id )
 	Instancio reactor
 */
 
-$reactor = new Reactor();
+
+if ($config['sync_attr']){
+	$reactor = new Reactor();
+}
