@@ -12,6 +12,7 @@ use boctulus\EasyFarmaDespachos\libs\Products;
     Copiar metas compatibles con meta-boxes y precio EasyFarma Plus desde CSV
 */
 
+ini_set("memory_limit","728M");
 
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', realpath(__DIR__ . '/../../..') . DIRECTORY_SEPARATOR);

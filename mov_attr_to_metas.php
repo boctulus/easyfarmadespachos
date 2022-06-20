@@ -11,6 +11,7 @@ use boctulus\EasyFarmaDespachos\libs\Products;
     Mover atributos de productos simples a metas compatibles con meta-boxes
 */
 
+ini_set("memory_limit","728M");
 
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', realpath(__DIR__ . '/../../..') . DIRECTORY_SEPARATOR);
