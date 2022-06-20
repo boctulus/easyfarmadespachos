@@ -32,6 +32,11 @@ if (!$cli){
 	echo "Ejecutar desde la terminal";
 }
 
+/*
+	Creaci'on de atributos re-utilizables de productos. Normalemte se utilizan con productos variables.
+
+	Se crean en la tabla wp_woocommerce_attribute_taxonomies
+*/
 function addNewTaxonomies(){
 	$new_atts = [
 		['Laboratorio', 'laboratorio'],
@@ -55,11 +60,13 @@ function addNewTaxonomies(){
 	foreach ($new_atts as $new_at){
 		Products::createAttributeTaxonomy($new_at[0], $new_at[1]);
 	}
-
-	dd(Products::getCustomAttributeTaxonomies());
 }
 
 
 addNewTaxonomies();
+dd(
+	Products::getCustomAttributeTaxonomies()
+);
+
 dd('OK');
 

@@ -13,6 +13,8 @@ if ( ! function_exists( 'wp_crop_image' ) ) {
 */
 class Products
 {
+    // Investigar '_transient_wc_attribute_taxonomies' como option_name en wp_options
+
     static function productExists($sku){
         return !empty(static::getProductIdBySKU($sku));
     }
@@ -1738,7 +1740,7 @@ class Products
 
 
     /*
-        Obtener todos los custom attributes disponibles para productos simples
+        Obtener todos los custom attributes disponibles para productos variables
 
         Salida:
 
@@ -1772,11 +1774,14 @@ class Products
     }
 
     /*
-        Register an attribute taxonomy.
+        Crea los atributos (sin valores) que se utilizan normalmente con productos variables
+        (re-utilizables)
      
         Uso:
 				
 		Products::createAttributeTaxonomy(Precio EasyFarma Plus', 'precio_easyfarma_plus');
+
+        Los atributos son creados en la tabla `wp_woocommerce_attribute_taxonomies`
 
      */
     static function createAttributeTaxonomy($name, $new_slug, $translation_domain = null) 
@@ -1918,7 +1923,7 @@ class Products
 
 
     /*
-        Devuelve custom attributes.  Probado con productos simples.
+        Devuelve custom attributes de productos simples. NO confundir con metas
 
         Ejemplo de uso:
 
@@ -2348,7 +2353,6 @@ class Products
         return $ret;
     }
 
-
     /*
         Ej de uso
 
@@ -2362,8 +2366,10 @@ class Products
             'otros_medicamentos',
             'dosis'
         ])
+
+        Quizas se mejor usar delete_post_meta()  !!!!!!!!!!
     */
-    function deleteCustomMetas(Array $metas){
+    static function deleteCustomMetas(Array $metas){
         global $wpdb;
 
         foreach ($metas as $ix => $meta){
@@ -2377,4 +2383,90 @@ class Products
         $affected = $wpdb->query($sql);
         return $affected;
     }
+
+    static function getMeta($post_id, $meta_key){
+        if (!Strings::startsWith('_', $meta_key)){
+            $meta_key = '_' . $meta_key;
+        }
+
+        return get_post_meta($post_id, $meta_key, true);
+    }
+
+    static function setMeta($post_id, $meta_key, $dato, bool $sanitize = true){
+        if (!Strings::startsWith('_', $meta_key)){
+            $meta_key = '_' . $meta_key;
+        }
+
+        if ($sanitize){
+            $dato = sanitize_text_field($dato);
+        }
+
+        update_post_meta( $post_id, $meta_key, $dato); 
+    }
+
+    /*
+        Retorna productos contienen determinado valor en una meta_key
+    */
+    static function getByMeta($meta_key, $meta_value, $post_type = 'product', $status = 'publish' ) {
+        global $wpdb;
+
+        if (!Strings::startsWith('_', $meta_key)){
+            $meta_key = '_' . $meta_key;
+        }
+
+        /*
+            SELECT p.*, pm.* FROM wp_postmeta pm
+            LEFT JOIN wp_posts p ON p.ID = pm.post_id 
+            WHERE p.post_type = 'product' 
+            AND pm.meta_key = '_forma_farmaceutica' 
+            AND pm.meta_value='triangulo'
+            AND p.post_status = 'publish'
+            ;
+        */
+        $sql = "SELECT p.*, pm.* FROM wp_postmeta pm
+        LEFT JOIN wp_posts p ON p.ID = pm.post_id 
+        WHERE p.post_type = '%s' 
+        AND pm.meta_key = '%s' 
+        AND pm.meta_value='%s'
+        AND p.post_status = '%s'
+        ";
+
+        $r = $wpdb->get_results($wpdb->prepare($sql, $post_type, $meta_key, $meta_value, $status), ARRAY_A);
+    
+        return $r;
+    }
+
+    /*
+        Retorna la cantidad de productos contienen determinado valor en una meta_key
+    */
+    static function countByMeta($meta_key, $meta_value, $post_type = 'product', $status = 'publish' ) {
+        global $wpdb;
+
+        if (!Strings::startsWith('_', $meta_key)){
+            $meta_key = '_' . $meta_key;
+        }
+
+        /*
+            SELECT COUNT(*) FROM wp_postmeta pm
+            LEFT JOIN wp_posts p ON p.ID = pm.post_id 
+            WHERE p.post_type = 'product' 
+            AND pm.meta_key = '_forma_farmaceutica' 
+            AND pm.meta_value='crema'
+            AND p.post_status = 'publish'
+            ;
+        */
+        $sql = "SELECT COUNT(*) FROM wp_postmeta pm
+        LEFT JOIN wp_posts p ON p.ID = pm.post_id 
+        WHERE p.post_type = '%s' 
+        AND pm.meta_key = '%s' 
+        AND pm.meta_value='%s'
+        AND p.post_status = '%s'
+        ";
+
+        $r = (int) $wpdb->get_var($wpdb->prepare($sql, $post_type, $meta_key, $meta_value, $status));
+    
+        return $r;
+    }
+
+
 }
