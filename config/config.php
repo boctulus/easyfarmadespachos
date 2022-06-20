@@ -7,7 +7,7 @@
 */
 
 return [
-	'sync_attr' => false
+	'sync_attr' => true
 ];
 
 

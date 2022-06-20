@@ -2330,37 +2330,6 @@ class Products
         return $ret;
     }
 
-    /*
-        Ej de uso
-
-        Products::deleteCustomMetas([
-            'laboratorio',
-            'enfermedades',
-            'bioequivalente',
-            'principio_activo',
-            'forma_farmaceutica',
-            'control_de_stock',
-            'otros_medicamentos',
-            'dosis'
-        ])
-
-        Quizas se mejor usar delete_post_meta()  !!!!!!!!!!
-    */
-    static function deleteCustomMetas(Array $metas){
-        global $wpdb;
-
-        foreach ($metas as $ix => $meta){
-            $metas[$ix] = "'$meta'";
-        }
-
-        $metas_str = implode(',', $metas);
-
-        $sql = "DELETE FROM `wp_postmeta` WHERE meta_key IN ($metas_str);";
-    
-        $affected = $wpdb->query($sql);
-        return $affected;
-    }
-
     static function getMeta($post_id, $meta_key){
         if (!Strings::startsWith('_', $meta_key)){
             $meta_key = '_' . $meta_key;

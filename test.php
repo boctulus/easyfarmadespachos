@@ -38,6 +38,13 @@ if (!$cli){
 	echo "Ejecutar desde la terminal";
 }
 
+
+dd(
+    get_post_meta(7845)
+);
+
+exit;
+
 dd(
     Products::countByMeta('laboratorio', 'Hetero Labs Limited')
 );
