@@ -575,37 +575,13 @@ class Products
         wp_set_object_terms($pid, $names, 'product_tag');
     }
 
-    static function updatePrice($product, $price){
-        $product = static::getProduct($product);
-
-        if ($product === null){
-            return;
-        }
-
-        if ($price != null){
-            $product->set_regular_price($price);
-            $product->save();
-        }
+    static function updatePrice($pid, $price){
+        update_post_meta( $pid, '_price', $price );
+        update_post_meta($pid, '_regular_price', $price );
     }
 
-    static function updateSalePrice($product, $price){
-        $product = static::getProduct($product);
-
-        if ($product === null){
-            return;
-        }
-
-        if ($price != null){
-            $product->set_sale_price($price);
-            $product->save();
-        }
-    }
-
-    static function removeSalePrice($pid){
-        global $wpdb;
-
-        $sql = "DELETE FROM `{$wpdb->prefix}postmeta` WHERE post_id = $pid AND meta_key = '_sale_price';";
-        return $wpdb->get_results($sql);  
+    static function updateSalePrice($pid, $sale_price){
+        update_post_meta($pid, '_sale_price', $sale_price );
     }
 
     static function updateStock($product, $qty){      
@@ -930,6 +906,10 @@ class Products
 
         // Now update the post with its new attributes
         update_post_meta($pid, '_product_attributes', $product_attributes);
+    }
+
+    static function removeAllAttributesForSimpleProducts($pid){
+        update_post_meta($pid, '_product_attributes', []);
     }
 
     /*
