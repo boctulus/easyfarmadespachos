@@ -938,8 +938,12 @@ class Products
         /// HACER !!!!!!!!!!
     }
 
-    /*
-        Utility function that prepare product attributes before saving
+    /*`
+        Inserta terminos en atributos re-utilizables
+
+        Pre-cond: los atributos deben existir.
+
+        Nota: antes se llamaba createProductAttributes()
 
         https://gist.github.com/alphasider/b9916b51083c48466f330ab0006328e6
 
@@ -957,15 +961,10 @@ class Products
             ),
         )
 
-        It works even for Simple products althought them they can not be used.
+        It works even for Simple products althought them they can not be used
 
-        ---
 
-        Crea / inserta terminos en atributos re-utilizables
-
-        Pre-cond: los atributos deben existir.
-
-        Nota: antes se llamaba createProductAttributes()
+        Los terminos son insertados en la tabla `wp_terms` 
     */
     static function insertAttTerms(Array $attributes, bool $for_variation){
 
@@ -1037,13 +1036,10 @@ class Products
     /*
         Delete Attribute Term by Name
 
-        Borra terminos agregados con insertAttTerms()
+        Borra terminos agregados con insertAttTerms() de la tabla 'wp_terms'
     */
-    static function deleteTermByName($name){
-        global $wpdb;
-
-        $sql = "DELETE FROM `{$wpdb->prefix}terms` WHERE name = '$name'";
-        return $wpdb->get_results($sql);  
+    static function deleteTermByName(int $term_id, string $taxonomy, $args = []){
+        wp_delete_term($term_id, $taxonomy, $args);
     }
 
      /*
@@ -2464,6 +2460,38 @@ class Products
         ";
 
         $r = (int) $wpdb->get_var($wpdb->prepare($sql, $post_type, $meta_key, $meta_value, $status));
+    
+        return $r;
+    }
+
+    /*
+        Uso. Ej:
+
+        Products::getTaxonomyFromTerm('Crema')
+
+        retorna
+
+        array (
+            0 => 'pa_forma_farmaceutica',
+            1 => 'pa_dosis',
+        )
+    */
+    static function getTaxonomyFromTerm(string $term_name){
+        global $wpdb;
+
+        /*  
+            SELECT * FROM wp_terms AS t 
+            LEFT JOIN wp_termmeta AS tm ON t.term_id = tm.term_id 
+            LEFT JOIN wp_term_taxonomy AS tt ON tt.term_id = t.term_id
+            WHERE t.name = 'Crema'
+        */
+
+        $sql = "SELECT taxonomy FROM wp_terms AS t 
+        LEFT JOIN wp_termmeta AS tm ON t.term_id = tm.term_id 
+        LEFT JOIN wp_term_taxonomy AS tt ON tt.term_id = t.term_id
+        WHERE name = '%s'";
+
+        $r = $wpdb->get_col($wpdb->prepare($sql, $term_name));
     
         return $r;
     }
