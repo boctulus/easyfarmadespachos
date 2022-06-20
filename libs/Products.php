@@ -12,7 +12,11 @@ if ( ! function_exists( 'wp_crop_image' ) ) {
     Product utility class
 */
 class Products
-{    
+{
+    static function productExists($sku){
+        return !empty(static::getProductIdBySKU($sku));
+    }
+        
     static function getProduct($product){
         $p =  is_object($product) ? $product : \wc_get_product($product);
         return $p;
@@ -168,6 +172,10 @@ class Products
         return $terms;
     }
 
+    /*
+        Generalizada del filtro Ajax de tallas para cliente peruano
+        con productos variables
+    */
     function getAttributeValuesByCategory($catego, $attr_name){
         global $config;
         
@@ -175,35 +183,40 @@ class Products
             throw new \InvalidArgumentException("Category can not be avoided");
         }
 
-        $cached = get_transient("tallas_ropa-$catego");
-        if ($cached != null){
-            return $cached;
+        if (isset($config['cache_expires_in'])){
+            $cached = get_transient("$attr_name-$catego");
+            
+            if ($cached != null){
+                return $cached;
+            }
         }
-
-        $tallas = [];
-
+    
+        $valores = [];
+    
         // WC_Product_Variable[]
         $products = static::getProductsByCategoryName($catego);
-
+    
         foreach ($products as $p){
             // id, slug, name
-            $p_tallas = static::getAttributeValuesByProduct($p, $attr_name);
+            $p_valores = static::getAttributeValuesByProduct($p, $attr_name);
             
-            foreach ($p_tallas as $pt){
+            foreach ($p_valores as $pt){
                 $id = $pt['id'];
-
-                if (!isset($tallas[$id])){
-                    $tallas[$id] = [
+    
+                if (!isset($valores[$id])){
+                    $valores[$id] = [
                         'slug' => $pt['slug'],
                         'name' => $pt['name']
                     ];
                 }
             }
         }
-
-        set_transient("{$attr_name}-$catego", $tallas, $config['cache_expires_in']);
-
-        return $tallas;
+    
+        if (isset($config['cache_expires_in'])){
+            set_transient("{$attr_name}-$catego", $valores, $config['cache_expires_in']);
+        }        
+    
+        return $valores;
     }
 
 

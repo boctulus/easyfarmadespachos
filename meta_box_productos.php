@@ -23,10 +23,19 @@ $meta_atts = [
     'precio_por_fraccion',
     'precio_por_100',
     'requiere_receta',
+    'precio_plus'
 ];
 
 function productos_meta_box() {
     $screen = 'product';
+
+    // Precio Plus
+    add_meta_box(
+        'productos-precio_plus',
+        'Precio EasyFarma Plus',
+        'precio_plus_meta_box_callback',
+        $screen
+    );
 
     // Laboratorio
     add_meta_box(
@@ -139,6 +148,7 @@ function productos_meta_box() {
         'requiere_receta_meta_box_callback',
         $screen
     );
+    
 }
 
 add_action( 'add_meta_boxes', 'productos_meta_box' );
@@ -281,6 +291,16 @@ function requiere_receta_meta_box_callback( $post ) {
     $value = get_post_meta($post->ID, '_requiere_receta', true);
 
     echo '<textarea style="width:100%" id="requiere_receta" name="requiere_receta">' . esc_attr( $value ) . '</textarea>';
+}
+
+function precio_plus_meta_box_callback( $post ) {
+
+    // Add a nonce field so we can check for it later.
+    wp_nonce_field( 'productos_nonce', 'productos_nonce' );
+    
+    $value = get_post_meta($post->ID, '_precio_plus', true);
+
+    echo '<textarea style="width:100%" id="precio_plus" name="precio_plus">' . esc_attr( $value ) . '</textarea>';
 }
 
 // ...

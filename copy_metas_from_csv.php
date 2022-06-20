@@ -68,15 +68,20 @@ $path =  __DIR__ . '/completo_keys_updated.csv';
 $rows = Files::getCSV($path)['rows'];
 
 foreach ($rows as $row) {
-    if ($row['sku'] != 7800063000770){
-        continue;
-    }
+    // if ($row['sku'] != 'C8903726249093'){
+    //     continue;
+    // }
 
     $pid = Products::getProductIdBySKU($row['sku']);
 
     foreach($att_equiv as $csv_key => $meta_key){
         if (isset($row[$csv_key]))
         {
+            // De momento solo me interesa traerme el precio_plus
+            if ($meta_key != 'precio_plus'){
+                continue;
+            }
+
             $dato = $row[$csv_key];
 
             dd([
