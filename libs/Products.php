@@ -1039,18 +1039,13 @@ class Products
         Borra terminos agregados con insertAttTerms() de la tabla 'wp_terms'
     */
     static function deleteTermByName(int $term_id, string $taxonomy, $args = []){
+        if (!Strings::startsWith('pa_', $taxonomy)){
+            $taxonomy = 'pa_' . $taxonomy;
+        }
+
         wp_delete_term($term_id, $taxonomy, $args);
     }
 
-     /*
-        Delete Attribute Term by Slug
-    */
-    static function deleteTermBySlug($slug){
-        global $wpdb;
-
-        $sql = "DELETE FROM `{$wpdb->prefix}terms` WHERE slug = '$slug'";
-        return $wpdb->get_results($sql);  
-    }
 
     /*
         Para cada atributo no-reusable extrae la diferencia

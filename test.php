@@ -41,8 +41,13 @@ if (!$cli){
 
 dd(
     Products::getTaxonomyFromTerm('Triangulo')
-);
+, 'Taxonimias conteniendo el term');
 
+Products::deleteTermByName('Triangulo', 'forma_farmaceutica');
+
+dd(
+    Products::getTaxonomyFromTerm('Triangulo')
+, 'Taxonimias conteniendo el term');
 
 die;
 //////////
