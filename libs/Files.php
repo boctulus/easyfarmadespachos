@@ -177,7 +177,11 @@ class Files
 		return file_put_contents($path, $data. "\n", FILE_APPEND);
 	}
 
-	static function localDump($object, $filename = 'dump.txt', $append = false){
+	static function localDump($object, $filename = '', $append = false){
+		if (empty($filename)){
+			$filename = 'dump.txt';
+		}
+
 		$path = __DIR__ . '/../logs/'. $filename; 
 
 		if ($append){

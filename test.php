@@ -40,7 +40,15 @@ if (!$cli){
 
 
 dd(
-    get_post_meta(7845)
+    Products::termExists('Gripe22', 'enfermedades')
+);
+
+
+exit;
+////////
+
+dd(
+    Products::getMetasByProduct(7845, '_enfermedades', true)
 );
 
 exit;

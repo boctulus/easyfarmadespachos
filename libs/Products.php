@@ -2330,6 +2330,51 @@ class Products
         return $ret;
     }
 
+    /*
+        Devolucion de array de metas incluidos atributos de productos
+
+        array (
+            '_sku' =>
+            array (
+                0 => '7800063000770',
+            ),
+            '_regular_price' =>
+            array (
+                0 => '2790',
+            ),
+
+            // ...
+            
+            '_product_attributes' =>
+            array (
+                0 => 'a:0:{}',
+            ),
+            
+            // ...
+
+            '_laboratorio' =>
+            array (
+                0 => 'Mintlab',
+            ),
+            '_enfermedades' =>
+            array (
+                0 => 'Gripe',
+            ),        
+        )
+
+        Si $single es true, en vez de devolver un array, se devuelve un solo valor,
+        lo cual tiene sentido con $key != ''
+    */
+    static function getMetasByProduct($pid, $meta_key = '', bool $single = false){
+        if (!empty($meta_key)){
+            if (!Strings::startsWith('_', $meta_key)){
+                $meta_key = '_' . $meta_key;
+            }
+        }
+
+        return get_post_meta($pid, $meta_key, $single);
+    }
+
     static function getMeta($post_id, $meta_key){
         if (!Strings::startsWith('_', $meta_key)){
             $meta_key = '_' . $meta_key;
@@ -2459,6 +2504,20 @@ class Products
     }
 
     /*
+        Devuelve si un termino existe para una determinada taxonomia
+
+        Nota: atributos re-utilizables de productos variables son "terms" tambien
+    */
+    static function termExists(string $term_name, string $taxonomy){
+        if (!Strings::startsWith('pa_', $taxonomy)){
+            $taxonomy = 'pa_' . $taxonomy;
+        }
+        
+        return (term_exists($term_name, $taxonomy) !== null);
+    }
+
+
+    /*
         Delete Attribute Term by Name
 
         Borra los terminos agregados con insertAttTerms() de la tabla 'wp_terms' por taxonomia (pa_forma_farmaceutica, etc)
@@ -2474,7 +2533,6 @@ class Products
             wp_delete_term($term_id, $taxonomy, $args);
         }
     }
-
 
 
 }
