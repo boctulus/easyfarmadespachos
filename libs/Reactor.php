@@ -10,6 +10,10 @@ require_once __DIR__ . '/Products.php';
 
 /*
     EasyFarma attributes reactor
+
+	Sincroniza metas de metaboxes hacia atributos de productos variables
+
+	@author Pablo Bozzolo (2022)
 */
 
 class Reactor

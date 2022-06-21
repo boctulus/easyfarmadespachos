@@ -12,7 +12,7 @@ TODO Easyfarma despachos
 
 - Reemplazar atributos de productos simples por Metas (1) -- listo
 
-- Sync de atributos  (2)	 -> Filtro <!--------------- *
+- Sync de atributos  (2)	 -> Filtro -- listo
 
 - Chequear que......... verdaderamente sea requerida la receta. Sino lo es........bloquear el checkout
 
