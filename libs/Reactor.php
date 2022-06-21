@@ -53,29 +53,27 @@ class Reactor
 		set_transient('product-'. $pid, true, 2);
 
 		foreach ($this->atts as $att => $meta_key){
-			$old_val = Products::getMetasByProduct($pid, $meta_key, true);
-			$new_val = $_POST[$meta_key];  
+			$new_val = $_POST[$meta_key];  			
 			
-			if ($old_val != $new_val){
-				/*	
-					Si el valor nuevo tiene cuenta de 0 en atributos re-utilizables => agregarlo
-				*/
-				if (!Products::termExists($new_val, $meta_key)){
-					//Files::localLogger("Insertando $meta_key = $new_val");
+			/*	
+				Si el valor nuevo tiene cuenta de 0 en atributos re-utilizables => agregarlo
+			*/
+			if (!Products::termExists($new_val, $meta_key)){
+				//Files::localLogger("Insertando $meta_key = $new_val");
 
-					$attrs = [
-						$meta_key =>  array(
-							'term_names' => [
-								$new_val
-							],
-							'is_visible' => true,
-							'for_variation' => false,
-						),
-					];
-					
-					Products::insertAttTerms($attrs, false);
-				}
+				$attrs = [
+					$meta_key =>  array(
+						'term_names' => [
+							$new_val
+						],
+						'is_visible' => true,
+						'for_variation' => false,
+					),
+				];
+				
+				Products::insertAttTerms($attrs, false);
 			}
+		
 		}
 	}
 
