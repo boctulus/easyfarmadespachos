@@ -17,6 +17,41 @@ class Files
 		'x' => 'Z',
 		);
 	*/
+	static function localVarExport($filename, $data, $variable = '$arr'){
+		$dir  = $path = __DIR__ . '/../logs/';
+		$path = __DIR__ . '/../logs/'. $filename; 
+
+		Files::mkDir($dir); //
+		
+		if ($variable === null){
+			$bytes = file_put_contents($path, '<?php '. "\r\n\r\n" . 'return ' . var_export($data, true). ';');
+		} else {
+			$bytes = file_put_contents($path, '<?php '. "\r\n\r\n" . $variable . ' = ' . var_export($data, true). ';');
+		}
+
+		return ($bytes > 0);
+	}
+
+	static function localJSONExport($filename, $data){
+		$dir  = $path = __DIR__ . '/../logs/';
+		$path = __DIR__ . '/../logs/'. $filename; 
+
+		Files::mkDir($dir); //
+
+		$bytes = file_put_contents($path, json_encode($data));
+		return ($bytes > 0);
+	}
+
+
+	/*
+		Resultado:
+
+		<?php 
+
+		$arr = array (
+		'x' => 'Z',
+		);
+	*/
 	static function varExport($path, $data, $variable = '$arr'){
 		if ($variable === null){
 			$bytes = file_put_contents($path, '<?php '. "\r\n\r\n" . 'return ' . var_export($data, true). ';');

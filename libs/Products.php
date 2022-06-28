@@ -36,6 +36,22 @@ class Products
         return wc_get_products($cond);
     }
 
+    static function getIDs($post_type = 'product', $post_status = null){
+        global $wpdb;
+
+        $include_post_status = '';
+        if ($post_status !== null){
+            $include_post_status = "AND post_status = '$post_status'";
+        }
+
+        $sql = "SELECT ID FROM `{$wpdb->prefix}posts` WHERE post_type = '$post_type' $include_post_status";
+       
+
+        $res = $wpdb->get_results($sql, ARRAY_A);   
+
+        return  array_column($res, 'ID') ?? null;
+	}
+
     static function getLastPost($post_type = 'product', $post_status = null){
         global $wpdb;
 
@@ -923,6 +939,71 @@ class Products
         update_post_meta($pid, '_product_attributes', $product_attributes);
     }
 
+    /*
+        Forma de uso:
+
+        Products::addAttributeForSimpleProducts($pid, 'vel', '80');
+    */
+    static function addAttributeForSimpleProducts($pid, $key, $val){
+        /*
+            array (
+                0 =>
+                array (
+                    'name' => 'stock',
+                    'value' => 'out of stock',
+                    'position' => 1,
+                    'is_visible' => 1,
+                    'is_variation' => 0,
+                    'is_taxonomy' => 0,
+                ),
+            ), ..
+        */
+        
+        $_attrs = Products::getCustomAttr($pid);
+        $attrs  = [];
+    
+        foreach($_attrs as $att){
+            $attrs[ $att['name'] ] = $att['value'];
+        }
+    
+        $attrs[ $key ] = $val;
+    
+        Products::setProductAttributesForSimpleProducts($pid, $attrs);
+    }
+    
+    /*
+        Forma de uso:
+
+        Products::addAttributesForSimpleProducts($pid, [
+            'fuerza' => 45,
+            'edad' => 29
+        ]);
+    */
+    static function addAttributesForSimpleProducts($pid, Array $attributes)
+    {
+        if (!Arrays::is_assoc($attributes)){
+            throw new \InvalidArgumentException("El Array de atributos debe ser asociativo");
+        }
+
+        $_attrs = Products::getCustomAttr($pid);
+        $attrs  = [];
+    
+        foreach($_attrs as $att){
+            $attrs[ $att['name'] ] = $att['value'];
+        }
+
+        /*
+            Nuevos atributos
+        */
+        foreach ($attributes as $key => $val){
+            $attrs[ $key ] = $val;
+        }
+
+    
+        Products::setProductAttributesForSimpleProducts($pid, $attrs);
+    }
+
+
     static function removeAllAttributesForSimpleProducts($pid){
         update_post_meta($pid, '_product_attributes', []);
     }
@@ -1142,6 +1223,10 @@ class Products
         $product = static::createProductByObjectType( $args['type'] );
         if( ! $product )
             return false;
+
+        if (isset($args['product_url'])){
+            $product->set_product_url($args['product_url']);
+        }
 
         // Product name (Title) and slug
         $product->set_name( $args['name'] ); // Name (title).
@@ -1364,6 +1449,7 @@ class Products
 
 		$obj['id'] = $pid;;
 		$obj['type'] = $product->get_type();
+        $obj['product_url'] = ($product instanceof \WC_Product_External) ? $product->get_product_url() : null;
 		$obj['name'] = $product->get_name();
 		$obj['slug'] = $product->get_slug();
 		$obj['status'] = $product->get_status();

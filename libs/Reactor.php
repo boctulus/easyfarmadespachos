@@ -143,7 +143,7 @@ class Reactor
 				Si el valor viejo tenia cuenta de 1 => removerlo
 			*/
 			if ($old_val_count == 1){
-				Files::localLogger("Eliminando para $meta_key = $old_val");
+				//Files::localLogger("Eliminando para $meta_key = $old_val");
 
 				Products::deleteTermByName($old_val, $meta_key);
 			}
