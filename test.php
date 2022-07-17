@@ -41,7 +41,23 @@ if (!$cli){
 
 $pid = 7839;
 
-Products::unhide($pid);
+$p = \wc_get_product($pid);
+
+$name        = $p->get_title();
+$precio_plus = Products::getMeta($pid, 'precio_plus');
+
+$p = Products::duplicate($pid, false, [
+    'name' => "$name | EasyFarma Plus",
+    'regular_price' => $precio_plus,
+    'price' => $precio_plus 
+]);
+
+Products::hide($p);
+
+dd(
+    $p->get_id()
+);
+
 exit;////
 
 dd(

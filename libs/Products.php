@@ -1423,7 +1423,7 @@ class Products
             //@$product->variable_product_sync();
         }
 
-        return $pid;
+        return $product; //
     }
 
     static function dumpProduct($product){
@@ -1437,7 +1437,12 @@ class Products
 	
 		// Get Product General Info
 	  
-		$pid = $product->get_id();
+        if (is_object($product)){
+            $pid = $product->get_id();
+        } else {
+            $pid = $product;
+            $product = wc_get_product($pid);
+        }
 
 		$obj['id'] = $pid;;
 		$obj['type'] = $product->get_type();
@@ -2586,7 +2591,7 @@ class Products
 
         Nota: atributos re-utilizables de productos variables son "terms" tambien
     */
-    static function termExists(string $term_name, string $taxonomy){
+    static function termExists($term_name, string $taxonomy){
         if (!Strings::startsWith('pa_', $taxonomy)){
             $taxonomy = 'pa_' . $taxonomy;
         }
@@ -2612,14 +2617,35 @@ class Products
         }
     }
 
-    static function hide($pid){
+    static function hide($product){
+        $product = static::getProduct($product);
+
         $terms = array('exclude-from-search', 'exclude-from-catalog' ); // for hidden..
-        wp_set_post_terms($pid, $terms, 'product_visibility', false); 
+        wp_set_post_terms($product, $terms, 'product_visibility', false); 
     }
 
-    static function unhide($pid){
-        $terms = array(); 
-        wp_set_post_terms($pid, $terms, 'product_visibility', false); 
+    static function unhide($product){
+        $product = static::getProduct($product);
+
+        $terms = array();
+        wp_set_post_terms($product, $terms, 'product_visibility', false); 
+    }
+
+    static function duplicate($pid, bool $new_sku = false, Array $props = []){
+        $p_ay = static::dumpProduct($pid);
+
+        if ($new_sku){
+            // Solo valido para un solo duplicado porque sino deberia mover el contador
+            $p_ay['sku'] = "{$p_ay['sku']}_2";
+        } else {        
+            $p_ay['sku'] = null;
+        }
+
+        $p_ay = array_merge($p_ay, $props);
+        
+        $dupe = static::createProduct($p_ay);
+
+        return $dupe;
     }
 
 }
