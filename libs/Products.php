@@ -2618,14 +2618,22 @@ class Products
     }
 
     static function hide($product){
-        $product = static::getProduct($product);
+        if (is_object($product)){
+            $pid = $product->get_id();
+        } else {
+            $pid = $product;
+        }
 
         $terms = array('exclude-from-search', 'exclude-from-catalog' ); // for hidden..
         wp_set_post_terms($product, $terms, 'product_visibility', false); 
     }
 
     static function unhide($product){
-        $product = static::getProduct($product);
+        if (is_object($product)){
+            $pid = $product->get_id();
+        } else {
+            $pid = $product;
+        }
 
         $terms = array();
         wp_set_post_terms($product, $terms, 'product_visibility', false); 

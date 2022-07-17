@@ -8,24 +8,27 @@ namespace boctulus\EasyFarmaDespachos\libs;
 
 class EasyFarma 
 {
-    static function get_precio_plus($pid){
-        $arr = Products::getCustomAttr($pid, 'Precio EasyFarma Plus');
-    
-        if ($arr === null){
-            return;
-        }
-    
-        return (float) $arr['value'];
-    }
+    /*
+        Duplica el producto como oculto y con el precio = precio_plus
 
-    static function get_laboratorio($pid){
-        $arr = Products::getCustomAttr($pid, 'Laboratorio');
-    
-        if ($arr === null){
-            return;
-        }
-    
-        return $arr['value'];
+        Ademas el titulo es alterado haciendo un append de " | EasyFarma Plus"
+
+        No se copian atributos
+    */
+    static function duplicate_as_hidden($pid){
+        $p = \wc_get_product($pid);
+
+        $name        = $p->get_title();
+        $precio_plus = Products::getMeta($pid, 'precio_plus');
+
+        $p = Products::duplicate($pid, false, [
+            'name' => "$name | EasyFarma Plus",
+            'regular_price' => $precio_plus,
+            'price' => $precio_plus 
+        ]);
+
+        Products::hide($p);
+
+        return $p;
     }
-    
 }
