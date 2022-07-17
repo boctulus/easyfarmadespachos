@@ -39,6 +39,12 @@ if (!$cli){
 }
 
 
+
+Products::hide(9001);
+
+die;
+////////////
+
 $pid = 7839;
 
 $p = \wc_get_product($pid);
@@ -59,6 +65,9 @@ dd(
 );
 
 exit;////
+
+
+
 
 dd(
     Products::termExists('Gripe22', 'enfermedades')
