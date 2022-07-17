@@ -998,25 +998,17 @@ class Products
         foreach ($attributes as $key => $val){
             $attrs[ $key ] = $val;
         }
-
     
         Products::setProductAttributesForSimpleProducts($pid, $attrs);
     }
 
+    // alias
+    static function updateProductAttributesForSimpleProducts($pid, Array $att){
+        static::addAttributesForSimpleProducts($pid, $att);
+    }   
 
     static function removeAllAttributesForSimpleProducts($pid){
         update_post_meta($pid, '_product_attributes', []);
-    }
-
-    /*
-        Lo que debe hacer es ... 
-
-        1) Leer todos los atributos existentes para ese post con sus los valores y almacenarlos temporalmente
-
-        2) Debe funcionar como un PATCH, permitiendo actualizar uno o algunos (pero no obligatoriamente todos) atributos usando los valores temporales para el resto.
-    */
-    static function updateProductAttributesForSimpleProducts($pid, $att){
-        /// HACER !!!!!!!!!!
     }
 
     /*`
@@ -2620,5 +2612,14 @@ class Products
         }
     }
 
+    static function hide($pid){
+        $terms = array('exclude-from-search', 'exclude-from-catalog' ); // for hidden..
+        wp_set_post_terms($pid, $terms, 'product_visibility', false); 
+    }
+
+    static function unhide($pid){
+        $terms = array(); 
+        wp_set_post_terms($pid, $terms, 'product_visibility', false); 
+    }
 
 }

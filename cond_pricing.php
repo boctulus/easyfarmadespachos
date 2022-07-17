@@ -62,19 +62,52 @@ add_filter('woocommerce_product_get_price', 'custom_price_easyfarma_plus_role', 
  */
  function custom_price_easyfarma_plus_role($price, $product) {
     /*
+        En la pàgina de producto se envia por POST
+
         $_POST = 
         array (
-        'quantity' => '1',
-        'add-to-cart' => '4173',
-        'price_type' => 'Plus',
+            'quantity' => '1',
+            'add-to-cart' => '4173',
+            'price_type' => 'Plus',
         )
+
+        En cambio, en ¨archives¨ se envia por GET
+
+        array (
+           'add-to-cart' => '7397',
+        )
+
+        Ej:
+
+        http://easyfarma.lan/tienda/nexium-40-mg-x-28-comprimidos/?add-to-cart=108
+
+        y tocaria hacer el append del price_type
+
+        http://easyfarma.lan/tienda/nexium-40-mg-x-28-comprimidos/?add-to-cart=108&price_type=Plus
+
+
+        Aca:
+
+        <div class="product-action-wrap">
+        
+        <a href="?add-to-cart=7396" data-quantity="1" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="7396" data-product_sku="4001638097048" aria-label="Añade “Aceite Corporal Refrescante Citrus 100ml Weleda” a tu carrito" rel="nofollow">Agregar <span class="kadence-svg-iconset svg-baseline">
+        
+        <svg class="kadence-svg-icon kadence-spinner-svg" fill="currentColor" version="1.1" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" data-darkreader-inline-fill=""></path>
+				</svg></span> .... </a>
+        </div>
+
     */
+
+    // dd($_REQUEST, '_REQUEST');
+    // die; ///
     
-    if (!is_user_logged_in() || !isset($_POST['price_type'])){
+    if (!is_user_logged_in() || !isset($_REQUEST['price_type'])){
         return $price;
     } 
+    
+    Files::localDump($_REQUEST, 'REQUEST.txt');
 
-    if ($_POST['price_type'] == 'normal'){
+    if ($_REQUEST['price_type'] == 'normal'){
         return $price;
     }
 

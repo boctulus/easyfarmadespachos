@@ -1,0 +1,9 @@
+array (
+  'add-to-cart' => '108',
+  'price_type' => 'Plus',
+  'woocommerce-login-nonce' => NULL,
+  '_wpnonce' => NULL,
+  'woocommerce-reset-password-nonce' => NULL,
+  'woocommerce-edit-address-nonce' => NULL,
+  'save-account-details-nonce' => NULL,
+)

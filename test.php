@@ -39,6 +39,11 @@ if (!$cli){
 }
 
 
+$pid = 7839;
+
+Products::unhide($pid);
+exit;////
+
 dd(
     Products::termExists('Gripe22', 'enfermedades')
 );
