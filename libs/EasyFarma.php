@@ -8,6 +8,10 @@ namespace boctulus\EasyFarmaDespachos\libs;
 
 class EasyFarma 
 {
+    static function getPrecioPlus($pid){
+        return Products::getMeta($pid, 'precio_plus');
+    }
+
     /*
         Duplica el producto como oculto y con el precio = precio_plus
 
@@ -20,15 +24,21 @@ class EasyFarma
 
         $name        = $p->get_title();
         $precio_plus = Products::getMeta($pid, 'precio_plus');
+        $sku         = $p->get_sku();
 
-        $p = Products::duplicate($pid, false, [
-            'name' => "$name | EasyFarma Plus",
-            'regular_price' => $precio_plus,
-            'price' => $precio_plus 
-        ]);
+        if (!Products::productExists("{$sku}_2")){
 
-        Products::hide($p);
+            $p = Products::duplicate($pid, function ($old_sku){
+                return "{$old_sku}_2";
+            }, [
+                'name' => "$name | EasyFarma Plus",
+                'regular_price' => $precio_plus,
+                'price' => $precio_plus 
+            ]);
 
-        return $p;
+            Products::hide($p);
+
+            return $p;
+        } 
     }
 }

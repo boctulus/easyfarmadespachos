@@ -2639,12 +2639,12 @@ class Products
         wp_set_post_terms($product, $terms, 'product_visibility', false); 
     }
 
-    static function duplicate($pid, bool $new_sku = false, Array $props = []){
+    static function duplicate($pid, callable $new_sku = null, Array $props = []){
         $p_ay = static::dumpProduct($pid);
 
-        if ($new_sku){
+        if (!is_null($new_sku) && is_callable($new_sku)){
             // Solo valido para un solo duplicado porque sino deberia mover el contador
-            $p_ay['sku'] = "{$p_ay['sku']}_2";
+            $p_ay['sku'] = $new_sku($p_ay['sku']);
         } else {        
             $p_ay['sku'] = null;
         }

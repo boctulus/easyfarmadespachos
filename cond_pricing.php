@@ -117,7 +117,7 @@ add_filter('woocommerce_product_get_price', 'custom_price_easyfarma_plus_role', 
     $user_id = get_current_user_id();
 
     if (Users::hasRole('easyfarma_vip', $user_id)){
-        $price_plus = EasyFarma::get_precio_plus($prod_id);
+        $price_plus = EasyFarma::getPrecioPlus($prod_id);
 
         if (!empty($price_plus)){
             $price = $price_plus;

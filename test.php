@@ -41,11 +41,14 @@ if (!$cli){
 
 $pid = 7839;
 
+// 
 $p = EasyFarma::duplicate_as_hidden($pid);
 
-dd(
-    $p->get_id()
-);
+if ($p != null){
+    dd(
+        $p->get_id()
+    );
+}
 
 exit;////
 
