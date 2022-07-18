@@ -55,9 +55,9 @@ class EasyFarma
                 'price' => $precio_plus 
             ]);
 
-            Products::hide($p);
-            update_post_meta($p->get_id(), 'ori_id',  $pid);
-            update_post_meta($p->get_id(), 'ori_sku', $sku);
+            $dupe_id = $p->get_id();
+
+            Products::hide($p);         
 
             return $p;
         } else {
@@ -65,5 +65,9 @@ class EasyFarma
 
             Products::updatePrice($dupe_id, $precio_plus);
         } 
+
+        update_post_meta($dupe_id, 'ori_id',  $pid);
+        update_post_meta($dupe_id, 'ori_sku', $sku);
+        update_post_meta($dupe_id, 'precio_plus', $precio_plus);
     }
 }
