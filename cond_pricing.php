@@ -15,9 +15,13 @@ require_once __DIR__ . '/libs/Users.php';
 require_once __DIR__ . '/libs/EasyFarma.php';
 
 
-if (Strings::startsWith('/tienda/', $_SERVER['REQUEST_URI']) && !Strings::endsWith('/tienda/', $_SERVER['REQUEST_URI'])):
-	?>
-	<script>
+add_action( 'woocommerce_single_product_summary', 'product_page_with_radios', 15 );
+
+
+function product_page_with_radios() { 
+    ?>
+    
+    <script>
         const SITE_URL = '<?= get_site_url(); ?>';
 
         jQuery(jQuery('.price > .woocommerce-Price-amount > bdi')[0]).replaceWith('<input type="radio" id="precio_plus" name="price_type" value="plus">	<label for="precio_plus">EasyFarma Plus</label><br>	<input type="radio" id="precio_normal" name="price_type" value="normal"> <label for="precio_normal">Precio normal</label><br>')
@@ -27,8 +31,9 @@ if (Strings::startsWith('/tienda/', $_SERVER['REQUEST_URI']) && !Strings::endsWi
         }
 
 	</script>
-<?php
-endif;
+
+    <?php
+};     
 
 /*
     HOOK para precios condicionales
