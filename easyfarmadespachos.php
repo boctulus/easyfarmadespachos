@@ -246,6 +246,6 @@ function custom_orders_list_column_content( $column, $order_id )
 */
 
 
-if ($config['sync_attr']){
+#if ($config['sync_attr']){
 	$reactor = new Reactor();
-}
+#}

@@ -16,7 +16,11 @@ class Products
     // Investigar '_transient_wc_attribute_taxonomies' como option_name en wp_options
 
     static function productExists($sku){
-        return !empty(static::getProductIdBySKU($sku));
+        $p = static::getProductIdBySKU($sku);
+
+        dd($p, 'p para '.$sku);
+
+        return  $p !== 0;
     }
         
     static function getProduct($product){
@@ -308,7 +312,7 @@ class Products
         return !Strings::endsWith('/placeholder.png', $src);
     }
 
-    function getTagsByPid($pid){
+    static function getTagsByPid($pid){
 		global $wpdb;
 
 		$pid = (int) $pid;
@@ -396,6 +400,11 @@ class Products
             wc_delete_product_transients($parent_id);
         }
         return true;
+    }
+
+    static function deleteProductBySKU($sku, bool $permanent = false){
+        $pid = static::getProductIdBySKU($sku);
+		static::deleteProduct($pid, $permanent);
     }
 
     static function deleteLastProduct($force = false){
@@ -1498,7 +1507,7 @@ class Products
 		
 		// Get Product Taxonomies
 		
-		$obj['tags'] = self::getTagsByPid($pid);
+		$obj['tags'] = static::getTagsByPid($pid);
 
 
 		$obj['categories'] = [];

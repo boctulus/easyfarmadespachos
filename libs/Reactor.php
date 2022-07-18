@@ -56,6 +56,8 @@ class Reactor
 		
 		set_transient('product-'. $pid, true, 2);
 
+		EasyFarma::duplicate_as_hidden($pid, true);
+
 		foreach ($this->atts as $att => $meta_key){
 			$new_val = $_POST[$meta_key];  			
 			
@@ -87,7 +89,11 @@ class Reactor
 			return;
 		}
 
+		Files::localLogger(__FUNCTION__);//
+
 		set_transient('product-'. $pid, true, 2);	
+
+		EasyFarma::duplicate_as_hidden($pid, true);
 
 		foreach ($this->atts as $att => $meta_key){
 			$old_val = Products::getMetasByProduct($pid, $meta_key, true);
@@ -130,6 +136,9 @@ class Reactor
 
 	function onDelete($pid, $product)
 	{
+		$sku = $product->get_sku();
+		Products::deleteProductBySKU("$sku{_2}", true);
+
 		foreach ($this->atts as $att => $meta_key){
 			$old_val = Products::getMetasByProduct($pid, $meta_key, true);
 			
@@ -152,6 +161,8 @@ class Reactor
 
 	function onRestore($pid, $product)
 	{	
+		EasyFarma::duplicate_as_hidden($pid, true);
+
 		foreach ($this->atts as $att => $meta_key){
 			$val = Products::getMetasByProduct($pid, $meta_key, true);
 			

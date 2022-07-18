@@ -38,18 +38,48 @@ if (!$cli){
 	echo "Ejecutar desde la terminal";
 }
 
+/*
+    La putada es que los productos no pueden tener SKU no-numerico
 
-$pid = 7839;
+    => no sirve de nada agregar el _2
 
-// 
-$p = EasyFarma::duplicate_as_hidden($pid);
+    Al menos no ser'an seleccionables por ese SKU
+*/
 
-if ($p != null){
-    dd(
-        $p->get_id()
-    );
-}
+$sku = '4031626711175_2';
+dd(Products::productExists($sku));
 
+exit;
+
+
+// Clean up
+
+// $ids = Products::getIDs();
+
+// foreach ($ids as $id){
+//     $p = Products::getProduct($id);
+//     $sku = $p->get_sku();
+
+//     if (Strings::endsWith('_2_2', $sku)){
+//         dd("Borrar $sku");
+//         Products::deleteProduct($id, true);
+//     }
+// }
+
+
+// exit;
+
+
+EasyFarma::duplicate_as_hidden(7834, true);
+
+exit;
+
+
+/*
+    Clonado inicial de todos los productos
+*/
+
+//EasyFarma::initDuplication();
 exit;////
 
 
