@@ -39,8 +39,7 @@ if (!$cli){
 }
 
 
-$sku = '4031626711175_2';
-dd(Products::productExists($sku));
+dd(Products::getSKUFromProductId(17793));
 
 exit;
 

@@ -2678,4 +2678,9 @@ class Products
         return $dupe;
     }
 
+    // Mejor que $p->get_sku() ya que no requiere sea estrictamente numerico el SKU
+    static function getSKUFromProductId($product_id)
+    {
+        return static::getMeta($product_id, '_sku');
+    }
 }
