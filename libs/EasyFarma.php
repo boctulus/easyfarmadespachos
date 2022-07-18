@@ -38,29 +38,14 @@ class EasyFarma
         $p = \wc_get_product($pid);
 
         $name        = $p->get_title();
-        $precio_plus = Products::getMeta($pid, 'precio_plus');
+        $precio_plus = isset($_POST['precio_plus']) ?  $_POST['precio_plus'] : Products::getMeta($pid, 'precio_plus');
         $sku         = $p->get_sku();
 
-        if ($overwrite){
-            dd("{$sku}_2");
-
-            if (Products::productExists("{$sku}_2")){
-                here();
-
-                dd("Borrando para SKU = {$sku}_2" );
-		        Products::deleteProductBySKU("{$sku}_2", true);
-            }
-        }
-
-        exit;////
-
-        if ($overwrite || !Products::productExists("{$sku}_2"))
+        if (!Products::productExists("{$sku}_2"))
         {
             if (Strings::endsWith('_2', $sku)){
                 return;
             }
-
-            dd("Duplicando para PID = $pid");
 
             $p = Products::duplicate($pid, function ($old_sku){
                 return "{$old_sku}_2";
@@ -71,8 +56,14 @@ class EasyFarma
             ]);
 
             Products::hide($p);
+            update_post_meta($p->get_id(), 'ori_id',  $pid);
+            update_post_meta($p->get_id(), 'ori_sku', $sku);
 
             return $p;
+        } else {
+            $dupe_id = Products::getProductIdBySKU("{$sku}_2");
+
+            Products::updatePrice($dupe_id, $precio_plus);
         } 
     }
 }

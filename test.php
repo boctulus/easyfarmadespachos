@@ -38,13 +38,6 @@ if (!$cli){
 	echo "Ejecutar desde la terminal";
 }
 
-/*
-    La putada es que los productos no pueden tener SKU no-numerico
-
-    => no sirve de nada agregar el _2
-
-    Al menos no ser'an seleccionables por ese SKU
-*/
 
 $sku = '4031626711175_2';
 dd(Products::productExists($sku));

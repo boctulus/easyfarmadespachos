@@ -18,9 +18,7 @@ class Products
     static function productExists($sku){
         $p = static::getProductIdBySKU($sku);
 
-        dd($p, 'p para '.$sku);
-
-        return  $p !== 0;
+        return  is_numeric($p) && $p !== 0;
     }
         
     static function getProduct($product){
@@ -99,11 +97,26 @@ class Products
         $sql = "SELECT SQL_CALC_FOUND_ROWS  * FROM {$wpdb->prefix}posts  WHERE 1=1  AND (({$wpdb->prefix}posts.post_type = '$post_type' AND ({$wpdb->prefix}posts.post_status = '$status')));";
     
         return $wpdb->get_row($sql, ARRAY_A);
+    }    
+
+    static function getProductPropertiesBySKU($sku){
+        $result_ay = static::getByMeta('SKU', $sku);
+
+        if (empty($result_ay)){
+            return;
+        }
+
+        return $result_ay[0];
     }
-    
 
     static function getProductIdBySKU($sku){
-        return \wc_get_product_id_by_sku($sku);
+        $result_ay = static::getByMeta('SKU', $sku);
+
+        if (empty($result_ay)){
+            return;
+        }
+
+        return $result_ay[0]['ID'];
     }
 
     static function setStatus($pid, $status){
