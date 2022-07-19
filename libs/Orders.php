@@ -42,12 +42,17 @@ class Orders
         Atributos. Ej:
 
         [
-            '_customer_user' => $userid,
+            '_customer_user'        => $userid,
             // ...
+            '_payment_method'       => 'ideal',
+            '_payment_method_title' => 'iDeal'
         ]
 
         https://stackoverflow.com/a/50384706/980631
         
+        En caso de querer crear la orden programaticamente, procesar un pago y redirigir ->
+        
+        https://stackoverflow.com/a/31987151/980631
     */
     static function createOrder(Array $products, Array $billing_address, Array $shipping_address = null, $attributes = [])
     {   
@@ -105,7 +110,7 @@ class Orders
         // Getting last Order ID (max value)
         $results = $wpdb->get_col( "
             SELECT MAX(ID) FROM {$wpdb->prefix}posts
-            WHERE post_type LIKE 'shop_order'
+            WHERE post_type = 'shop_order'
             AND post_status IN ('$statuses')
         " );
         return reset($results);
@@ -119,6 +124,26 @@ class Orders
         }
 
         return static::getOrderById($id);
+    }
+
+    static function getLastOrder(){
+        return \wc_get_order(
+            static::getLastOrderId()
+        );
+    }
+
+    static function getRecentOrders($days = 30, $user_id = null){
+        $args = array(            
+            'date_created' => '>' . ( time() - (DAY_IN_SECONDS * $days)),
+        );
+
+        if ($user_id !== null){
+            $args['customer_id'] = $user_id;
+        }
+        
+        $orders = wc_get_orders( $args );
+
+        return $orders;
     }
 
     static function getOrderItems(\Automattic\WooCommerce\Admin\Overrides\Order $order_object){
@@ -294,7 +319,18 @@ class Orders
             'total_tax_non_discounted'  => $total_tax_non_discounted,
             'total_tax_discounted' => $total_tax_discounted
         ];
+    }
 
+    static function getOrderItemArray(object $order){
+        $order_items = Orders::getOrderItems($order);
+
+        $items = [];
+        foreach ( $order_items as $item_id => $item ) 
+        {
+            $items[] = Orders::orderItemToArray($item);
+        }
+
+        return $items;
     }
 
 }

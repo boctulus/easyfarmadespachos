@@ -4,6 +4,7 @@ use boctulus\EasyFarmaDespachos\libs\Debug;
 use boctulus\EasyFarmaDespachos\libs\Strings;
 use boctulus\EasyFarmaDespachos\libs\Products;
 use boctulus\EasyFarmaDespachos\libs\Users; ///
+use boctulus\EasyFarmaDespachos\libs\Orders; ///
 use boctulus\EasyFarmaDespachos\libs\EasyFarma; ///
 // ...
 
@@ -19,6 +20,7 @@ require_once __DIR__ . '/libs/Debug.php';
 require_once __DIR__ . '/libs/Strings.php';
 require_once __DIR__ . '/libs/Products.php';
 require_once __DIR__ . '/libs/Users.php';
+require_once __DIR__ . '/libs/Orders.php';
 require_once __DIR__ . '/libs/EasyFarma.php'; ///
 
 
@@ -39,13 +41,20 @@ if (!$cli){
 }
 
 
-EasyFarma::addBuyedQuantityEasyFarmaPlusPerUser(17793, 1, 1);
+$orders = Orders::getRecentOrders(30, 1);
 
-dd(    
-    EasyFarma::getBuyedQuantityEasyFarmaPlusPerUser(17793, 1)
-);
+dd($orders);
+
 
 exit;
+
+// EasyFarma::addBuyedQuantityEasyFarmaPlusPerUser(17793, 1, 1);
+
+// dd(    
+//     EasyFarma::getBuyedQuantityEasyFarmaPlusPerUser(17793, 1)
+// );
+
+// exit;
 
 
 // Clean up
