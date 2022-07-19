@@ -5,6 +5,7 @@ use boctulus\EasyFarmaDespachos\libs\Files;
 use boctulus\EasyFarmaDespachos\libs\Strings;
 use boctulus\EasyFarmaDespachos\libs\Debug;
 use boctulus\EasyFarmaDespachos\libs\Users;
+use boctulus\EasyFarmaDespachos\libs\Carrito; 
 use boctulus\EasyFarmaDespachos\libs\Products;
 use boctulus\EasyFarmaDespachos\libs\EasyFarma; 
 
@@ -13,6 +14,7 @@ require_once __DIR__ . '/libs/Files.php';
 require_once __DIR__ . '/libs/Strings.php';
 require_once __DIR__ . '/libs/Debug.php';
 require_once __DIR__ . '/libs/Users.php';
+require_once __DIR__ . '/libs/Carrito.php';
 require_once __DIR__ . '/libs/Products.php';
 require_once __DIR__ . '/libs/EasyFarma.php';
 
@@ -71,52 +73,57 @@ function product_page_with_radios() {
     HOOK para precios condicionales
 */
 
-
 add_action('woocommerce_add_to_cart', 'custome_add_to_cart');
 
 function custome_add_to_cart() 
 {
+    $config = include __DIR__ . '/config/config.php';
+
+    $max_abs_plus = $config['max_per_user_and_month'];
+    
     //check if product already in cart
     if ( sizeof( WC()->cart->get_cart() ) > 0 ) {
-        foreach ( WC()->cart->get_cart() as $cart_item_key => $data ) 
-        {
-            $product_id   = $data['product_id'];
-            $variation_id = $data['variation_id'];
-            $quantity     = $data['quantity'];
-            $variation    = $data['variation'];
-            $sku          = Products::getSKUFromProductId($product_id);
         
-            // Cantidad maxima que debe depender de cierta logica pero donde 2 es el maximo absoluto
-            $max = 2; 
+        $items = WC()->cart->get_cart();
+        $last  = end($items); // ultimo item agregado al carrito (en principio no se si es Plus o no)
 
-            if ($quantity > $max){
-                // Split
+        $product_id   = $last['product_id'];
+        $variation_id = $last['variation_id'];
+        $quantity     = $last['quantity'];
+        $variation    = $last['variation'];
+        $sku          = Products::getSKUFromProductId($product_id);
 
-                $extra_qty = $quantity -$max;
+        // Si el producto es con precio Plus
+        if (Strings::endsWith('_2', $sku)){
+            $prod_id_plus   = $product_id;
+            $cant_en_carrito_plus = $quantity;
 
-                $plus_prod_id = Products::getProductIdBySKU("{$sku}_2");
-                
-                // Remuevo producto original
-                WC()->cart->remove_cart_item( $cart_item_key );
+            $_sku_normal    = Strings::before($sku, '_2');
+            $prod_id_normal = Products::getProductIdBySKU($_sku_normal);
 
-                // Agrego productos
-                WC()->cart->add_to_cart( $product_id, $max, $variation_id, $variation);
-                WC()->cart->add_to_cart( $plus_prod_id, $extra_qty, $variation_id, $variation);
-            }
+            $prod_normal_en_carrito = Carrito::find($prod_id_normal);
 
-        //    dd(
-        //         [
-        //             $data['product_id'],
-        //             $data['variation_id'],
-        //             $data['quantity'],
-        //             $data['variation']
-        //         ]
-        //    );
-            
-        }
+        } else {
+            // Si el producto viene con precio normal
+
+            $cant_en_carrito_normal = $quantity;
+            $prod_id_plus   = Products::getProductIdBySKU("{$sku}_2");
+        }   
+
+        $cant_compras_mensuales_plus = EasyFarma::getBuyedQuantityEasyFarmaPlusPerUser($prod_id_plus);
+
+        $cant_en_carrito_plus = 5;      // No debe estar hardcodeado!
+        $cant_en_carrito_normal = 7;    // No debe estar hardcodeado!
+        
+
+        /*
+            Aplico la logica que ... debe reflejarse en operaciones sobre el carrito
+        */
+
+        EasyFarma::cartLogic($cant_en_carrito_plus, $cant_en_carrito_normal, $cant_compras_mensuales_plus, $max_abs_plus);
     }
 
-    // = 
+ 
 }
 
 

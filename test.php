@@ -39,7 +39,11 @@ if (!$cli){
 }
 
 
-dd(Products::getSKUFromProductId(17793));
+EasyFarma::addBuyedQuantityEasyFarmaPlusPerUser(17793, 1, 1);
+
+dd(    
+    EasyFarma::getBuyedQuantityEasyFarmaPlusPerUser(17793, 1)
+);
 
 exit;
 
