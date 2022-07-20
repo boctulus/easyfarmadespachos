@@ -132,6 +132,9 @@ class Orders
         );
     }
 
+    /*
+        Utilizar para obtener la cantidad de unidades vendidas a precio Plus de cierto producto 
+    */
     static function getRecentOrders($days = 30, $user_id = null){
         $args = array(            
             'date_created' => '>' . ( time() - (DAY_IN_SECONDS * $days)),

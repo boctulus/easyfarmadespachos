@@ -41,9 +41,10 @@ if (!$cli){
 }
 
 
-$orders = Orders::getRecentOrders(30, 1);
+$orders = Orders::getRecentOrders(30, 8);
 
-dd($orders);
+dd($orders, 'ORDERS');
+dd(count($orders), 'ORDER COUNT');
 
 
 exit;
