@@ -40,6 +40,15 @@ if (!$cli){
 	echo "Ejecutar desde la terminal";
 }
 
+/*
+    Creacion de dummy orders
+*/
+
+$ids = Orders::createRandom();
+dd($ids, 'ORDER ID');
+
+
+exit;
 
 $orders = Orders::getRecentOrders(30, 8);
 

@@ -54,7 +54,7 @@ class Orders
         
         https://stackoverflow.com/a/31987151/980631
     */
-    static function createOrder(Array $products, Array $billing_address, Array $shipping_address = null, $attributes = [])
+    static function createOrder(Array $products, Array $billing_address = null, Array $shipping_address = null, $attributes = [])
     {   
         // Now we create the order
         $order = wc_create_order();
@@ -68,10 +68,12 @@ class Orders
             $order->add_product($p, $qty); 
         }
         
-        $order->set_address( $billing_address, 'billing' );
+        if (!empty($billing_address)){
+            $order->set_address( $billing_address, 'billing' );
+        }    
 
         if (!empty($shipping_address)){
-            $order->set_address( $billing_address, 'shipping' );
+            $order->set_address( $shipping_address, 'shipping' );
         }
 
         //
@@ -84,6 +86,33 @@ class Orders
         }
         
         return $order;
+    }
+
+    /*
+        Create a bunch of random orders
+    */
+    static function createRandom(int $qty_orders = 10, Array $user_roles = ['customer']){
+        $order_ids = [];
+
+        for ($i=0; $i< $qty_orders; $i++){
+            $pids = Products::getRandomProductIds(rand(1,4));
+        
+            $products = [];
+            foreach ($pids as $pid){
+                $products[] = [
+                    'pid' => $pid,
+                    'qty' => rand(1,5)
+                ];
+            }
+        
+            $order = Orders::createOrder($products, null, null, [
+                '_customer_user' => Users::getUsersByRole($user_roles),
+            ]);
+        
+            $order_ids[] = $order->get_id();
+        }
+
+        return $order_ids;
     }
 
     static function setOrderStatus($order, $status){

@@ -64,4 +64,35 @@ class Users
 
         return in_array( $role, (array) $user->roles );
     }
+
+    static function getRoleMames() {
+        global $wp_roles;
+        
+        if ( ! isset( $wp_roles ) )
+            $wp_roles = new \WP_Roles();
+        
+        return $wp_roles->get_names();
+    }
+
+    static function getUsersByRole(Array $roles) {
+        $query = new \WP_User_Query(
+           array(
+              'fields' => 'ID',
+              'role__in' => $roles,         
+           )
+        );
+
+        return $query->get_results();
+    }
+
+    static function getCustomerList() {
+        $query = new \WP_User_Query(
+           array(
+              'fields' => 'ID',
+              'role' => 'customer',         
+           )
+        );
+
+        return $query->get_results();
+    }
 }
