@@ -145,13 +145,13 @@ function custome_add_to_cart()
     }
     
     // Debug
-    Files::localDump([
-        'cant_normal' => $cant_en_carrito_normal,
-        'cant_plus'   => $cant_en_carrito_plus,
-        'cant_compras_mensuales_plus' => $cant_compras_mensuales_plus,
-        'max_abs'     => $max_abs_plus
+    // Files::localDump([
+    //     'cant_normal' => $cant_en_carrito_normal,
+    //     'cant_plus'   => $cant_en_carrito_plus,
+    //     'cant_compras_mensuales_plus' => $cant_compras_mensuales_plus,
+    //     'max_abs'     => $max_abs_plus
 
-    ], 'CARRITO.txt', true);
+    // ], 'CARRITO.txt', true);
 
     /*
         Aplico la logica que ... debe reflejarse en operaciones sobre el carrito
@@ -160,13 +160,13 @@ function custome_add_to_cart()
     EasyFarma::cartLogic($cant_en_carrito_plus, $cant_en_carrito_normal, $cant_compras_mensuales_plus, $max_abs_plus);
 
     // Debug
-    Files::localDump([
-        'cant_normal (luego de ajuste)' => $cant_en_carrito_normal,
-        'cant_plus  (luego de ajuste)'   => $cant_en_carrito_plus,
-        'cant_compras_mensuales_plus' => $cant_compras_mensuales_plus,
-        'max_abs'     => $max_abs_plus
+    // Files::localDump([
+    //     'cant_normal (luego de ajuste)' => $cant_en_carrito_normal,
+    //     'cant_plus  (luego de ajuste)'   => $cant_en_carrito_plus,
+    //     'cant_compras_mensuales_plus' => $cant_compras_mensuales_plus,
+    //     'max_abs'     => $max_abs_plus
 
-    ], 'CARRITO.txt', true);
+    // ], 'CARRITO.txt', true);
 
     /*
         Aplico operaciones sobre el carrito
@@ -175,7 +175,9 @@ function custome_add_to_cart()
     if ($prod_es_plus){
         Carrito::setQuantity($product_id, $cant_en_carrito_plus);
 
-        if ($hay_gemelo_en_carrito){
+        if (!$hay_gemelo_en_carrito){
+            Carrito::addToCart($prod_id_normal, $cant_en_carrito_normal);
+        } else {
             Carrito::setQuantity($prod_id_normal, $cant_en_carrito_normal);
         }
 
@@ -183,7 +185,9 @@ function custome_add_to_cart()
         // Es normal
         Carrito::setQuantity($product_id, $cant_en_carrito_normal);
 
-        if ($hay_gemelo_en_carrito){
+        if (!$hay_gemelo_en_carrito){
+            Carrito::addToCart($prod_id_plus, $cant_en_carrito_plus);
+        } else {
             Carrito::setQuantity($prod_id_plus, $cant_en_carrito_plus);
         }
     }

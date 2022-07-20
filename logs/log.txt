@@ -1,10 +1,14 @@
-2022-07-18 13:17:54	onUpdate
-2022-07-18 13:18:25	onUpdate
-2022-07-18 13:24:42	onUpdate
-2022-07-18 13:25:49	onUpdate
-2022-07-18 13:26:31	onUpdate
-2022-07-18 13:28:03	onUpdate
-2022-07-18 13:28:50	onUpdate
-2022-07-18 13:29:11	onUpdate
-2022-07-18 13:31:35	onUpdate
-2022-07-18 13:34:44	onUpdate
+2022-07-20 19:39:28	Seteando '2' unidades de 16448
+2022-07-20 19:40:14	Seteando '2' unidades de 16448
+2022-07-20 19:44:36	Seteando '2' unidades de 16448
+2022-07-20 19:44:36	Agregando '3' unidades de 7808
+2022-07-20 19:44:36	Seteando '3' unidades de 7808
+2022-07-20 19:44:36	Seteando '2' unidades de 16448
+2022-07-20 19:46:07	Seteando '4' unidades de 7808
+2022-07-20 19:46:07	Seteando '2' unidades de 16448
+2022-07-20 19:47:03	Seteando '8' unidades de 7808
+2022-07-20 19:47:03	Seteando '2' unidades de 16448
+2022-07-20 19:48:29	Seteando '1' unidades de 7808
+2022-07-20 19:48:29	Agregando '0' unidades de 16448
+2022-07-20 19:48:44	Seteando '3' unidades de 7808
+2022-07-20 19:48:44	Agregando '0' unidades de 16448

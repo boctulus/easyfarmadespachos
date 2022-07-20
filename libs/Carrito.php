@@ -21,7 +21,13 @@ class Carrito
 			$cart_item_key = static::find($product_id);
 		}
 
+		Files::localLogger("Seteando '$qty' unidades de $product_id");
 		WC()->cart->set_quantity( $cart_item_key, $qty );
+	}
+
+	static function addToCart($product_id, $qty){
+		Files::localLogger("Agregando '$qty' unidades de $product_id");
+		WC()->cart->add_to_cart($product_id, $qty);
 	}
 
 }
