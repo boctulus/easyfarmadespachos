@@ -25,7 +25,7 @@ class Carrito
 		WC()->cart->remove_cart_item($cart_item_key);
 
 		// Agrego la cantidad deseada
-		WC()->cart->add_to_cart($product_id, $qty, $variation_id, $variation);
+		WC()->cart->add_to_cart($product_id, $qty, $variation_id, $variation, $cart_item_key);
 	}
 
 }
