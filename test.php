@@ -41,25 +41,21 @@ if (!$cli){
 }
 
 
-// $ids = Orders::createRandom(50, [7,8,11]);
-// dd($ids, 'ORDER ID');
+$ids = Orders::createRandom(1, [17793], [8]);
+dd($ids, 'ORDER ID');
 
 
-$orders = Orders::getRecentOrders(30, 8);
+// $orders = Orders::getRecentOrders(30, 8);
 
-dd($orders, 'ORDERS');
-dd(count($orders), 'ORDER COUNT');
+// dd($orders, 'ORDERS');
+// dd(count($orders), 'ORDER COUNT');
 
+
+dd(    
+    EasyFarma::getBuyedQuantityEasyFarmaPlusPerUser(17793, 8)
+);
 
 exit;
-
-// EasyFarma::addBuyedQuantityEasyFarmaPlusPerUser(17793, 1, 1);
-
-// dd(    
-//     EasyFarma::getBuyedQuantityEasyFarmaPlusPerUser(17793, 1)
-// );
-
-// exit;
 
 
 // Clean up
@@ -80,9 +76,9 @@ exit;
 // exit;
 
 
-EasyFarma::duplicate_as_hidden(7834, true);
+// EasyFarma::duplicate_as_hidden(7834, true);
 
-exit;
+// exit;
 
 
 /*
@@ -95,59 +91,59 @@ exit;////
 
 
 
-dd(
-    Products::termExists('Gripe22', 'enfermedades')
-);
+// dd(
+//     Products::termExists('Gripe22', 'enfermedades')
+// );
 
 
-exit;
-////////
+// exit;
+// ////////
 
-dd(
-    Products::getMetasByProduct(7845, '_enfermedades', true)
-);
+// dd(
+//     Products::getMetasByProduct(7845, '_enfermedades', true)
+// );
 
-exit;
+// exit;
 
-dd(
-    Products::countByMeta('laboratorio', 'Hetero Labs Limited')
-);
+// dd(
+//     Products::countByMeta('laboratorio', 'Hetero Labs Limited')
+// );
 
-exit;///
+// exit;///
 
-dd(
-    Products::getTaxonomyFromTerm('Triangulo')
-, 'Taxonimias conteniendo el term');
+// dd(
+//     Products::getTaxonomyFromTerm('Triangulo')
+// , 'Taxonimias conteniendo el term');
 
-Products::deleteTermByName('Triangulo', 'forma_farmaceutica');
+// Products::deleteTermByName('Triangulo', 'forma_farmaceutica');
 
-dd(
-    Products::getTaxonomyFromTerm('Triangulo')
-, 'Taxonimias conteniendo el term');
+// dd(
+//     Products::getTaxonomyFromTerm('Triangulo')
+// , 'Taxonimias conteniendo el term');
 
 
-die;
-//////////
+// die;
+// //////////
 
-$attrs = [
-    'forma_farmaceutica' =>  array(
-        'term_names' => [
-            'Circulo', 
-            'Pentagono', 
-            'Triangulo'
-        ],
-        'is_visible' => true,
-        'for_variation' => false,
-    ),
+// $attrs = [
+//     'forma_farmaceutica' =>  array(
+//         'term_names' => [
+//             'Circulo', 
+//             'Pentagono', 
+//             'Triangulo'
+//         ],
+//         'is_visible' => true,
+//         'for_variation' => false,
+//     ),
 
-    // podr'ian haber otros atributos
-];
+//     // podr'ian haber otros atributos
+// ];
 
-//Products::insertAttTerms($attrs, false);
-Products::deleteTermByName('Triangulo', 'pro');
+// //Products::insertAttTerms($attrs, false);
+// Products::deleteTermByName('Triangulo', 'pro');
 
-dd('-- FIN --');
-die; ///////////////
+// dd('-- FIN --');
+// die; ///////////////
 
 
 // $pid = 8947;

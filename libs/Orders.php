@@ -91,22 +91,28 @@ class Orders
     /*
         Create a bunch of random orders
     */
-    static function createRandom(int $qty_orders = 10, Array $user_ids){
+    static function createRandom(int $qty_orders = 10, Array $product_ids = null, Array $user_ids = null){
         $order_ids = [];
 
         for ($i=0; $i< $qty_orders; $i++){
-            $pids = Products::getRandomProductIds(rand(1,4));
-        
+            if (empty($product_ids)){    
+                $product_ids = Products::getRandomProductIds(rand(1,4));
+            }
+
             $products = [];
-            foreach ($pids as $pid){
+            foreach ($product_ids as $pid){
                 $products[] = [
                     'pid' => $pid,
                     'qty' => rand(1,5)
                 ];
             }
 
+            if (empty($user_ids)){
+                $user_ids = Users::getUserIDList();
+            }
+
             $user_id = $user_ids[array_rand($user_ids,1)];
-        
+
             $order = Orders::createOrder($products, null, null, [
                 '_customer_user' => $user_id,
             ]);

@@ -130,52 +130,25 @@ class EasyFarma
             }
         }
 
-        $current = get_transient("buyed_qty_per_user");
+        $orders = Orders::getRecentOrders(30, $user_id);
 
-        dd($current, 'CURRENT');
+        $qty = 0;
+        foreach ($orders as $order){
+            $items = Orders::getOrderItemArray($order);
 
-        $key = "$user_id:$product_id";
+            foreach ($items as $item_ay){               
+                if ($item_ay['product_id'] == $product_id){
+                     // chequeo
+                    if (!Strings::endsWith('_2', $item_ay['sku'])){
+                        throw new \InvalidArgumentException("Product id '$product_id' no corresponde a producto con precio Plus");
+                    }
 
-        if (empty($current)){
-            return 0;
-        } else {
-            if (!isset($current[$key])){
-                return 0;
-            } else {
-                $current_qty = $current[$key];
-                return $current_qty;
-            }
-        }
-    }
-
-    static function addBuyedQuantityEasyFarmaPlusPerUser($product_id, $qty, $user_id = null){
-        if ($user_id === null){
-            $user_id = get_current_user_id();
-
-            if ($user_id === 0){
-                throw new \Exception("User id no puede ser determinado en el contexto actual");
+                    $qty += $item_ay['qty'];
+                }
             }
         }
 
-        $current = get_transient("buyed_qty_per_user");
-
-        $key = "$user_id:$product_id";
-
-        if (empty($current)){
-            set_transient("buyed_qty_per_user", [
-                $key => $qty
-            ], 30 * 24 * 3600);
-        } else {
-            if (!isset($current[$key])){
-                $current[$key] = $qty;
-
-                set_transient("buyed_qty_per_user", $current, 30 * 24 * 3600);
-            } else {
-                $current[$key] += $qty;
-
-                set_transient("buyed_qty_per_user", $current, 30 * 24 * 3600);
-            }
-        }
+        return $qty;
     }
 
     static function cartLogic(&$cant_en_carrito_plus, &$cant_en_carrito_normal, &$cant_compras_mensuales_plus, $max_abs_plus){       

@@ -65,7 +65,7 @@ class Users
         return in_array( $role, (array) $user->roles );
     }
 
-    static function getRoleMames() {
+    static function getRoleNames() {
         global $wp_roles;
         
         if ( ! isset( $wp_roles ) )
@@ -78,18 +78,31 @@ class Users
         $query = new \WP_User_Query(
            array(
               'fields' => 'ID',
-              'role__in' => $roles,         
+              'role__in' => $roles, 
+              'limit' => -1        
            )
         );
 
         return $query->get_results();
     }
 
+    static function getUserIDList() {
+        $query = new \WP_User_Query(
+           array(
+              'fields' => 'ID',
+              'limit' => -1                 
+           )
+        );
+
+        return $query->get_results();
+    }
+    
     static function getCustomerList() {
         $query = new \WP_User_Query(
            array(
               'fields' => 'ID',
-              'role' => 'customer',         
+              'role' => 'customer',
+              'limit' => -1                 
            )
         );
 
