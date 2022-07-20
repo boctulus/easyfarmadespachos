@@ -91,7 +91,7 @@ class Orders
     /*
         Create a bunch of random orders
     */
-    static function createRandom(int $qty_orders = 10, Array $user_roles = ['customer']){
+    static function createRandom(int $qty_orders = 10, Array $user_ids){
         $order_ids = [];
 
         for ($i=0; $i< $qty_orders; $i++){
@@ -104,9 +104,39 @@ class Orders
                     'qty' => rand(1,5)
                 ];
             }
+
+            $user_id = $user_ids[array_rand($user_ids,1)];
         
             $order = Orders::createOrder($products, null, null, [
-                '_customer_user' => Users::getUsersByRole($user_roles),
+                '_customer_user' => $user_id,
+            ]);
+        
+            $order_ids[] = $order->get_id();
+        }
+
+        return $order_ids;
+    }
+
+    static function createRandomByRoles(int $qty_orders = 10, Array $user_roles = ['customer']){
+        $order_ids = [];
+
+        $user_ids = Users::getUsersByRole($user_roles);       
+
+        for ($i=0; $i< $qty_orders; $i++){
+            $pids = Products::getRandomProductIds(rand(1,4));
+        
+            $products = [];
+            foreach ($pids as $pid){
+                $products[] = [
+                    'pid' => $pid,
+                    'qty' => rand(1,5)
+                ];
+            }
+
+            $user_id = $user_ids[array_rand($user_ids,1)];
+        
+            $order = Orders::createOrder($products, null, null, [
+                '_customer_user' => $user_id,
             ]);
         
             $order_ids[] = $order->get_id();
@@ -167,6 +197,7 @@ class Orders
     static function getRecentOrders($days = 30, $user_id = null){
         $args = array(            
             'date_created' => '>' . ( time() - (DAY_IN_SECONDS * $days)),
+            'limit' => '-1'
         );
 
         if ($user_id !== null){

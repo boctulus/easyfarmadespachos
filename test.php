@@ -41,7 +41,7 @@ if (!$cli){
 }
 
 
-// $ids = Orders::createRandom();
+// $ids = Orders::createRandom(50, [7,8,11]);
 // dd($ids, 'ORDER ID');
 
 
