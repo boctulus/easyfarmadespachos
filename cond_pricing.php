@@ -173,26 +173,20 @@ function custome_add_to_cart()
     */
 
     if ($prod_es_plus){
-        here();
+        Carrito::setQuantity($product_id, $cant_en_carrito_plus);
 
-        Carrito::setQuantity($product_id, $cant_en_carrito_plus, $variation_id, $variation);
-
-        // if ($hay_gemelo_en_carrito){
-        //     Carrito::setQuantity($prod_id_normal, $cant_en_carrito_normal, $variation_id, $variation);
-        // }
+        if ($hay_gemelo_en_carrito){
+            Carrito::setQuantity($prod_id_normal, $cant_en_carrito_normal);
+        }
 
     } else {
-        // // Es normal
-        // Carrito::setQuantity($product_id, $cant_en_carrito_normal, $variation_id, $variation);
+        // Es normal
+        Carrito::setQuantity($product_id, $cant_en_carrito_normal);
 
-        // if ($hay_gemelo_en_carrito){
-        //     Carrito::setQuantity($prod_id_plus, $cant_en_carrito_plus, $variation_id, $variation);
-        // }
+        if ($hay_gemelo_en_carrito){
+            Carrito::setQuantity($prod_id_plus, $cant_en_carrito_plus);
+        }
     }
-
-    // ..
-
-
  
 }
 

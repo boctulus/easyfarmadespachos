@@ -15,17 +15,13 @@ class Carrito
 		return $cart_item_key;
 	}
 
-	static function setQuantity($product_id, int $qty, $variation_id = '', $variation = [], string $cart_item_key = '')
+	static function setQuantity($product_id, int $qty)
 	{
 		if (empty($cart_item_key)){
 			$cart_item_key = static::find($product_id);
 		}
 
-		// Remuevo producto original
-		WC()->cart->remove_cart_item($cart_item_key);
-
-		// Agrego la cantidad deseada
-		WC()->cart->add_to_cart($product_id, $qty, $variation_id, $variation, $cart_item_key);
+		WC()->cart->set_quantity( $cart_item_key, $qty );
 	}
 
 }
