@@ -41,8 +41,8 @@ if (!$cli){
 }
 
 
-$ids = Orders::createRandom(1, [17793], [8]);
-dd($ids, 'ORDER ID');
+// $ids = Orders::createRandom(1, [17793], [8]);
+// dd($ids, 'ORDER ID');
 
 
 // $orders = Orders::getRecentOrders(30, 8);

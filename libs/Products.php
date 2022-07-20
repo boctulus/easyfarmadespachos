@@ -18,7 +18,13 @@ class Products
     static function productExists($sku){
         $p = static::getProductIdBySKU($sku);
 
-        return  is_numeric($p) && $p !== 0;
+        return is_numeric($p) && $p !== 0;
+    }
+
+    static function productIDExists($pid){
+        $p = \wc_get_product($pid);
+
+        return !empty($p);
     }
         
     static function getProduct($product){

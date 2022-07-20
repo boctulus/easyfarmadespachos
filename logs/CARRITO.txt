@@ -1,0 +1,12 @@
+array (
+  'cant_normal' => 0,
+  'cant_plus' => 5,
+  'cant_compras_mensuales_plus' => 0,
+  'max_abs' => 2,
+)
+array (
+  'cant_normal (luego de ajuste)' => 3,
+  'cant_plus  (luego de ajuste)' => 2,
+  'cant_compras_mensuales_plus' => 2,
+  'max_abs' => 2,
+)

@@ -93,6 +93,11 @@ function custome_add_to_cart()
         $variation    = $last['variation'];
         $sku          = Products::getSKUFromProductId($product_id);
 
+        $cant_en_carrito_plus   = 0; 
+        $cant_en_carrito_normal = 0; 
+        
+        $prod_es_plus = false;
+
         // Si el producto es con precio Plus
         if (Strings::endsWith('_2', $sku)){
             $prod_id_plus   = $product_id;
@@ -101,26 +106,63 @@ function custome_add_to_cart()
             $_sku_normal    = Strings::before($sku, '_2');
             $prod_id_normal = Products::getProductIdBySKU($_sku_normal);
 
-            $prod_normal_en_carrito = Carrito::find($prod_id_normal);
-
+            $prod_es_plus = true;
         } else {
             // Si el producto viene con precio normal
 
             $cant_en_carrito_normal = $quantity;
             $prod_id_plus   = Products::getProductIdBySKU("{$sku}_2");
+            $prod_id_normal = $product_id;
         }   
 
         $cant_compras_mensuales_plus = EasyFarma::getBuyedQuantityEasyFarmaPlusPerUser($prod_id_plus);
-
-        $cant_en_carrito_plus = 5;      // No debe estar hardcodeado!
-        $cant_en_carrito_normal = 7;    // No debe estar hardcodeado!
         
+        if ($prod_es_plus){
+            $cart_item_key = Carrito::find($prod_id_normal);
+
+            $cart_items = WC()->cart->get_cart_contents($cart_item_key);
+
+            if (isset($cart_items[$cart_item_key])){
+                $gemelo = $cart_items[$cart_item_key];
+                $cant_en_carrito_normal = $gemelo['quantity'];
+            }
+        } else {
+            $cart_item_key = Carrito::find($prod_id_plus);
+
+            $cart_items = WC()->cart->get_cart_contents($cart_item_key);
+
+            if (isset($cart_items[$cart_item_key])){
+                $gemelo = $cart_items[$cart_item_key];
+                $cant_en_carrito_plus = $gemelo['quantity'];
+            }
+        }
+        
+        // Debug
+        Files::localDump([
+            'cant_normal' => $cant_en_carrito_normal,
+            'cant_plus'   => $cant_en_carrito_plus,
+            'cant_compras_mensuales_plus' => $cant_compras_mensuales_plus,
+            'max_abs'     => $max_abs_plus
+
+        ], 'CARRITO.txt', true);
 
         /*
             Aplico la logica que ... debe reflejarse en operaciones sobre el carrito
         */
 
         EasyFarma::cartLogic($cant_en_carrito_plus, $cant_en_carrito_normal, $cant_compras_mensuales_plus, $max_abs_plus);
+
+        // Debug
+        Files::localDump([
+            'cant_normal (luego de ajuste)' => $cant_en_carrito_normal,
+            'cant_plus  (luego de ajuste)'   => $cant_en_carrito_plus,
+            'cant_compras_mensuales_plus' => $cant_compras_mensuales_plus,
+            'max_abs'     => $max_abs_plus
+
+        ], 'CARRITO.txt', true);
+
+
+        // ...
     }
 
  

@@ -120,7 +120,6 @@ class EasyFarma
         update_post_meta($dupe_id, 'precio_plus', $precio_plus);
     }
 
-
     static function getBuyedQuantityEasyFarmaPlusPerUser($product_id, $user_id = null){
         if ($user_id === null){
             $user_id = get_current_user_id();
@@ -128,6 +127,10 @@ class EasyFarma
             if ($user_id === 0){
                 throw new \Exception("User id no puede ser determinado en el contexto actual");
             }
+        }
+
+        if (!Products::productIDExists($product_id)){
+            throw new \InvalidArgumentException("Producto con id '$product_id' no existe");
         }
 
         $orders = Orders::getRecentOrders(30, $user_id);
@@ -163,13 +166,13 @@ class EasyFarma
         } else {
             $margen_para_plus = $max_abs_plus - $cant_compras_mensuales_plus;
 
-            // d($margen_para_plus, 'Margen para plus');
+            //d($margen_para_plus, 'Margen para plus');
 
-            if ($cant_en_carrito_plus <= $margen_para_plus){
-                // d("Debo convertir todos los items normales en plus (si el usuario tiene la membresia)");
+            if ($cant_en_carrito_plus < $margen_para_plus){  /// antes <=
+                //d("Debo convertir todos los items normales en plus (si el usuario tiene la membresia)");
 
-                $cant_en_carrito_normal -= $margen_para_plus;
-                $cant_en_carrito_plus   += $margen_para_plus;
+                $cant_en_carrito_plus   += $cant_en_carrito_normal; //
+                $cant_en_carrito_normal = 0; //
 
             } else {
                 $_dif_plus_y_plus_max = $cant_en_carrito_plus - $margen_para_plus;
