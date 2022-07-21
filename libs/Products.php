@@ -16,13 +16,17 @@ class Products
     // Investigar '_transient_wc_attribute_taxonomies' como option_name en wp_options
 
     static function productExists($sku){
-        $p = static::getProductIdBySKU($sku);
+        global $wpdb;
 
-        return is_numeric($p) && $p !== 0;
+        $product_id = $wpdb->get_var(
+            $wpdb->prepare("SELECT post_id FROM $wpdb->postmeta WHERE meta_key='_sku' AND meta_value='%s'", $sku)
+        );
+
+        return is_numeric($product_id) && $product_id !== 0;
     }
 
-    static function productIDExists($pid){
-        $p = \wc_get_product($pid);
+    static function productIDExists($prod_id){
+        $p = \wc_get_product($prod_id);
 
         return !empty($p);
     }
@@ -117,6 +121,8 @@ class Products
 
     static function getProductIdBySKU($sku){
         $result_ay = static::getByMeta('SKU', $sku);
+
+        dd($result_ay);
 
         if (empty($result_ay)){
             return;
@@ -2673,18 +2679,36 @@ class Products
         if (!is_null($new_sku) && is_callable($new_sku)){
             // Solo valido para un solo duplicado porque sino deberia mover el contador
             $p_ay['sku'] = $new_sku($p_ay['sku']);
+
+            dd(
+                static::productExists($p_ay['sku'])
+            , "EXISTE PROD CON SKU '{$p_ay['sku']}' ???");
+
+            if (static::productExists($p_ay['sku'])){
+                dd("Producto con SKU '{$p_ay['sku']}' ya existe. Abortando,...");
+                return;
+            }
+
         } else {        
             $p_ay['sku'] = null;
         }
 
         $p_ay = array_merge($p_ay, $props);
-        
+
+        if (is_cli()){
+            dd($p_ay, $pid);
+        }
+
         $dupe = static::createProduct($p_ay);
 
         return $dupe;
     }
 
-    // Mejor que $p->get_sku() ya que no requiere sea estrictamente numerico el SKU
+    /*
+        Mejor que $p->get_sku() ya que no requiere sea estrictamente numerico el SKU
+
+        Realmente es el $product_id que es buscado como _sku
+    */
     static function getSKUFromProductId($product_id)
     {
         return static::getMeta($product_id, '_sku');

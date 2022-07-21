@@ -1,6 +1,8 @@
 <?php
 
 use boctulus\EasyFarmaDespachos\libs\Debug;
+use boctulus\EasyFarmaDespachos\libs\Files;
+
 
 if (!function_exists('dd')){
 	function dd($val, $msg = null, $pre_cond = null){
@@ -14,8 +16,21 @@ if (!function_exists('here') && function_exists('dd')){
 	}
 }
 
+if (!function_exists('debug')){
+	function debug(...$args){
+		if (defined('WP_DEBUG_DISPLAY') && WP_DEBUG_DISPLAY){
+			if (is_cli()){
+				dd(...$args);
+			}
+			
+			Files::logger($args[0]);
+		}
+	}
+}
+
 if (!function_exists('foo')){
 	function foo(){
 		throw new \Exception("FOO");
 	}
 }
+

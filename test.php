@@ -24,11 +24,7 @@ require_once __DIR__ . '/libs/Orders.php';
 require_once __DIR__ . '/libs/EasyFarma.php'; ///
 
 
-if (!function_exists('dd')){
-	function dd($val, $msg = null, $pre_cond = null){
-		Debug::dd($val, $msg, $pre_cond);
-	}
-}
+require_once __DIR__ . '/helpers/debug.php';
 
 
 global $wpdb;
@@ -41,6 +37,49 @@ if (!$cli){
 }
 
 
+$sku = '7800007112583_2';
+
+dd(
+	Products::productExists($sku),
+'EXISTE????');
+
+
+exit;
+
+$pid = 46;
+
+EasyFarma::duplicate_as_hidden($pid);
+
+
+
+// dd(
+// 	Products::getProductIdBySKU($sku)
+// );
+
+dd(
+	Products::productExists($sku)
+);
+
+exit;
+//////////////////
+
+$sku = '7804650880288';
+
+$pid  = wc_get_product_id_by_sku( $sku );
+$name = "Producto";
+
+$p   = Products::duplicate($pid, function ($old_sku){
+	return "{$old_sku}_3";
+}, [
+	'name' => "$name | EasyFarma Plus",
+	'regular_price' => $precio_plus,
+	'price' => $precio_plus 
+]);
+
+
+dd($p->get_id());
+
+
 // $ids = Orders::createRandom(1, [17793], [8]);
 // dd($ids, 'ORDER ID');
 
@@ -51,9 +90,9 @@ if (!$cli){
 // dd(count($orders), 'ORDER COUNT');
 
 
-dd(    
-    EasyFarma::getBuyedQuantityEasyFarmaPlusPerUser(17793, 8)
-);
+// dd(    
+//     EasyFarma::getBuyedQuantityEasyFarmaPlusPerUser(17793, 8)
+// );
 
 exit;
 
@@ -79,17 +118,6 @@ exit;
 // EasyFarma::duplicate_as_hidden(7834, true);
 
 // exit;
-
-
-/*
-    Clonado inicial de todos los productos
-*/
-
-//EasyFarma::initDuplication();
-exit;////
-
-
-
 
 // dd(
 //     Products::termExists('Gripe22', 'enfermedades')

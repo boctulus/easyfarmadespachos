@@ -59,6 +59,10 @@ class Reactor
 		EasyFarma::duplicate_as_hidden($pid, true);
 
 		foreach ($this->atts as $att => $meta_key){
+			if (!isset($_POST[$meta_key])){
+				continue;
+			}
+
 			$new_val = $_POST[$meta_key];  			
 			
 			/*	
