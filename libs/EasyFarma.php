@@ -23,7 +23,7 @@ class EasyFarma
             $p = EasyFarma::duplicate_as_hidden($pid);
 
             if ($p != null){
-                dd(
+                debug(
                     $p->get_id()
                 );
             }
@@ -91,7 +91,7 @@ class EasyFarma
         $sku         = trim($p->get_sku());
 
         if (empty($sku)){
-            debug("SKU no encontrado para pid = $pid");
+                debug("SKU no encontrado para pid = $pid");
             return;
         }
 

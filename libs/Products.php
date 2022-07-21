@@ -122,8 +122,6 @@ class Products
     static function getProductIdBySKU($sku){
         $result_ay = static::getByMeta('SKU', $sku);
 
-        dd($result_ay);
-
         if (empty($result_ay)){
             return;
         }
