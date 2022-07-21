@@ -88,10 +88,12 @@ class EasyFarma
 
         $name        = $p->get_title();
         $precio_plus = isset($_POST['precio_plus']) ?  $_POST['precio_plus'] : Products::getMeta($pid, 'precio_plus');
+        $precio_reg  = $p->get_regular_price();  
+        $precio      = $p->get_price();
         $sku         = trim($p->get_sku());
 
         if (empty($sku)){
-                debug("SKU no encontrado para pid = $pid");
+            debug("SKU no encontrado para pid = $pid");
             return;
         }
 
@@ -100,37 +102,43 @@ class EasyFarma
         }
 
         $new_sku = "{$sku}_2";
-        //dd($new_sku, 'NEW_SKU');
 
-        if (Products::productExists($new_sku))
-        {   
-            dd("EXISTE con sku $new_sku");
-            return;
+        /*
+            No puede haber producto "gemelo" Plus sin precio
+        */
+        if (empty($precio_plus)){
+            if (!empty($precio_reg)){
+                $precio_plus = $precio_reg;
+            } else {
+                $precio_plus = $precio;
+            }
         }
 
-        $p = Products::duplicate($pid, function ($old_sku) use ($new_sku){
-            return $new_sku;
-        }, [
-            'name' => "$name | EasyFarma Plus",
-            'regular_price' => $precio_plus,
-            'price' => $precio_plus 
-        ]);
+        if (!Products::productExists($new_sku))
+        {   
+            $p = Products::duplicate($pid, function ($old_sku) use ($new_sku){
+                return $new_sku;
+            }, [
+                'name' => "$name | EasyFarma Plus",
+                'regular_price' => $precio_plus,
+                'price' => $precio_plus 
+            ]);
+    
+            Products::hide($p);  
+            $dupe_id = $p->get_id();
 
-        Products::hide($p);         
-
-        $dupe_id = $p->get_id();
-
+        } else {      
+            dd("Actualizando precio de prod. con SKU = $new_sku");
+            
+            $dupe_id = Products::getProductIdBySKU("{$sku}_2");
+            Products::updatePrice($dupe_id, $precio_plus);
+        }
+       
         update_post_meta($dupe_id, 'ori_id',  $pid);
         update_post_meta($dupe_id, 'ori_sku', $sku);
         update_post_meta($dupe_id, 'precio_plus', $precio_plus);
 
         return $p;
-    
-        // else 
-        // {
-        //     $dupe_id = Products::getProductIdBySKU("{$sku}_2");
-        //     Products::updatePrice($dupe_id, $precio_plus);        // } 
-
     }
 
     static function getBuyedQuantityEasyFarmaPlusPerUser($product_id, $user_id = null){

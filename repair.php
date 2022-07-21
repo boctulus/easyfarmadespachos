@@ -53,12 +53,40 @@ foreach ($ids as $id){
     $p    = Products::getProduct($id);
     $sku  = $p->get_sku();
 	$name = $p->get_name();
+	$precio_plus = Products::getMeta($pid, 'precio_plus');
+    $precio_reg  = $p->get_regular_price();  
+    $precio      = $p->get_price();
 
-    if ($sku == '_2' || Strings::endsWith('_2_2', $sku) || Strings::endsWith("EasyFarma Plus | EasyFarma Plus", $name)){
-        dd("Borrar $sku");
-        Products::deleteProduct($id, true);
-    }
+    //if (Strings::endsWith('_2', $sku)){
+
+		/*
+			No puede haber producto "gemelo" Plus sin precio
+		*/
+		if (empty($precio_plus)){
+			if (!empty($precio_reg)){
+				$precio_plus = $precio_reg;
+			} else {
+				$precio_plus = $precio;
+			}
+
+			dd("Reparando precio de prod. con PID = $id | SKU = $sku");
+			Products::updatePrice($id, $precio_plus);
+		}
+
+    //}
 }
+
+
+// foreach ($ids as $id){
+//     $p    = Products::getProduct($id);
+//     $sku  = $p->get_sku();
+// 	$name = $p->get_name();
+
+//     if ($sku == '_2' || Strings::endsWith('_2_2', $sku) || Strings::endsWith("EasyFarma Plus | EasyFarma Plus", $name)){
+//         dd("Borrar $sku");
+//         Products::deleteProduct($id, true);
+//     }
+// }
 
 
 exit;
