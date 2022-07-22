@@ -75,7 +75,7 @@ function scripts_ezfarma_checkout(){
                     })
                     .done(function(data) {
                         console.log(data);
-                        addNotice("Receta recibida", "info", "ef_checkout_messages");
+                        addNotice("Receta recibida", "success", "ef_checkout_messages");
                         console.log("success");
                     })
                     .fail(function(data) {

@@ -50,8 +50,11 @@ use boctulus\EasyFarmaDespachos\libs\Url;
 function my_css_enqueues() 
 {  
 	//if (!is_home()){
-		// wp_register_script('bootstrap', Files::get_rel_path(). 'assets/js/bootstrap/bootstrap.bundle.min.js');
-		// wp_enqueue_script('bootstrap');
+		wp_register_script('bootstrap', plugin_dir_url(__FILE__) . '/assets/js/bootstrap/bootstrap.bundle.min.js');
+		wp_enqueue_script('bootstrap');
+
+		wp_register_style('bootstrap', plugin_dir_url(__FILE__) . '/assets/css/bootstrap/bootstrap.min.css');
+		wp_enqueue_style('bootstrap');
 
 		wp_register_style('ef_main',  plugin_dir_url(__FILE__) . '/assets/css/ef_styles.css');
 		wp_enqueue_style('ef_main');
