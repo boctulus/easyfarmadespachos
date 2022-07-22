@@ -33,15 +33,27 @@ class EasyFarma
     /*
         Devuelve si el SKU se corresponde a un producto con precio Plus
     */
-    static function isSkuPlus($sku, bool $check_for_existance){
+    static function isSkuPlus($sku, bool $check_for_existance = false){
         if (Strings::endsWith('_2', $sku)){
-            if (!Products::productExists($sku))
+            if ($check_for_existance && !Products::productExists($sku))
             {
                 throw new \InvalidArgumentException("SKU '$sku' no existe");
             }
 
             return true;
         }
+    }
+
+    static function getNonPlusSku($sku_plus){
+        return Strings::before($sku_plus, '_2');
+    }
+
+    /*
+        Devuelve el product_id del producto non-plus a partir del sku del producto plus
+    */
+    static function getNonPlusProductId($sku_plus){
+        $sku_normal = static::getNonPlusSku($sku_plus);
+        return Products::getProductIdBySKU($sku_normal);
     }
 
     /*

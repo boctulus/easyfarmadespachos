@@ -27,6 +27,14 @@ class Users
         }
     }
 
+    static function getUserIdByUsername($username){
+        $u = get_user_by( 'login', $username);
+
+        if (!empty($u)){
+            return $u->ID;
+        }
+    }
+
     static function userExistsByEmail($email){
         return !empty( get_user_by( 'email', $email) );
     }

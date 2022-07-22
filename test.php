@@ -37,6 +37,20 @@ if (!$cli){
 }
 
 
+$orders = Orders::getRecentOrders(30, Users::getUserIdByUsername('boctulus'));
+
+foreach ($orders as $order){
+	$order_id = $order->ID;
+	$items = Orders::getOrderItemArray($order);
+
+	$prod_name_ay = array_column($items, 'product_name');
+
+	dd($prod_name_ay, "ORDER id= $order_id");
+}
+
+
+exit;
+
 $sku = '7800007112583_2';
 
 dd(
@@ -64,20 +78,6 @@ exit;
 //////////////////
 
 $sku = '7804650880288';
-
-$pid  = wc_get_product_id_by_sku( $sku );
-$name = "Producto";
-
-$p   = Products::duplicate($pid, function ($old_sku){
-	return "{$old_sku}_3";
-}, [
-	'name' => "$name | EasyFarma Plus",
-	'regular_price' => $precio_plus,
-	'price' => $precio_plus 
-]);
-
-
-dd($p->get_id());
 
 
 // $ids = Orders::createRandom(1, [17793], [8]);

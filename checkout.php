@@ -1,11 +1,12 @@
 <?php
 
+use boctulus\EasyFarmaDespachos\libs\Products;
 use boctulus\EasyFarmaDespachos\libs\Url;
 use boctulus\EasyFarmaDespachos\libs\Files;
 use boctulus\EasyFarmaDespachos\libs\Strings;
 use boctulus\EasyFarmaDespachos\libs\Debug;
 use boctulus\EasyFarmaDespachos\libs\Arrays;
-
+use boctulus\EasyFarmaDespachos\libs\EasyFarma;
 
 require_once __DIR__ . '/libs/Url.php';
 require_once __DIR__ . '/libs/Files.php';
@@ -91,10 +92,34 @@ add_action( 'woocommerce_after_order_notes', 'add_ezfarma_custom_fields' );
 
 function add_ezfarma_custom_fields($checkout)
 {
+    $items = WC()->cart->get_cart();
+
+    $req_receta_ay = [];
+    foreach ($items as $item => $values)
+    {
+        $qty = $values['quantity'];
+        $pid = $values['product_id'];
+        $sku = $values['data']->get_sku();
+
+        //dd($qty, $pid);
+
+        if (EasyFarma::isSkuPlus($sku)){
+            $pid = EasyFarma::getNonPlusProductId($sku);
+        }
+
+        $req = Products::getMeta($pid, 'requiere_receta');
+
+        if ($req == 'Si' || $req == 'Sí'){
+            $req_receta_ay[] = $pid;
+        }
+    }
+
+    dd($req_receta_ay, 'REQUIEREN RECETA');
+
     ?>
     <h3>Receta adjunta</h3>
 
-    <label><strong>El medicamento requiere que adjunte receta médica.</strong></label>
+    <label><strong>Hay medicamentos que requieren que adjunte receta médica.</strong></label>
 
     <p></p>
     <p class="form-row form-row-wide validate-required validate-phone">

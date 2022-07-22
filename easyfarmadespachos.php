@@ -32,6 +32,7 @@ require_once __DIR__ . '/installer/easyfarma_files.php';
 require_once __DIR__ . '/libs/Debug.php';
 require_once __DIR__ . '/libs/Reactor.php'; // Reactor
 require_once __DIR__ . '/libs/Users.php';
+require_once __DIR__ . '/libs/Url.php';
 
 require_once __DIR__ . '/helpers/debug.php';
 require_once __DIR__ . '/helpers/cli.php';
@@ -43,6 +44,23 @@ require_once __DIR__ . '/cond_pricing.php'; // hooks
 
 require_once __DIR__ . '/meta_box_despachos.php';
 require_once __DIR__ . '/meta_box_productos.php';
+
+use boctulus\EasyFarmaDespachos\libs\Url;
+
+function my_css_enqueues() 
+{  
+	//if (!is_home()){
+		// wp_register_script('bootstrap', Files::get_rel_path(). 'assets/js/bootstrap/bootstrap.bundle.min.js');
+		// wp_enqueue_script('bootstrap');
+
+		wp_register_style('ef_main',  plugin_dir_url(__FILE__) . '/assets/css/ef_styles.css');
+		wp_enqueue_style('ef_main');
+	//}
+}
+
+add_action( 'wp_enqueue_scripts', 'my_css_enqueues');
+
+
 
 // https://generatewp.com/post-type/
 if (!function_exists('despachos_post_type')) {

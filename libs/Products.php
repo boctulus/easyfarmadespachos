@@ -2657,7 +2657,7 @@ class Products
         }
 
         $terms = array('exclude-from-search', 'exclude-from-catalog' ); // for hidden..
-        wp_set_post_terms($product, $terms, 'product_visibility', false); 
+        wp_set_post_terms($pid, $terms, 'product_visibility', false); 
     }
 
     static function unhide($product){
@@ -2668,7 +2668,7 @@ class Products
         }
 
         $terms = array();
-        wp_set_post_terms($product, $terms, 'product_visibility', false); 
+        wp_set_post_terms($pid, $terms, 'product_visibility', false); 
     }
 
     static function duplicate($pid, callable $new_sku = null, Array $props = []){
@@ -2678,12 +2678,12 @@ class Products
             // Solo valido para un solo duplicado porque sino deberia mover el contador
             $p_ay['sku'] = $new_sku($p_ay['sku']);
 
-            dd(
-                static::productExists($p_ay['sku'])
-            , "EXISTE PROD CON SKU '{$p_ay['sku']}' ???");
+            // dd(
+            //     static::productExists($p_ay['sku'])
+            // , "EXISTE PROD CON SKU '{$p_ay['sku']}' ???");
 
             if (static::productExists($p_ay['sku'])){
-                dd("Producto con SKU '{$p_ay['sku']}' ya existe. Abortando,...");
+                //dd("Producto con SKU '{$p_ay['sku']}' ya existe. Abortando,...");
                 return;
             }
 

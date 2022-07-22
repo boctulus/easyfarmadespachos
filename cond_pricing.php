@@ -19,50 +19,51 @@ require_once __DIR__ . '/libs/Products.php';
 require_once __DIR__ . '/libs/EasyFarma.php';
 
 
-add_action( 'woocommerce_single_product_summary', 'product_page_with_radios', 15 );
+add_action( 'woocommerce_single_product_summary', 'product_page_two_prices', 15 );
 
 
-function product_page_with_radios() {
+function product_page_two_prices() {
     $config = include __DIR__ . '/config/config.php';
 
-    if (!is_user_logged_in() || !Users::hasRole($config['vip_membership_user'], get_current_user_id())){
-        return;
+    $es_vip = is_user_logged_in() && Users::hasRole($config['vip_membership_user'], get_current_user_id());
+
+    if (!$config['show_easyfarma_plus_to_non_members']){
+        if (!$es_vip){
+            return;
+        }
     }
+
+    global $product;
+    $pid = $product->get_id();
+
+    $p   = Products::getProduct($pid);
+
+    $precio_plus = Products::getMeta($pid, 'precio_plus');
+    $precio      = $p->get_price();
+
+    $precio_plus = Strings::formatNumber($precio_plus);
+    $precio      = Strings::formatNumber($precio);
 
     ?>
 
     <script>
-        const SITE_URL = '<?= get_site_url(); ?>';
-		
-        function set_as_plus(){
-            if (jQuery('input[name="price_type"]').length == 0){
-                jQuery(jQuery("form.cart")[0]).append('<input type="hidden" name="price_type" value="plus">');
-            } else {
-                jQuery('input[name="price_type"]').val('plus')
-            }
+        const SITE_URL = '<?= get_site_url(); ?>';  
+
+        let precio      = '<?= $precio ?>'
+        let precio_plus = '<?= $precio_plus ?>'
+
+        const es_vip    = <?= $es_vip ? 'true' : 'false' ?>
+
+        let line_plus   = `<span class="ef_plus_price">EasyFarma Plus $ ${precio_plus}</span>`
+        let line_normal = `<span class="ef_normal_price">Normal $ ${precio }</span>`
+
+        if (!es_vip){
+            line_plus   = `<del>${line_plus}</del>`
         }
 
-        function set_as_normal(){
-            if (jQuery('input[name="price_type"]').length == 0){
-                jQuery(jQuery("form.cart")[0]).append('<input type="hidden" name="price_type" value="normal">');
-            } else {
-                jQuery('input[name="price_type"]').val('normal')
-            }
-        }
+        let reemplazo = `${line_plus}<br/>${line_normal}`
 
-        jQuery(jQuery('.price > .woocommerce-Price-amount > bdi')[0]).replaceWith('<input type="radio" id="precio_plus" name="radio_price_type" value="plus">	<label for="precio_plus">EasyFarma Plus</label><br>	<input type="radio" id="precio_normal" name="radio_price_type" value="normal"> <label for="precio_normal">Precio normal</label><br>')
-
-
-        jQuery('input:radio[name="radio_price_type"]').change(
-        function(){
-            if (this.checked) {
-                if (this.value == 'normal'){
-                    set_as_normal()
-                } else {
-                    set_as_plus()
-                }
-            } 
-        });
+        jQuery(jQuery('.price > .woocommerce-Price-amount > bdi')[0]).replaceWith(reemplazo)
 
 	</script>
 
@@ -222,61 +223,32 @@ function custome_add_to_cart()
     /cart/
     /cart/{producto}
 
-
-    Restricción:
-
-    límite máximo de 2 medicamentos easyfarma plus al mes por client
  */
- function custom_price_easyfarma_plus_role($price, $product) {
-    $config = include __DIR__ . '/config/config.php';
+//  function custom_price_easyfarma_plus_role($price, $product) {
+//     $config = include __DIR__ . '/config/config.php';
 
-    /*
-        En la pàgina de producto se envia por POST
-
-        $_POST = 
-        array (
-            'quantity' => '1',
-            'add-to-cart' => '4173',
-            'price_type' => 'Plus',
-        )
-
-        En cambio, en ¨archives¨ se envia por GET
-
-        array (
-           'add-to-cart' => '7397',
-        )
-
-        Ej:
-
-        http://easyfarma.lan/tienda/nexium-40-mg-x-28-comprimidos/?add-to-cart=108
-
-        y tocaria hacer el append del price_type
-
-        http://easyfarma.lan/tienda/nexium-40-mg-x-28-comprimidos/?add-to-cart=108&price_type=plus
-    */
-
-    if (!is_user_logged_in() || !isset($_REQUEST['price_type'])){
-        return $price;
-    } 
+//     if (!is_user_logged_in() || !isset($_REQUEST['price_type'])){
+//         return $price;
+//     } 
     
-    Files::localDump($_REQUEST, 'REQUEST.txt');
+//     Files::localDump($_REQUEST, 'REQUEST.txt');
 
-    if ($_REQUEST['price_type'] == 'normal'){
-        return $price;
-    }
+//     if ($_REQUEST['price_type'] == 'normal'){
+//         return $price;
+//     }
 
-    // El precio podria ser 'normal' o 'plus'
+//     // El precio podria ser 'normal' o 'plus'
 
-    $prod_id = $product->get_id();
-    $user_id = get_current_user_id();
+//     $prod_id = $product->get_id();
+//     $user_id = get_current_user_id();
 
-    if (Users::hasRole($config['vip_membership_user'], $user_id)){
-        $price_plus = EasyFarma::getPrecioPlus($prod_id);
+//     if (Users::hasRole($config['vip_membership_user'], $user_id)){
+//         $price_plus = EasyFarma::getPrecioPlus($prod_id);
 
-        if (!empty($price_plus)){
-            $price = $price_plus;
-        }
-    }
+//         if (!empty($price_plus)){
+//             $price = $price_plus;
+//         }
+//     }
     
-    return $price;
-}
+//     return $price;
+// }

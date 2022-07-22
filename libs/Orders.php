@@ -390,6 +390,9 @@ class Orders
         ];
     }
 
+    /*
+        Atajo para obtener items a partie del objeto de la orden
+    */
     static function getOrderItemArray(object $order){
         $order_items = Orders::getOrderItems($order);
 

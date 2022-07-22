@@ -1,45 +1,20 @@
 TODO Easyfarma despachos
 ========================
 
-El problema de los "dos precios"
-
-
-https://pruebas.gentedefutbol.cl/?product=up-vivalite-900-gramos-sabor-mora-crema
-
-Y desde la console del navegador pega esto:
-
-jQuery(jQuery('.price > .woocommerce-Price-amount > bdi')[0]).replaceWith('<input type="radio" id="precio_plus" name="price_type" value="plus">	<label for="precio_plus">EasyFarma Plus</label><br>	<input type="radio" id="precio_normal" name="price_type" value="normal"> <label for="precio_normal">Precio normal</label><br>')
-
-
-El "alcance" debe llegar a "archives" como categorias de producto. Ej:
-
-?product_cat=naturales
-
-que puede ser visto como
-
-http://easyfarma.lan/product-category/naturales/
-
-
-CREAR / MODIFICAR producto en tiempo real con REACTOR 
-
-    con asterisco en el título, 
-    invisible
-    con precio easyfarma plus
-
 
 ENTREGAR BALANCE de lo hecho / pendiente 
 ªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªª
 
 Entregado por cobrar
 
-Trabajo para el filtro      
-Dos precios sobre página de producto ---- mañana estará
-Subir receta -- 80% o sea falta ontrolar que la requiera
+Trabajo para el filtro -- listo      
+Dos precios sobre página de producto ---- listo
+Subir receta -- en progreso
 
-Cobrado pero sin entregar
+Cobrado pero sin entregar (en proceso)
 
-Generador de QR -- 50%
-App móvil       -- 50%
+Generador de QR -- 50% cobrado
+App móvil       -- 50% cobrado
 
 
 

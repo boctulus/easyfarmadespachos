@@ -42,6 +42,26 @@ if (!$cli){
 	echo "Ejecutar desde la terminal";
 }
 
+$ids = Products::getIDs();
+
+foreach ($ids as $id){
+    $p    = Products::getProduct($id);
+    $sku  = $p->get_sku();
+	// $name = $p->get_name();
+	// $precio_plus = Products::getMeta($id, 'precio_plus');
+    // $precio_reg  = $p->get_regular_price();  
+    // $precio      = $p->get_price();
+
+    if (Strings::endsWith('_2', $sku)){
+		dd("Ocultando producto con SKU $sku | PID = $id");
+		Products::hide($id);
+		//$p->save();
+    }
+}
+
+
+exit;
+//////////
 
 // Clean up
 
@@ -53,7 +73,7 @@ foreach ($ids as $id){
     $p    = Products::getProduct($id);
     $sku  = $p->get_sku();
 	$name = $p->get_name();
-	$precio_plus = Products::getMeta($pid, 'precio_plus');
+	$precio_plus = Products::getMeta($id, 'precio_plus');
     $precio_reg  = $p->get_regular_price();  
     $precio      = $p->get_price();
 
@@ -71,6 +91,7 @@ foreach ($ids as $id){
 
 			dd("Reparando precio de prod. con PID = $id | SKU = $sku");
 			Products::updatePrice($id, $precio_plus);
+			///Products::setMeta($id, 'precio_plus', $precio_plus);
 		}
 
     //}
