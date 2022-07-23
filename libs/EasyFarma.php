@@ -11,6 +11,12 @@ use ParagonIE\Sodium\Core\Curve25519\Ge\P2;
 
 class EasyFarma 
 {
+    static function esVIP(){
+        $config = config();
+
+        return is_user_logged_in() && Users::hasRole($config['vip_membership_user'], get_current_user_id());
+    }
+
     static function getPrecioPlus($pid){
         return Products::getMeta($pid, 'precio_plus');
     }

@@ -46,11 +46,9 @@ add_action( 'woocommerce_single_product_summary', 'product_page_two_prices', 15 
 
 
 function product_page_two_prices() {
-    $config = include __DIR__ . '/config/config.php';
+    $es_vip = EasyFarma::esVIP();
 
-    $es_vip = is_user_logged_in() && Users::hasRole($config['vip_membership_user'], get_current_user_id());
-
-    if (!$config['show_easyfarma_plus_to_non_members']){
+    if (!config()['show_easyfarma_plus_to_non_members']){
         if (!$es_vip){
             return;
         }
@@ -106,7 +104,7 @@ function add_custom_logic_to_cart()
     /*
         Sino esta logueado no tiene sentido seguir
     */
-    if (!is_user_logged_in() || empty(get_current_user_id()) || !Users::hasRole($config['vip_membership_user'], get_current_user_id())){
+    if (!EasyFarma::esVIP()){
         return;
     }
 

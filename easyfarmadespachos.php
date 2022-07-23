@@ -36,6 +36,7 @@ require_once __DIR__ . '/libs/Url.php';
 
 require_once __DIR__ . '/helpers/debug.php';
 require_once __DIR__ . '/helpers/cli.php';
+require_once __DIR__ . '/helpers/config.php';
 
 require_once __DIR__ . '/ajax.php';
 
