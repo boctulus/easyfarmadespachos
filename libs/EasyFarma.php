@@ -163,6 +163,7 @@ class EasyFarma
             $user_id = get_current_user_id();
 
             if ($user_id === 0){
+                //return;
                 throw new \Exception("User id no puede ser determinado en el contexto actual");
             }
         }

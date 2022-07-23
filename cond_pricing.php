@@ -19,6 +19,29 @@ require_once __DIR__ . '/libs/Products.php';
 require_once __DIR__ . '/libs/EasyFarma.php';
 
 
+/*
+    Me saco de encima el enlace a "Ver carrito" porque permite saltarse restricciones
+*/
+add_action( 'init', function(){
+    if (!is_admin()){
+        ?>
+        <script>
+            function removeVerCarrito(){
+                jQuery(jQuery(jQuery('p.woocommerce-mini-cart__buttons')[0]).children('a.wc-forward')[0]).remove();
+            }
+    
+            document.addEventListener("DOMContentLoaded", function(event) { 
+                setTimeout(function(){
+                    removeVerCarrito();
+                }, 1000)
+            });
+
+        </script>
+        <?php
+    }
+});
+
+
 add_action( 'woocommerce_single_product_summary', 'product_page_two_prices', 15 );
 
 
@@ -74,11 +97,19 @@ function product_page_two_prices() {
     HOOK para precios condicionales
 */
 
-add_action('woocommerce_add_to_cart', 'custome_add_to_cart');
+add_action('woocommerce_add_to_cart', 'add_custom_logic_to_cart');
 
-function custome_add_to_cart() 
+function add_custom_logic_to_cart() 
 {
     $config = include __DIR__ . '/config/config.php';
+
+    /*
+        Sino esta logueado no tiene sentido seguir
+    */
+    if (!is_user_logged_in() || empty(get_current_user_id()) || !Users::hasRole($config['vip_membership_user'], get_current_user_id())){
+        return;
+    }
+
 
     $max_abs_plus = $config['max_per_user_and_month'];
     
