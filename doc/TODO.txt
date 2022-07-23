@@ -12,10 +12,6 @@ Para "te hubieras ahorrado":
     * Considerar Sumatoria de max(2, cantidad de unidades compradas) * (precio_normal - precio_plus)
 
 
-- Eliminar enlace a "Ver carrito" o eliminar botones +/- ya que permite saltarse restricciones.
-
-http://easyfarma.lan/cart/
-
 - Solucionar problema........ no funciona endpoint en LiteSpeed del server de Rodrigo
 
 https://pruebas.gentedefutbol.cl/wp-json/ez_files_base64/v1/post
@@ -40,8 +36,7 @@ ENTREGAR BALANCE de lo hecho / pendiente
 
 Entregado por cobrar
 
-Trabajo para el filtro -- listo                             $ 150   una semana 
-Dos precios sobre página de producto ---- listo 99%         $ 45 *  una semana
+Adicional por "dos precios"
 Subir receta -- en progreso 80%                             
 
 Cobrado pero sin entregar (en proceso)
