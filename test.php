@@ -37,6 +37,18 @@ if (!$cli){
 }
 
 
+$pid = 16483;
+
+Products::addProductCategoryNames($pid,
+	['EasyFarma Plus']
+);
+
+dd(
+	Products::getProductCategoryNames($pid)
+);
+
+exit;
+
 $orders = Orders::getRecentOrders(30, Users::getUserIdByUsername('boctulus'));
 
 foreach ($orders as $order){

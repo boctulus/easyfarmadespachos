@@ -1,6 +1,8 @@
 TODO Easyfarma despachos
 ========================
 
+Cobrar 80 USD por el tema de las recetas + 45 USD por optimizaciones + adicional por tiempo extra con los dos precios
+
 - Con EasyFarma Plus Ud. se ahorro $ ..... / Ud. se hubiera ahorrado $
 
 Para "te hubieras ahorrado":
@@ -9,6 +11,10 @@ Para "te hubieras ahorrado":
 
     * Considerar Sumatoria de max(2, cantidad de unidades compradas) * (precio_normal - precio_plus)
 
+
+- Eliminar enlace a "Ver carrito" o eliminar botones +/- ya que permite saltarse restricciones.
+
+http://easyfarma.lan/cart/
 
 - Solucionar problema........ no funciona endpoint en LiteSpeed del server de Rodrigo
 
@@ -26,20 +32,22 @@ Error: 404
 https://stackoverflow.com/a/43318152/980631
 
 
+- Graficos con Grafana o Tableau o similar ***********
+
+
 ENTREGAR BALANCE de lo hecho / pendiente 
 ªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªªª
 
 Entregado por cobrar
 
-Trabajo para el filtro -- listo      
-Dos precios sobre página de producto ---- listo
-Subir receta -- en progreso
+Trabajo para el filtro -- listo                             $ 150   una semana 
+Dos precios sobre página de producto ---- listo 99%         $ 45 *  una semana
+Subir receta -- en progreso 80%                             
 
 Cobrado pero sin entregar (en proceso)
 
-Generador de QR -- 50% cobrado
+Generador de QR -- 50% cobrado 
 App móvil       -- 50% cobrado
-
 
 
 

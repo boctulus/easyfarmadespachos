@@ -42,10 +42,10 @@ if (!$cli){
 	echo "Ejecutar desde la terminal";
 }
 
-$ids = Products::getIDs();
+$pids = Products::getIDs();
 
-foreach ($ids as $id){
-    $p    = Products::getProduct($id);
+foreach ($pids as $pid){
+    $p    = Products::getProduct($pid);
     $sku  = $p->get_sku();
 	// $name = $p->get_name();
 	// $precio_plus = Products::getMeta($id, 'precio_plus');
@@ -53,9 +53,12 @@ foreach ($ids as $id){
     // $precio      = $p->get_price();
 
     if (Strings::endsWith('_2', $sku)){
-		dd("Ocultando producto con SKU $sku | PID = $id");
-		Products::hide($id);
-		//$p->save();
+		dd("Ocultando producto con SKU $sku | PID = $pid");
+		//Products::hide($id);
+
+		Products::addProductCategoryNames($pid,
+			['EasyFarma Plus']
+		);
     }
 }
 

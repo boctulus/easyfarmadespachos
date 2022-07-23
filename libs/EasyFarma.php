@@ -137,6 +137,11 @@ class EasyFarma
             ]);
     
             Products::hide($p);  
+
+            Products::addProductCategoryNames($pid,
+                ['EasyFarma Plus']
+            );
+
             $dupe_id = $p->get_id();
 
         } else {      

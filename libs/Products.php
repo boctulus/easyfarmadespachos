@@ -611,6 +611,7 @@ class Products
     static function setPostAttribute($pid, $key, $value){
         update_post_meta($pid, $key, $value);
     }
+    
     static function setDefaultImage($pid, $image_id){
         //dd("Updating default image for post with PID $pid");
         update_post_meta( $pid, '_thumbnail_id', $image_id );
@@ -621,14 +622,37 @@ class Products
         $image_ids = implode(",", $image_ids);
         update_post_meta($pid, '_product_image_gallery', $image_ids);
     }
+
+    static function getProductCategoryNames($pid){
+        return wp_get_post_terms( $pid, 'product_cat', array('fields' => 'names') );
+    }
+
+    /*
+        Sobre-escribe cualquier categoria previa
+    */
     static function setProductCategoryNames($pid, Array $categos){
         if (count($categos) >0 && is_array($categos[0])){
-            //dd($categos, 'CATEGORIES');
             throw new \InvalidArgumentException("Categorias no pueden ser array de array");
         }
 
         wp_set_object_terms($pid, $categos, 'product_cat');
     }
+
+    /*
+        Agrega nuevas categorias
+    */
+    static function addProductCategoryNames($pid, Array $categos){
+        $current_categos = static::getProductCategoryNames($pid);
+
+        if (!empty($categos)){
+            $current_categos = array_diff($current_categos, ['Uncategorized']);
+        }
+
+        $categos = array_merge($current_categos, $categos);
+
+        static::setProductCategoryNames($pid, $categos);
+    }
+    
     static function setProductTagNames($pid, Array $names){
         if (count($names) >0 && is_array($names[0])){
             //dd($names, 'TAGS');
