@@ -1,0 +1,7 @@
+vendor/
+*.zip
+*.rar
+*.tar
+uploads/
+logs/
+__TEMAS/
