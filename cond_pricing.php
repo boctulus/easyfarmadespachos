@@ -19,50 +19,6 @@ require_once __DIR__ . '/libs/Products.php';
 require_once __DIR__ . '/libs/EasyFarma.php';
 
 
-/*
-    Me saco de encima el enlace a "Ver carrito" porque permite saltarse restricciones
-
-    Dejo de funcionar
-*/
-add_action( 'init', function(){
-    if (!is_admin()){
-        ?>
-        <script>
-            function removeVerCarrito(){
-                let index = <?= wp_is_mobile() ? 1 : 0 ?>
-
-                console.log(index)
-                jQuery(jQuery(jQuery('p.woocommerce-mini-cart__buttons')[index]).children('a.wc-forward')[0]).remove();
-                
-            }
-    
-            document.addEventListener("DOMContentLoaded", function(event) { 
-                let link_removed = false;
-                
-                // setTimeout(function(){
-                //     removeVerCarrito();
-                // }, 1000);
-
-                setTimeout(function(){
-                    if (link_removed){
-                        return;
-                    }
-
-                    jQuery('.product-quantity > .quantity > input').prop("disabled", true);
-
-                    removeVerCarrito();
-                    link_removed = true;
-                }, 2000)
-
-               
-            });
-
-        </script>
-        <?php
-    }
-});
-
-
 add_action( 'woocommerce_single_product_summary', 'product_page_two_prices', 15 );
 
 

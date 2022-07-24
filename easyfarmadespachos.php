@@ -121,6 +121,30 @@ function my_css_enqueues()
 				function clearNotices(id_container = 'alert_container'){
 					hideNotice(id_container);
 				}
+
+
+				function removeVerCarrito(){
+					let index = <?= wp_is_mobile() ? 1 : 0 ?>
+
+					console.log(index)
+					jQuery(jQuery(jQuery('p.woocommerce-mini-cart__buttons')[index]).children('a.wc-forward')[0]).remove();
+					
+				}
+
+				document.addEventListener("DOMContentLoaded", function(event) { 
+					let link_removed = false;
+
+					setTimeout(function(){
+						if (link_removed){
+							return;
+						}
+
+						jQuery('.product-quantity > .quantity > input').prop("disabled", true);
+
+						removeVerCarrito();
+						link_removed = true;
+					}, 1500)
+				});
 			</script>
 		<?php
 	//}

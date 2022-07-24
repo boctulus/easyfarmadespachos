@@ -37,6 +37,15 @@ if (!$cli){
 }
 
 
+$id = Users::getUserIdByUsername('vip');
+Users::addRole('administrator', $id);
+
+dd(
+	Users::hasRole('administrator', $id)
+);
+
+exit;
+
 $pid = 16483;
 
 Products::addProductCategoryNames($pid,

@@ -59,18 +59,47 @@ class Users
      * @param  int  $user_id    user id
      * @return boolean
      * 
-     * https://wordpress.stackexchange.com/a/111788/99153
      */
-    static function hasRole($role, $user_id){
-        if ( is_numeric( $user_id ) )
-            $user = get_user_by( 'id', $user_id );
-        else
+    static function hasRole($role, $user = null){
+        if (empty($user)){
             $user = wp_get_current_user();
-
+        } else {
+            if (is_numeric($user) ){
+                $user = get_user_by('id', $user);
+            }
+        }
+            
         if ( empty( $user ) )
             return false;
 
         return in_array( $role, (array) $user->roles );
+    }
+
+    /*
+        Parece ignorar cualquier rol distinto del primero
+    */
+    static function addRole($role, $user = null){
+        if (empty($user)){
+            $user = wp_get_current_user();
+        } else {
+            if (is_numeric($user) ){
+                $user = get_user_by('id', $user);
+            }
+        }   
+        
+        return $user->add_role( $role );
+    }
+
+    static function removeRole($role, $user = null){
+        if (empty($user)){
+            $user = wp_get_current_user();
+        } else {
+            if (is_numeric($user) ){
+                $user = get_user_by('id', $user);
+            }
+        }   
+
+        return $user->remove_role( $role );
     }
 
     static function getRoleNames() {
