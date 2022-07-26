@@ -3,6 +3,7 @@
 namespace boctulus\EasyFarmaDespachos\libs;
 
 use boctulus\EasyFarmaDespachos\libs\Strings;
+use ParagonIE\Sodium\Core\Curve25519\Ge\P2;
 
 if ( ! function_exists( 'wp_crop_image' ) ) {
     include_once ( __DIR__ . '/../../../../wp-admin/includes/image.php' );
@@ -120,6 +121,12 @@ class Products
     }
 
     static function getProductIdBySKU($sku){
+        $pid = wc_get_product_id_by_sku($sku);
+
+        if (!empty($pid)){
+            return $pid;
+        }
+
         $result_ay = static::getByMeta('SKU', $sku);
 
         if (empty($result_ay)){
@@ -691,16 +698,22 @@ class Products
     }
 
 
-    static function updateProductBySku( $args, $update_images_even_it_has_featured_image = true )
+    static function updateProductBy($by = 'pid', $args, $update_images_even_it_has_featured_image = true )
     {
-        if (!isset($args['sku']) || empty($args['sku'])){
-            throw new \InvalidArgumentException("SKU es requerido");
-        }
+        if ($by === 'pid'){
+            $pid = $args['id'];
+        } else {
+            // by sku
 
-        $pid = static::getProductIdBySKU($args['sku']);
-
-        if (empty($pid)){
-            throw new \InvalidArgumentException("SKU {$args['sku']} no encontrado");
+            if (!isset($args['sku']) || empty($args['sku'])){
+                throw new \InvalidArgumentException("SKU es requerido");
+            }
+    
+            $pid = static::getProductIdBySKU($args['sku']);
+    
+            if (empty($pid)){
+                throw new \InvalidArgumentException("SKU {$args['sku']} no encontrado");
+            }
         }
 
         $product = wc_get_product($pid);
@@ -935,6 +948,10 @@ class Products
                 }      
             }  
         }
+    }
+
+    static function updateProductBySku($args, $update_images_even_it_has_featured_image = true ){
+        return static::updateProductBy('sku', $args, $update_images_even_it_has_featured_image);
     }
 
     /*

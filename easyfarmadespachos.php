@@ -48,6 +48,30 @@ require_once __DIR__ . '/meta_box_productos.php';
 
 use boctulus\EasyFarmaDespachos\libs\Url;
 
+/*
+	Notice al panel de Admin
+*/
+function reactor_admin_notice() { 
+	if (session_status() === PHP_SESSION_NONE) {
+		session_start();
+	}
+	
+	if (isset($_SESSION['reactor-notice']) && $_SESSION['reactor-notice'] == 'SKU ausente'):
+	?>
+    
+	<div class="notice notice-warning is-dismissible">
+        <p><?= "Se ha agregado un producto <u>sin SKU</u>. Es necesario que edite el producto y <b>agregue el SKU</b>." ?></p>
+    </div>
+	
+	<?php 
+
+	$_SESSION['reactor-notice'] = '';
+	endif;
+}
+
+add_action( 'admin_notices', 'reactor_admin_notice' );
+
+
 function my_css_enqueues() 
 {  
 	//if (!is_home()){

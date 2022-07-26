@@ -56,6 +56,19 @@ class Reactor
 		
 		set_transient('product-'. $pid, true, 2);
 
+		if (is_admin()){
+			$sku = $_POST['_sku'] ?? null;
+			if ($sku === ''){
+				if (session_status() === PHP_SESSION_NONE) {
+					session_start();
+				}
+
+				$_SESSION['reactor-notice'] = 'SKU ausente';
+			} else {
+				$_SESSION['reactor-notice'] = '';
+			}
+		}
+
 		EasyFarma::duplicate_as_hidden($pid, true);
 
 		foreach ($this->atts as $att => $meta_key){
@@ -93,7 +106,7 @@ class Reactor
 			return;
 		}
 
-		Files::localLogger(__FUNCTION__);//
+		//Files::localLogger(__FUNCTION__);//
 
 		set_transient('product-'. $pid, true, 2);	
 
