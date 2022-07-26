@@ -1,8 +1,6 @@
 TODO Easyfarma despachos
 ========================
 
-Cobrar 80 USD por el tema de las recetas + 45 USD por optimizaciones + adicional por tiempo extra con los dos precios
-
 - Con EasyFarma Plus Ud. se ahorro $ ..... / Ud. se hubiera ahorrado $
 
 Para "te hubieras ahorrado":
@@ -37,7 +35,8 @@ ENTREGAR BALANCE de lo hecho / pendiente
 Entregado por cobrar
 
 Adicional por "dos precios"
-Subir receta -- en progreso 80%                             
+Subir receta -- en progreso 80%     
+Otros adicionales ***                        
 
 Cobrado pero sin entregar (en proceso)
 

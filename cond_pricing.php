@@ -21,7 +21,6 @@ require_once __DIR__ . '/libs/EasyFarma.php';
 
 add_action( 'woocommerce_single_product_summary', 'product_page_two_prices', 15 );
 
-
 function product_page_two_prices() {
     $es_vip = EasyFarma::esVIP();
 
@@ -38,9 +37,11 @@ function product_page_two_prices() {
 
     $precio_plus = Products::getMeta($pid, 'precio_plus');
     $precio      = $p->get_price();
+    $precio_sale = $p->get_sale_price();
 
-    $precio_plus = Strings::formatNumber($precio_plus);
-    $precio      = Strings::formatNumber($precio);
+    $precio_plus = empty($precio_plus) ? '' : Strings::formatNumber($precio_plus);
+    $precio      = empty($precio)      ? '' : Strings::formatNumber($precio);
+    $precio_sale = empty($precio_sale) ? '' : Strings::formatNumber($precio_sale);
 
     ?>
 
@@ -49,20 +50,29 @@ function product_page_two_prices() {
 
         let precio      = '<?= $precio ?>'
         let precio_plus = '<?= $precio_plus ?>'
+        let precio_sale = '<?= $precio_sale ?>'
 
         const es_vip    = <?= $es_vip ? 'true' : 'false' ?>
 
-        let line_plus   = `<span class="ef_plus_price">EasyFarma Plus $ ${precio_plus}</span>`
-        let line_normal = `<span class="ef_normal_price">Normal $ ${precio }</span>`
+        if (precio_plus != ''){
+            let line_plus   = `<span class="ef_plus_price">EasyFarma Plus $ ${precio_plus}</span>`
+            let line_normal = `<span class="ef_normal_price">Normal $ ${precio }</span>`
 
-        if (!es_vip){
-            line_plus   = `<del>${line_plus}</del>`
+            if (!es_vip){
+                line_plus   = `<del>${line_plus}</del>`
+            }
+
+            let reemplazo = `${line_plus}<br/>${line_normal}`
+
+            if (precio_sale == ''){
+                jQuery(jQuery('.price > .woocommerce-Price-amount > bdi')[0]).replaceWith(reemplazo)
+            } else {
+                // Nuevo caso: existe precio de descuento
+                jQuery(jQuery('p.price')).append(`<br/>${line_plus}`)
+
+            }
+            
         }
-
-        let reemplazo = `${line_plus}<br/>${line_normal}`
-
-        jQuery(jQuery('.price > .woocommerce-Price-amount > bdi')[0]).replaceWith(reemplazo)
-
 	</script>
 
     <?php

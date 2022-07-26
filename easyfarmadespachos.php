@@ -148,11 +148,19 @@ function my_css_enqueues()
 
 
 				function removeVerCarrito(){
-					let index = <?= wp_is_mobile() ? 1 : 0 ?>
-
-					console.log(index)
+					let index = <?= wp_is_mobile() ? 1 : 0 ?>;
 					jQuery(jQuery(jQuery('p.woocommerce-mini-cart__buttons')[index]).children('a.wc-forward')[0]).remove();
 					
+				}
+
+				/*
+					Asume que la segunda imagen de existir.... es un duplicado de la primera 
+
+					(util solamente cuandos se sabe se carga solo una imagen)
+				*/
+				function removeSecondImage(){
+					jQuery('.woocommerce-product-gallery--with-images > ol > li').first().next().remove(); // Kadence
+					jQuery('.slick-track').find('div:first').next().remove(); // FlatSome
 				}
 
 				document.addEventListener("DOMContentLoaded", function(event) { 
@@ -168,6 +176,10 @@ function my_css_enqueues()
 						removeVerCarrito();
 						link_removed = true;
 					}, 1500)
+					
+					setTimeout(function(){
+						removeSecondImage();
+					}, 700)
 				});
 			</script>
 		<?php
